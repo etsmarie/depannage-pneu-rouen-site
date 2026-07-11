@@ -1,0 +1,133 @@
+---
+interface Props {
+  href: string;
+  name: string;
+  postalCode: string;
+  hook?: string;
+  axes?: string[];
+}
+const { href, name, postalCode, hook, axes = [] } = Astro.props;
+---
+
+<a href={href} class="city-card">
+  <div class="city-card__head">
+    <h3>{name}</h3>
+    <span class="city-card__cp">{postalCode}</span>
+  </div>
+  {hook && <p>{hook}</p>}
+  {axes.length > 0 && (
+    <div class="city-card__axes">
+      {axes.map((a) => <span>{a}</span>)}
+    </div>
+  )}
+  <span class="city-card__arrow" aria-hidden="true">→</span>
+</a>
+
+<style>
+  /* Défaut (fond clair) : carte blanche ombrée, bord gauche orange */
+  .city-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: #fff;
+    border: 1px solid var(--ligne-fonce);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    box-shadow: var(--shadow-md);
+    color: var(--c-ardoise-fonce);
+    text-decoration: none;
+    position: relative;
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+  }
+  .city-card:hover {
+    transform: translateY(-3px);
+    color: var(--c-ardoise-fonce);
+    text-decoration: none;
+  }
+
+  .city-card__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .city-card h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.16rem;
+    letter-spacing: 0.02em;
+    color: var(--c-ardoise);
+  }
+  .city-card__cp {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    color: var(--c-texte-doux);
+  }
+  .city-card p {
+    margin: 0;
+    color: var(--c-texte-doux);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-snug);
+  }
+  .city-card__axes {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-top: var(--space-2);
+  }
+  .city-card__axes span {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--c-orange-nuit);
+    border: 1px dashed rgba(47, 191, 113, 0.5);
+    padding: 0.3em 0.65em;
+    border-radius: var(--radius-sm);
+  }
+  .city-card__arrow {
+    color: var(--c-orange);
+    font-size: var(--fs-base);
+    margin-top: var(--space-2);
+    align-self: flex-start;
+    transition: transform var(--transition-fast);
+  }
+  .city-card:hover .city-card__arrow {
+    transform: translateX(4px);
+  }
+
+  /* Sur bandes sombres : carte nuit, bord orange au survol */
+  :global(.band-ardoise) .city-card,
+  :global(.band-nuit) .city-card {
+    background: rgba(25, 31, 38, 0.55);
+    border: 1px solid var(--ligne);
+    border-radius: var(--radius-lg);
+    box-shadow: none;
+    color: var(--c-blanc);
+  }
+  :global(.band-ardoise) .city-card:hover,
+  :global(.band-nuit) .city-card:hover {
+    border-color: var(--c-orange);
+    color: var(--c-blanc);
+  }
+  :global(.band-ardoise) .city-card h3,
+  :global(.band-nuit) .city-card h3 {
+    color: #fff;
+  }
+  :global(.band-ardoise) .city-card__cp,
+  :global(.band-nuit) .city-card__cp {
+    color: var(--c-brume);
+  }
+  :global(.band-ardoise) .city-card p,
+  :global(.band-nuit) .city-card p {
+    color: var(--c-ficelle);
+  }
+  :global(.band-ardoise) .city-card__axes span,
+  :global(.band-nuit) .city-card__axes span {
+    color: var(--c-orange-clair);
+  }
+</style>

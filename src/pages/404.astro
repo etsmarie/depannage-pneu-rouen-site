@@ -1,0 +1,99 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { NAP } from '~/data/nap.ts';
+---
+
+<BaseLayout
+  title="Page introuvable — Dépannage pneu Rouen"
+  description={`Cette URL ne mène nulle part. Repartez de l'accueil pour joindre Lucas, dépannage pneu et batterie à domicile sur Rouen et toute la Seine-Maritime, ou appelez le ${NAP.phoneDisplay}, 24h/24.`}
+  canonicalPath="/404"
+  noindex
+>
+  <section class="nf band-ardoise">
+    <div class="container nf__inner">
+      <p class="eyebrow">Erreur 404</p>
+      <p class="nf__code" aria-hidden="true">404</p>
+      <h1>Page introuvable</h1>
+      <p class="nf__lede">
+        Cette adresse s&rsquo;est perdue quelque part entre les quais de Seine et
+        les hauteurs de Bonsecours. Votre pneu, lui, n&rsquo;attendra pas&nbsp;:
+        Lucas et l&rsquo;atelier roulant restent joignables jour et nuit, d&rsquo;une
+        rive à l&rsquo;autre de l&rsquo;agglo. Un appel, et on file jusqu&rsquo;à
+        la voiture.
+      </p>
+      <div class="nf__actions">
+        <a class="btn btn--primary btn--lg" href={`tel:${NAP.phoneE164}`}>
+          Appeler le {NAP.phoneDisplay}
+        </a>
+        <a class="btn btn--ghost" href="/">Revenir à l&rsquo;accueil</a>
+      </div>
+      <nav class="nf__links" aria-label="Pages utiles">
+        <a href="/zones-intervention">Zones d&rsquo;intervention</a>
+        <a href="/services">Nos services</a>
+        <a href="/comment-ca-marche">Comment ça marche</a>
+      </nav>
+    </div>
+    <div class="hazard-stripe" aria-hidden="true"></div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    position: relative;
+    min-height: 62vh;
+    display: flex;
+    align-items: center;
+    padding-block: var(--space-10);
+  }
+  .nf .hazard-stripe {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .nf__inner {
+    text-align: center;
+  }
+  .nf .eyebrow {
+    justify-content: center;
+  }
+  .nf__code {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(4rem, 14vw, 8rem);
+    line-height: 1;
+    color: var(--c-orange-clair);
+    margin: var(--space-4) 0 var(--space-2);
+  }
+  .nf h1 {
+    color: #fff;
+  }
+  .nf__lede {
+    color: var(--c-ficelle);
+    font-size: var(--fs-lg);
+    max-width: 46ch;
+    margin: 0 auto var(--space-6);
+  }
+  .nf__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+  .nf__links {
+    margin-top: var(--space-6);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-5);
+    font-size: var(--fs-sm);
+  }
+  .nf__links a {
+    color: var(--c-ficelle);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .nf__links a:hover {
+    color: var(--c-orange-clair);
+  }
+</style>

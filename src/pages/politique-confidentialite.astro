@@ -1,0 +1,101 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import EmailObfuscated from '~/components/EmailObfuscated.astro';
+import { NAP } from '~/data/nap.ts';
+---
+
+<BaseLayout
+  title="Politique de confidentialité — Dépannage pneu Rouen"
+  description={`Traitement des données personnelles sur ${NAP.domain} : données collectées, finalités et droits d'accès. Aucun suivi publicitaire.`}
+  canonicalPath="/politique-confidentialite"
+  noindex
+>
+  <section class="legal">
+    <div class="container">
+      <p class="eyebrow">Vos données</p>
+      <h1>Politique de confidentialité</h1>
+
+      <p>
+        Le responsable de traitement est {NAP.legalEntity}, qui édite le service
+        {NAP.name} et le site <strong>{NAP.domain}</strong>. Ce document résume,
+        sans jargon, les informations personnelles qui transitent par nous et
+        l&rsquo;usage strictement limité que nous en faisons.
+      </p>
+
+      <h2>Aucune collecte à votre insu</h2>
+      <p>
+        Parcourir ces pages ne remplit aucun fichier&nbsp;: ni inscription, ni
+        formulaire, ni pistage marketing. Nous ne détenons que ce que vous nous
+        confiez de vive voix ou par courriel au moment de demander une
+        intervention&nbsp;— votre nom, un numéro pour vous rappeler, l&rsquo;endroit
+        où la voiture est immobilisée, le souci rencontré et quelques détails sur
+        le véhicule.
+      </p>
+
+      <h2>À quoi elles servent</h2>
+      <ul>
+        <li>Convenir du rendez-vous et mener à bien le dépannage</li>
+        <li>Établir le devis puis la facture correspondante</li>
+        <li>Revenir vers vous ensuite si besoin (garantie, suite d&rsquo;une pose)</li>
+      </ul>
+
+      <h2>Durées de conservation</h2>
+      <p>
+        Un dossier rattaché à une facture reste archivé dix&nbsp;ans&nbsp;: c&rsquo;est
+        la règle comptable et fiscale, pas un choix de notre part. Une prise de
+        contact sans suite&mdash;un simple renseignement, par exemple&mdash;disparaît
+        dans les douze&nbsp;mois qui suivent notre dernier échange.
+      </p>
+
+      <h2>Ce que la loi vous accorde</h2>
+      <p>
+        Accès, rectification, effacement, limitation, portabilité, opposition&nbsp;:
+        le RGPD et la loi Informatique et Libertés placent ces leviers entre vos
+        mains. Un message via <EmailObfuscated label="email" />, en indiquant
+        l&rsquo;objet précis de votre demande, suffit à les activer.
+      </p>
+
+      <h2>Traceurs</h2>
+      <p>
+        Ce site ne dépose ni cookie publicitaire ni mouchard d&rsquo;analyse
+        d&rsquo;audience tiers. Tout au plus quelques cookies purement techniques,
+        indispensables à son affichage, peuvent apparaître.
+      </p>
+
+      <h2>Un désaccord&nbsp;?</h2>
+      <p>
+        Si vous jugez qu&rsquo;un traitement piétine vos droits, l&rsquo;autorité
+        compétente est la CNIL&nbsp;: 3 place de Fontenoy, TSA 80715, 75334 Paris
+        Cedex 07, ou <a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal {
+    padding-block: var(--space-9);
+  }
+  .legal h1 {
+    color: var(--c-ardoise);
+    font-size: var(--fs-3xl);
+    margin: var(--space-3) 0 var(--space-7);
+  }
+  .legal h2 {
+    margin-top: var(--space-7);
+    font-size: var(--fs-xl);
+    color: var(--c-ardoise);
+    text-transform: none;
+    padding-left: var(--space-3);
+    border-left: 4px solid var(--c-orange);
+  }
+  .legal p,
+  .legal li {
+    color: var(--c-texte-doux);
+    line-height: var(--lh-loose);
+  }
+  .legal p,
+  .legal ul {
+    max-width: 70ch;
+  }
+</style>

@@ -1,0 +1,243 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ServiceCard from '~/components/ServiceCard.astro';
+import PhoneCTA from '~/components/PhoneCTA.astro';
+import Guarantees from '~/components/Guarantees.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import { SERVICES } from '~/data/services.ts';
+import { NAP } from '~/data/nap.ts';
+---
+
+<BaseLayout
+  title="Services — Dépannage pneu Rouen"
+  description="Lucas Dépannage Pneu Rouen : crevaison traitée selon la norme NF U85-200, pneus posés par paire, batterie 12V et roue de secours, 24h/24 au pied de votre voiture dans l’agglo rouennaise — jamais de remorquage."
+  canonicalPath="/services"
+>
+  <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/services`} />
+
+  <section class="sv-hero">
+    <div class="container">
+      <p class="eyebrow">Le catalogue mobile</p>
+      <h1>Cinq urgences auto, réparées <span class="sv-hero__or">au pied de la voiture</span></h1>
+      <p class="sv-hero__lede">
+        Aucun garage où passer : Lucas roule en tout mobile et vient jusqu’à
+        l’endroit précis où votre véhicule est resté planté — devant un pavillon
+        des coteaux de Bonsecours, sur une aire le long des quais de Seine ou à
+        l’arrêt d’urgence de l’A28. Le principe ne bouge jamais : on ne tracte
+        rien, votre auto redémarre et repart roulante.
+      </p>
+      <PhoneCTA hint="Arrivée express dans Rouen intra-muros · horaire confirmé pour la périphérie" />
+    </div>
+    <div class="hazard-stripe" aria-hidden="true"></div>
+  </section>
+
+  <section class="sv-grid-band band-ardoise">
+    <div class="container">
+      <header class="sv-head">
+        <p class="eyebrow eyebrow--center">Cinq savoir-faire embarqués</p>
+        <h2>Cinq réparations à bord, un prix tenu en prime</h2>
+        <p>
+          Tout sort du fourgon équipé : démonte-pneu, équilibreuse, réserve de
+          batteries 12V et pneumatiques dans les montes les plus répandues. La
+          panne se traite là où la voiture patiente, sans la déplacer d’un mètre.
+        </p>
+      </header>
+      <div class="sv-grid">
+        {SERVICES.map((s, i) => (
+          <ServiceCard
+            href={`/services/${s.slug}`}
+            label={s.shortLabel}
+            title={s.title}
+            hook={s.metaDescription}
+            number={String(i + 1).padStart(2, '0')}
+            priceFrom={s.priceFrom}
+          />
+        ))}
+        <article class="sv-static">
+          <span class="sv-static__num" aria-hidden="true">06 · Devis d’abord</span>
+          <h3>Le prix dit avant le départ</h3>
+          <p>
+            Au téléphone, on additionne tout sous vos yeux : la venue de
+            l’atelier, le temps passé, et l’éventuel supplément quand
+            l’intervention tombe de nuit ou un dimanche. Ce total vous est
+            communiqué avant même que Lucas ne prenne la route — et c’est très
+            exactement lui qui apparaît sur la facture.
+          </p>
+          <span class="sv-static__tag">Zéro écart entre le devis et la note</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sv-guarantees">
+    <div class="container">
+      <header class="sv-head sv-head--left">
+        <p class="eyebrow">Nos règles</p>
+        <h2>Les points non négociables</h2>
+      </header>
+      <Guarantees variant="grid" />
+    </div>
+  </section>
+
+  <section class="sv-final">
+    <div class="container sv-final__inner">
+      <p class="eyebrow eyebrow--center">Un seul appel</p>
+      <h2>Indiquez-nous l’endroit exact</h2>
+      <p class="sv-final__lede">
+        Un clou ramassé sur les quais, un démarreur resté muet au parking du
+        Vieux-Marché, une roue à plat immobilisée sur la rocade A150 : décrivez
+        la situation et l’atelier mobile se met aussitôt en route.
+      </p>
+      <a class="btn btn--primary btn--lg" href={`tel:${NAP.phoneE164}`}>
+        Lancer le dépannage
+      </a>
+      <a class="sv-final__phone" href={`tel:${NAP.phoneE164}`}>{NAP.phoneDisplay}</a>
+      <p class="sv-final__hours">{NAP.hoursLabel} · {NAP.area}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Hero sombre dégradé, liseré signalétique en pied */
+  .sv-hero {
+    position: relative;
+    padding-block: var(--space-9) var(--space-8);
+    background:
+      radial-gradient(1100px 460px at 80% -10%, rgba(47, 191, 113, 0.2), transparent 60%),
+      linear-gradient(160deg, var(--c-ardoise) 0%, var(--c-ardoise-fonce) 55%, var(--c-ardoise-nuit) 100%);
+    color: var(--c-blanc);
+  }
+  .sv-hero .hazard-stripe {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .sv-hero h1 {
+    font-size: var(--fs-3xl);
+    margin: var(--space-4) 0;
+    color: #fff;
+  }
+  .sv-hero__or {
+    color: var(--c-orange-clair);
+  }
+  .sv-hero__lede {
+    color: var(--c-ficelle);
+    font-size: var(--fs-lg);
+    max-width: 62ch;
+    margin-bottom: var(--space-6);
+  }
+
+  /* Bande ardoise : grille de cartes sombres numérotées */
+  .sv-head {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto var(--space-7);
+  }
+  .sv-head h2 {
+    margin: 14px 0 0;
+  }
+  .sv-head p {
+    margin-top: 14px;
+    font-size: 1.05rem;
+  }
+  .sv-head--left {
+    text-align: left;
+    margin-left: 0;
+  }
+  .sv-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+    gap: 18px;
+  }
+
+  /* 6e carte non cliquable, même gabarit que les cartes service sombres */
+  .sv-static {
+    background: rgba(25, 31, 38, 0.55);
+    border: 1px dashed rgba(47, 191, 113, 0.5);
+    border-radius: var(--radius-lg);
+    padding: 26px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .sv-static__num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-orange-clair);
+  }
+  .sv-static h3 {
+    margin: var(--space-2) 0 0;
+    font-size: 1.28rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .sv-static p {
+    margin: 0;
+    color: var(--c-ficelle);
+    font-size: 0.96rem;
+  }
+  .sv-static__tag {
+    margin-top: auto;
+    padding-top: var(--space-3);
+    border-top: 2px solid var(--c-orange);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-orange-clair);
+  }
+
+  /* CTA final sombre, liseré en tête, numéro géant */
+  .sv-final {
+    position: relative;
+    background:
+      radial-gradient(900px 400px at 20% 0%, rgba(47, 191, 113, 0.28), transparent 60%),
+      linear-gradient(150deg, var(--c-ardoise) 0%, var(--c-ardoise-nuit) 100%);
+    color: #fff;
+    text-align: center;
+  }
+  .sv-final::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 6px;
+    background: repeating-linear-gradient(
+      45deg,
+      var(--c-orange) 0 22px,
+      var(--c-ardoise-nuit) 22px 44px
+    );
+  }
+  .sv-final h2 {
+    color: #fff;
+    margin-top: 14px;
+  }
+  .sv-final__lede {
+    color: var(--c-ficelle);
+    max-width: 48ch;
+    margin: 0 auto var(--space-6);
+    font-size: 1.08rem;
+  }
+  .sv-final__phone {
+    display: block;
+    margin-top: var(--space-4);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 6vw, 3rem);
+    letter-spacing: 0.02em;
+    color: var(--c-orange-clair);
+  }
+  .sv-final__phone:hover {
+    color: var(--c-orange-clair);
+    text-decoration: none;
+  }
+  .sv-final__hours {
+    margin: var(--space-3) 0 0;
+    font-size: 0.9rem;
+    color: var(--c-brume);
+  }
+</style>

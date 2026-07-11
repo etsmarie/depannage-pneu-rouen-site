@@ -1,0 +1,473 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PhoneCTA from '~/components/PhoneCTA.astro';
+import ServiceCard from '~/components/ServiceCard.astro';
+import CityCard from '~/components/CityCard.astro';
+import Guarantees from '~/components/Guarantees.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Faq from '~/components/Faq.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import JumpLinks from '~/components/JumpLinks.astro';
+import { CITIES_83, EPCI_LABEL, type City } from '~/data/cities-83.ts';
+import { SERVICES } from '~/data/services.ts';
+import { cityFaq } from '~/data/faq.ts';
+import { NAP } from '~/data/nap.ts';
+
+export function getStaticPaths() {
+  return CITIES_83.map((city) => ({
+    params: { city: city.slug },
+    props: { city },
+  }));
+}
+
+interface Props { city: City }
+const { city } = Astro.props;
+
+/**
+ * Maillage interne : les communes du même EPCI passent devant,
+ * puis les plus peuplées — 4 cartes voisines par page.
+ */
+const nearby = CITIES_83
+  .filter((c) => c.slug !== city.slug)
+  .sort(
+    (a, b) =>
+      Number(b.epci === city.epci) - Number(a.epci === city.epci) ||
+      b.population - a.population,
+  )
+  .slice(0, 4);
+
+/** « dépannage pneu X » → « Dépannage pneu X » pour la balise <title>. */
+const kwTitle = city.keywords.primary.toLowerCase().startsWith('dépannage pneu')
+  ? city.keywords.primary.charAt(0).toUpperCase() + city.keywords.primary.slice(1)
+  : `Dépannage pneu ${city.name}`;
+const fullTitle = `${kwTitle} — réparation sur place`;
+const title = fullTitle.length <= 60 ? fullTitle : kwTitle;
+
+/** « à {Ville} » adapté aux noms en « Les … ». */
+const villeLoc = city.name.startsWith('Les ') ? `aux ${city.name.slice(4)}` : `à ${city.name}`;
+const descTails = [
+  'Pneu réparé ou remplacé, la voiture repart roulante. Un appel, on file.',
+  'Crevaison ou batterie à plat gérée devant chez vous, de jour comme de nuit. Un appel, on file.',
+  'Roue, pneu ou batterie remis d’aplomb sur votre stationnement, 24h/24. Un appel, on file.',
+  'Pneu remonté là où la voiture a calé, quai ou côte. Un appel, on file.',
+];
+const tailIdx = Math.max(0, CITIES_83.findIndex((c) => c.slug === city.slug)) % descTails.length;
+const description = `Zéro remorquage : on intervient sur place en ~45 min ${villeLoc}. ${descTails[tailIdx]}`;
+
+/** Fil d'Ariane : mêmes libellés/URLs pour le rendu visible et le JSON-LD. */
+const crumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: "Zones d'intervention", href: '/zones-intervention' },
+  { label: city.name },
+];
+
+/** Sommaire (jump links) : pages tier 1 uniquement (contenu le plus riche). */
+const jumpLinks = [
+  { href: '#contexte', label: 'Côté terrain' },
+  { href: '#garanties', label: 'Garanties' },
+  { href: '#services', label: 'Interventions' },
+  { href: '#faq', label: 'FAQ' },
+  { href: '#communes', label: 'Communes voisines' },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalPath={`/${city.slug}`}
+>
+  <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/${city.slug}`} />
+
+  <Breadcrumb items={crumbs} currentPath={`/${city.slug}`} />
+  {city.tier === 1 && <JumpLinks links={jumpLinks} />}
+
+  <!-- 1 · HERO sombre, pills signalétiques, liseré hazard -->
+  <section class="c-hero band-nuit">
+    <div class="container">
+      <div class="c-hero__pills">
+        <span class="pill"><span class="pill__dot" aria-hidden="true"></span>{city.name} · {city.postalCode}</span>
+        <span class="pill"><span class="pill__dot" aria-hidden="true"></span>{EPCI_LABEL[city.epci]}</span>
+        <span class="pill"><span class="pill__dot" aria-hidden="true"></span>Sans remorquage</span>
+      </div>
+      <h1>
+        {city.keywords.primary}
+        <span class="c-hero__or">sur place, jour et nuit</span>
+      </h1>
+      <p class="c-hero__lede">{city.hookLine}</p>
+      <p class="c-hero__lede c-hero__lede--fine">
+        {city.keywords.secondary}, {city.keywords.tertiary}, batterie 12V ou
+        roue de secours{city.axes && city.axes.length > 0 && (
+          <> — même coincé le long de {city.axes.join(', ')}</>
+        )} : tout se règle à l'endroit exact où la voiture s'est immobilisée.
+        Rien n'est chargé sur plateau, vous remontez au volant et vous roulez.
+      </p>
+      <PhoneCTA
+        eyebrow={`Urgence pneu & batterie — ${city.name}`}
+        hint="Prix et heure d'arrivée annoncés dès l'appel"
+      />
+    </div>
+  </section>
+  <div class="hazard-stripe" aria-hidden="true"></div>
+
+  <!-- 2 · CONTEXTE LOCAL d'abord (ordre volontairement inversé) -->
+  <section class="c-terrain" id="contexte">
+    <div class="container c-terrain__grid">
+      <div class="c-terrain__main">
+        <p class="eyebrow">Côté terrain</p>
+        <h2>{city.name}, vu du fourgon</h2>
+        {city.localContext.map((para) => <p>{para}</p>)}
+        {city.internalLinks && <p class="c-weave" set:html={city.internalLinks} />}
+
+        <h3>Nos repères sur la commune</h3>
+        <p>
+          Lâchez un point de repère au téléphone — un quai, une côte, un pont —
+          et Lucas situe aussitôt où vous êtes bloqué :
+        </p>
+        <ul class="c-marks" role="list">
+          {city.landmarks.map((l) => <li>{l}</li>)}
+        </ul>
+        <p>
+          Le même atelier mobile enchaîne sur les communes voisines —
+          {nearby.slice(0, 3).map((c) => c.name).join(', ')} — et couvre tout le
+          secteur <a href={`/secteur/${city.epci}`}>{EPCI_LABEL[city.epci]}</a>.
+        </p>
+      </div>
+
+      <aside class="c-card" aria-label={`Fiche express ${city.name}`}>
+        <p class="c-card__title">Fiche express</p>
+        <dl>
+          <dt>Commune</dt><dd>{city.name} ({city.postalCode})</dd>
+          <dt>Intercommunalité</dt><dd>{EPCI_LABEL[city.epci]}</dd>
+          {city.axes && city.axes.length > 0 && (
+            <><dt>Axes desservis</dt><dd>{city.axes.join(' · ')}</dd></>
+          )}
+          <dt>Intervention</dt><dd>Sur place, sans remorquage</dd>
+          <dt>Horaires</dt><dd>{NAP.hoursLabel}</dd>
+          <dt>Téléphone</dt>
+          <dd><a href={`tel:${NAP.phoneE164}`}>{NAP.phoneDisplay}</a></dd>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 3 · GARANTIES (à la place de tout bloc d'avis) -->
+  <section class="band-ardoise" id="garanties">
+    <div class="container">
+      <header class="c-head c-head--center">
+        <p class="eyebrow eyebrow--center">Nos engagements</p>
+        <h2>Quatre garanties, aucune parole en l'air</h2>
+      </header>
+      <Guarantees variant="grid" />
+    </div>
+  </section>
+
+  <!-- 4 · PRESTATIONS -->
+  <section class="c-services" id="services">
+    <div class="container">
+      <header class="c-head">
+        <p class="eyebrow">Interventions</p>
+        <h2>Ce qu'on règle sur place</h2>
+        <p class="c-head__lede">
+          Tout l'atelier tient dans le fourgon : démonte-pneu, équilibreuse,
+          batteries 12V et gommes des montes les plus courantes. Les pneus neufs
+          se posent par paire — 2, 4 ou 6 — pour garder un essieu équilibré.
+        </p>
+      </header>
+      <div class="c-grid">
+        {SERVICES.map((s, i) => (
+          <ServiceCard
+            href={`/services/${s.slug}`}
+            label={s.shortLabel}
+            title={s.title}
+            hook={s.metaDescription}
+            number={String(i + 1).padStart(2, '0')}
+            priceFrom={s.priceFrom}
+          />
+        ))}
+      </div>
+      <p class="c-note">
+        Tarifs « à partir de », déplacement déjà compris dans le montant donné
+        au téléphone. Une majoration s'applique la nuit (22h-7h), le dimanche et
+        les jours fériés — elle est annoncée avant que le fourgon ne démarre.
+        <a href="/tarifs">Voir la grille de tarifs indicatifs →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 5 · FAQ locale (bande ardoise + schema FAQPage via le composant) -->
+  <Faq
+    id="faq"
+    items={cityFaq(city)}
+    title={`Vos questions — ${city.name}`}
+    eyebrow="FAQ locale"
+  />
+
+  <!-- 6 · MAILLAGE communes voisines -->
+  <section class="c-near" id="communes">
+    <div class="container">
+      <header class="c-head">
+        <p class="eyebrow">Autour de {city.postalCode}</p>
+        <h2>On couvre aussi les communes d'à côté</h2>
+      </header>
+      <div class="c-grid">
+        {nearby.map((c) => (
+          <CityCard
+            href={`/${c.slug}`}
+            name={c.name}
+            postalCode={c.postalCode}
+            hook={c.hookLine}
+            axes={c.axes}
+          />
+        ))}
+      </div>
+      <p class="c-more">
+        <a href={`/secteur/${city.epci}`}>Le secteur {EPCI_LABEL[city.epci]} →</a>
+        <a href="/zones-intervention">Toute la zone d'intervention →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 7 · CTA FINAL -->
+  <div class="hazard-stripe" aria-hidden="true"></div>
+  <section class="c-final band-nuit">
+    <div class="container c-final__in">
+      <p class="eyebrow eyebrow--center">Un souci, un appel</p>
+      <h2>En panne&nbsp;? Restez où vous êtes, on arrive.</h2>
+      <p>
+        Décrivez la panne, donnez votre position — le prix et l'heure
+        d'arrivée sont annoncés avant que le fourgon ne parte.
+      </p>
+      <a class="c-final__phone" href={`tel:${NAP.phoneE164}`}>{NAP.phoneDisplay}</a>
+      <p class="c-final__hours">{NAP.hoursLabel} · {NAP.area}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* --- Hero --- */
+  .c-hero {
+    background:
+      radial-gradient(1100px 480px at 80% -10%, rgba(47, 191, 113, 0.2), transparent 60%),
+      linear-gradient(160deg, var(--c-ardoise) 0%, var(--c-ardoise-fonce) 55%, var(--c-ardoise-nuit) 100%);
+    padding-block: var(--space-8) var(--space-9);
+  }
+  .c-hero h1 {
+    font-size: var(--fs-3xl);
+    color: #fff;
+    margin: var(--space-5) 0 var(--space-4);
+  }
+  .c-hero__or {
+    display: block;
+    color: var(--c-orange-clair);
+  }
+  .c-hero__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    background: rgba(198, 208, 215, 0.08);
+    border: 1px solid var(--ligne);
+    padding: 0.42em 0.85em;
+    border-radius: var(--radius-pill);
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--c-ficelle);
+  }
+  .pill__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-orange);
+    box-shadow: 0 0 0 4px rgba(47, 191, 113, 0.22);
+  }
+  .c-hero__lede {
+    max-width: 62ch;
+    font-size: var(--fs-lg);
+    color: var(--c-ficelle);
+  }
+  .c-hero__lede--fine {
+    font-size: var(--fs-base);
+    color: var(--c-brume);
+    margin-bottom: var(--space-6);
+  }
+
+  /* --- Terrain (contexte local) --- */
+  .c-terrain__grid {
+    display: grid;
+    grid-template-columns: 1.7fr 1fr;
+    gap: var(--space-7);
+    align-items: start;
+  }
+  @media (max-width: 880px) {
+    .c-terrain__grid { grid-template-columns: 1fr; }
+  }
+  .c-terrain__main h2 {
+    color: var(--c-ardoise);
+    margin-top: var(--space-3);
+  }
+  .c-terrain__main h3 {
+    color: var(--c-ardoise);
+    font-size: var(--fs-lg);
+    margin-top: var(--space-6);
+  }
+  .c-terrain__main p {
+    color: var(--c-texte-doux);
+    line-height: var(--lh-loose);
+  }
+  .c-weave a {
+    color: var(--c-orange-nuit);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .c-weave a:hover {
+    text-decoration: underline;
+  }
+  .c-marks {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-4);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .c-marks li {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.86rem;
+    letter-spacing: 0.04em;
+    color: var(--c-orange-nuit);
+    border: 1px dashed rgba(47, 191, 113, 0.5);
+    padding: 0.4em 0.8em;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Fiche express (aside sticky) */
+  .c-card {
+    background: var(--c-ardoise);
+    border: 1px solid var(--ligne);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    box-shadow: var(--shadow-md);
+    padding: var(--space-5);
+    position: sticky;
+    top: 92px;
+  }
+  .c-card__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-orange-clair);
+    margin-bottom: var(--space-4);
+  }
+  .c-card dl {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2px;
+    margin: 0;
+    font-size: var(--fs-sm);
+  }
+  .c-card dt {
+    color: var(--c-brume);
+    text-transform: uppercase;
+    font-family: var(--font-display);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    margin-top: var(--space-3);
+  }
+  .c-card dt:first-of-type { margin-top: 0; }
+  .c-card dd {
+    margin: 0;
+    color: var(--c-ficelle-clair);
+  }
+  .c-card dd a {
+    color: var(--c-orange-clair);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* --- Têtes de section --- */
+  .c-head {
+    max-width: 720px;
+    margin-bottom: var(--space-7);
+  }
+  .c-head--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .c-head h2 { margin: var(--space-3) 0 0; }
+  .c-head__lede {
+    color: var(--c-texte-doux);
+    margin-top: var(--space-3);
+  }
+  .c-services .c-head h2,
+  .c-near .c-head h2 {
+    color: var(--c-ardoise);
+  }
+
+  /* --- Grilles --- */
+  .c-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+    gap: 18px;
+  }
+  .c-note {
+    margin-top: var(--space-5);
+    font-size: var(--fs-sm);
+    color: var(--c-fg-subtle);
+    max-width: 72ch;
+  }
+  .c-more {
+    margin-top: var(--space-5);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    font-size: var(--fs-sm);
+  }
+
+  /* --- CTA final --- */
+  .c-final {
+    background:
+      radial-gradient(900px 400px at 20% 0%, rgba(47, 191, 113, 0.28), transparent 60%),
+      linear-gradient(150deg, var(--c-ardoise) 0%, var(--c-ardoise-nuit) 100%);
+  }
+  .c-final__in {
+    text-align: center;
+    max-width: 640px;
+  }
+  .c-final h2 {
+    color: #fff;
+    margin-top: var(--space-3);
+  }
+  .c-final p {
+    color: var(--c-ficelle);
+    max-width: 46ch;
+    margin-inline: auto;
+  }
+  .c-final__phone {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 6vw, 3rem);
+    letter-spacing: 0.02em;
+    color: var(--c-orange-clair);
+    margin-top: var(--space-2);
+  }
+  .c-final__phone:hover {
+    color: var(--c-orange);
+    text-decoration: none;
+  }
+  .c-final__hours {
+    margin-top: var(--space-3);
+    font-size: var(--fs-sm);
+    color: var(--c-brume);
+  }
+</style>

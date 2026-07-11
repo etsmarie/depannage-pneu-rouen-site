@@ -1,0 +1,220 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import CityCard from '~/components/CityCard.astro';
+import PhoneCTA from '~/components/PhoneCTA.astro';
+import Guarantees from '~/components/Guarantees.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import { CITIES_83, EPCI_LABEL, type EpciSlug } from '~/data/cities-83.ts';
+import { NAP } from '~/data/nap.ts';
+
+/**
+ * Hubs secteur — un par intercommunalité. Le réseau ne couvre qu'un seul
+ * EPCI, la Métropole Rouen Normandie : sa page regroupe les communes de
+ * l'agglo présentes dans CITIES_83 et renvoie vers leurs city pages.
+ */
+interface EpciContent {
+  /** Titre H1 (sans le mot-clé « dépannage pneu », ajouté au rendu). */
+  angle: string;
+  /** Balise <title> complète (≤ 60 caractères). */
+  metaTitle: string;
+  metaDescription: string;
+  /** Paragraphes propres au secteur (faits vérifiés uniquement). */
+  intro: string[];
+  /** Slugs affichés quand l'EPCI n'a aucune commune dans CITIES_83. */
+  fallbackSlugs?: string[];
+}
+
+const EPCI_CONTENT: Record<EpciSlug, EpciContent> = {
+  'metropole-rouen-normandie': {
+    angle: "Toute l'agglo",
+    metaTitle: 'Dépannage pneu Métropole Rouen Normandie',
+    metaDescription:
+      "Intervention sur place 24h/24 sur la Métropole Rouen Normandie : les deux rives de la Seine, les coteaux et la rive gauche industrielle. Sans remorquage, la voiture repart roulante.",
+    intro: [
+      "La Métropole Rouen Normandie, c'est notre terrain au quotidien. Un atelier mobile qui sillonne l'agglo d'une rive à l'autre : les quais de Seine et le centre autour du Gros-Horloge et de la cathédrale, la rive gauche industrielle de Sotteville et des deux Quevilly, les plateaux résidentiels de Mont-Saint-Aignan, Bois-Guillaume et Bihorel. Où que soit la voiture immobilisée, le fourgon vient à elle plutôt que l'inverse.",
+      "Le relief rouennais met le matériel à l'épreuve, et ça se voit dans nos interventions. Les côtes raides de Bonsecours, de Sainte-Catherine, de Canteleu ou de Bois-Guillaume tirent sur les batteries et chauffent les freins ; les vallées du Cailly et du Robec canalisent un trafic dense de Maromme à Darnétal ; les franchissements de Seine — ponts Flaubert, Guillaume-le-Conquérant et Mathilde — concentrent bouchons et arrêts d'urgence aux heures de pointe. C'est exactement là que réparer sur place prend tout son sens : on remet la voiture en état où elle s'est arrêtée, et elle repart roulante.",
+      "La congestion des rocades A13, A28 et A150 dicte une bonne part du rythme, tout comme les boucles de Seine vers Oissel et Elbeuf, plus au sud, où les zones d'activité et les grands axes ajoutent leur lot de crevaisons et de pneus flancs mordus par les bordures. Chaque commune du secteur listée ci-dessous a sa page dédiée, avec ses axes, ses repères et sa FAQ locale — de Rouen intra-muros aux communes de la vallée et des coteaux.",
+    ],
+  },
+};
+
+export function getStaticPaths() {
+  return (Object.keys(EPCI_LABEL) as EpciSlug[]).map((epci) => ({
+    params: { epci },
+    props: { epci },
+  }));
+}
+
+interface Props { epci: EpciSlug }
+const { epci } = Astro.props;
+
+const label = EPCI_LABEL[epci];
+const content = EPCI_CONTENT[epci];
+
+const cities = CITIES_83.filter((c) => c.epci === epci)
+  .sort((a, b) => b.population - a.population);
+
+/** Communes affichées : celles de l'EPCI, sinon les plus proches couvertes. */
+const shownCities = cities.length > 0
+  ? cities
+  : CITIES_83.filter((c) => content.fallbackSlugs?.includes(c.slug));
+
+const isFringe = cities.length === 0;
+
+/** Fil d'Ariane : mêmes libellés/URLs pour le rendu visible et le JSON-LD. */
+const crumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: "Zones d'intervention", href: '/zones-intervention' },
+  { label },
+];
+---
+
+<BaseLayout
+  title={content.metaTitle}
+  description={content.metaDescription}
+  canonicalPath={`/secteur/${epci}`}
+>
+  <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/secteur/${epci}`} />
+
+  <Breadcrumb items={crumbs} currentPath={`/secteur/${epci}`} />
+
+  <!-- Hero bande ardoise -->
+  <section class="s-hero band-ardoise">
+    <div class="container">
+      <p class="eyebrow">Secteur · {content.angle}</p>
+      <h1>Dépannage pneu<span class="s-hero__or">{label}</span></h1>
+      <p class="s-hero__lede">
+        Pneu crevé, paire à monter, batterie muette : un seul numéro couvre
+        {isFringe ? ' cette frange de territoire' : ` les ${cities.length} communes du secteur listées ici`},
+        de jour comme de nuit, sans remorquage.
+      </p>
+      <PhoneCTA
+        eyebrow={`Urgence pneu & batterie — ${content.angle.toLowerCase()}`}
+        hint="Prix complet et heure d'arrivée annoncés à l'appel"
+      />
+    </div>
+  </section>
+  <div class="hazard-stripe" aria-hidden="true"></div>
+
+  <!-- Texte secteur + garanties -->
+  <section class="s-body">
+    <div class="container s-body__grid">
+      <div class="s-body__text">
+        <p class="eyebrow">Le secteur en détail</p>
+        <h2>{content.angle}, d'une rive à l'autre de la Seine</h2>
+        {content.intro.map((para) => <p>{para}</p>)}
+      </div>
+      <div class="s-body__aside">
+        <Guarantees variant="aside" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Communes -->
+  <section class="s-cities band-nuit">
+    <div class="container">
+      <header class="s-head">
+        <p class="eyebrow eyebrow--center">
+          {isFringe ? 'Depuis nos communes les plus proches' : `${shownCities.length} commune${shownCities.length > 1 ? 's' : ''} du secteur`}
+        </p>
+        <h2>
+          {isFringe ? 'Les pages couvertes en bordure' : 'Trouvez votre commune'}
+        </h2>
+        {isFringe && (
+          <p class="s-head__lede">
+            Ces communes marquent la bordure de la zone régulière ;
+            au-delà, l'intervention se confirme au téléphone.
+          </p>
+        )}
+      </header>
+      <div class="s-grid">
+        {shownCities.map((c) => (
+          <CityCard
+            href={`/${c.slug}`}
+            name={c.name}
+            postalCode={c.postalCode}
+            hook={c.hookLine}
+            axes={c.axes}
+          />
+        ))}
+      </div>
+      <p class="s-more">
+        <a href="/zones-intervention">Toute la zone d'intervention →</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .s-hero {
+    background:
+      radial-gradient(1000px 460px at 82% -12%, rgba(47, 191, 113, 0.2), transparent 60%),
+      linear-gradient(160deg, var(--c-ardoise) 0%, var(--c-ardoise-fonce) 60%, var(--c-ardoise-nuit) 100%);
+    padding-block: var(--space-8) var(--space-9);
+  }
+  .s-hero h1 {
+    color: #fff;
+    font-size: var(--fs-3xl);
+    margin: var(--space-3) 0 var(--space-4);
+  }
+  .s-hero__or {
+    display: block;
+    color: var(--c-orange-clair);
+  }
+  .s-hero__lede {
+    color: var(--c-ficelle);
+    font-size: var(--fs-lg);
+    max-width: 60ch;
+    margin-bottom: var(--space-6);
+  }
+
+  .s-body__grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: var(--space-8);
+    align-items: start;
+  }
+  @media (max-width: 900px) {
+    .s-body__grid { grid-template-columns: 1fr; gap: var(--space-6); }
+  }
+  .s-body__text h2 {
+    color: var(--c-ardoise);
+    font-size: var(--fs-2xl);
+    margin-top: var(--space-3);
+  }
+  .s-body__text p {
+    color: var(--c-texte-doux);
+    line-height: var(--lh-loose);
+  }
+  .s-body__aside {
+    position: sticky;
+    top: 92px;
+  }
+
+  .s-head {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto var(--space-7);
+  }
+  .s-head h2 {
+    color: #fff;
+    margin-top: var(--space-3);
+  }
+  .s-head__lede {
+    color: var(--c-brume);
+    font-size: var(--fs-sm);
+    margin-top: var(--space-3);
+  }
+  .s-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-4);
+  }
+  .s-more {
+    margin-top: var(--space-5);
+    font-size: var(--fs-sm);
+    text-align: center;
+  }
+  .s-more a { color: var(--c-orange-clair); }
+</style>

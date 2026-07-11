@@ -1,0 +1,63 @@
+---
+import { NAP } from '~/data/nap.ts';
+
+interface Props {
+  /** Texte du label au-dessus du numéro */
+  eyebrow?: string;
+  /** Texte secondaire sous le bouton */
+  hint?: string;
+  /** Variant taille */
+  size?: 'md' | 'lg';
+  align?: 'start' | 'center';
+}
+
+const {
+  eyebrow = 'Urgence pneu / batterie 24h/24',
+  hint = 'Intervention sous 45 min · sans remorquage',
+  size = 'lg',
+  align = 'start',
+} = Astro.props;
+---
+
+<div class={`phone-cta phone-cta--${align}`}>
+  <p class={`eyebrow ${align === 'center' ? 'eyebrow--center' : ''}`.trim()}>{eyebrow}</p>
+  <a
+    href={`tel:${NAP.phoneE164}`}
+    class={`btn btn--primary ${size === 'lg' ? 'btn--lg' : ''}`}
+  >
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path d="M3 5.5C3 4.12 4.12 3 5.5 3h1.46a1 1 0 0 1 .97.76l1.04 4.16a1 1 0 0 1-.5 1.13l-1.6.8a14 14 0 0 0 6.28 6.28l.8-1.6a1 1 0 0 1 1.13-.5l4.16 1.04a1 1 0 0 1 .76.97V19.5C20 20.88 18.88 22 17.5 22h-1A14.5 14.5 0 0 1 2 7.5v-1Z"
+        stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    </svg>
+    Appeler le {NAP.phoneDisplay}
+  </a>
+  {hint && <p class="phone-cta__hint">{hint}</p>}
+</div>
+
+<style>
+  .phone-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .phone-cta--center {
+    align-items: center;
+    text-align: center;
+  }
+  .phone-cta .eyebrow {
+    margin: 0;
+  }
+  .phone-cta__hint {
+    margin: 0;
+    font-size: var(--fs-sm);
+    letter-spacing: 0.03em;
+    color: var(--c-texte-doux);
+  }
+
+  /* Sur bandes sombres : texte doux ficelle / brume */
+  :global(.band-ardoise) .phone-cta__hint,
+  :global(.band-nuit) .phone-cta__hint {
+    color: var(--c-brume);
+  }
+</style>

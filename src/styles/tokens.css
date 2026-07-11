@@ -1,0 +1,99 @@
+/* ==========================================================================
+ * Direction visuelle — Lucas Dépannage Pneu Rouen (Version C « Port de Seine industriel »)
+ * Mood : agglo rouennaise brute et moderne, port et rive gauche industrielle, jour & nuit
+ * Palette : ardoise/gris acier bleuté (#2b3540) + accent VERT SIGNAL (#2fbf71) + gris béton/vapeur
+ * Typo   : Saira Condensed (titres condensés, uppercase) + Archivo (lecture)
+ * Fond de page CLAIR (blanc bleuté) rythmé par des bandes sombres (ardoise/nuit)
+ * ========================================================================== */
+
+:root {
+  /* --- Palette Version C « Port de Seine » --- */
+  --c-ardoise:        #2b3540; /* bande sombre principale (slate) */
+  --c-ardoise-fonce:  #232c35; /* mi-dégradé des bandes sombres */
+  --c-ardoise-nuit:   #191f26; /* bandes les plus sombres, footer, topbar (slate-night) */
+  --c-acier:          #3a4756; /* acier */
+  --c-teal-clair:     #46566a; /* acier clair */
+
+  --c-orange:         #2fbf71; /* VERT SIGNAL — couleur d'action (CTA, accents) */
+  --c-orange-clair:   #3ad57f; /* vert vif (hover) */
+  --c-orange-nuit:    #1c8a52; /* vert foncé — liens, eyebrow sur fond clair */
+
+  --c-ficelle:        #c6d0d7; /* texte doux sur fond sombre (steam) */
+  --c-ficelle-clair:  #e0e6ea; /* béton clair */
+  --c-brume:          #9aa8b3; /* texte atténué sur fond sombre */
+  --c-blanc:          #f7f9fa; /* fond de page (paper) */
+  --c-texte-doux:     #5a6873; /* paragraphes sur fond clair (mute) */
+
+  --ligne:        rgba(198, 208, 215, 0.14); /* bordures sur fond sombre */
+  --ligne-fonce:  rgba(25, 31, 38, 0.10);    /* bordures sur fond clair */
+
+  /* --- Aliases sémantiques (compat composants) --- */
+  --c-bg:          var(--c-blanc);
+  --c-bg-elev:     #ffffff;
+  --c-surface:     var(--c-ardoise);
+  --c-divider:     var(--ligne-fonce);
+
+  --c-fg:          #20272e;      /* texte principal sur fond clair (ink) */
+  --c-fg-muted:    var(--c-texte-doux);
+  --c-fg-subtle:   #6b7883;
+
+  --c-accent:      var(--c-orange);
+  --c-accent-ink:  #191f26;      /* texte sombre sur fond vert (bon contraste) */
+  --c-accent-warm: var(--c-orange-clair);
+  --c-success:     #1f9457;
+
+  --c-link:        var(--c-orange-nuit);
+  --c-link-hover:  var(--c-orange);
+
+  /* --- Typographie --- */
+  --font-display:  'Saira Condensed', 'Oswald', Impact, system-ui, sans-serif;
+  --font-body:     'Archivo Variable', 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Échelle typo fluide (clamp) */
+  --fs-xs:   clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --fs-sm:   clamp(0.875rem, 0.84rem + 0.18vw, 0.9375rem);
+  --fs-base: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);
+  --fs-lg:   clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
+  --fs-xl:   clamp(1.375rem, 1.2rem + 0.8vw, 1.625rem);
+  --fs-2xl:  clamp(1.75rem, 1.5rem + 1.25vw, 2.25rem);
+  --fs-3xl:  clamp(1.9rem, 1.6rem + 2vw, 3rem);
+  --fs-4xl:  clamp(2.5rem, 1.9rem + 3.4vw, 4.7rem);
+
+  --lh-tight:  1.0;
+  --lh-snug:   1.25;
+  --lh-base:   1.62;
+  --lh-loose:  1.75;
+
+  --tracking-display: 0.005em;
+  --tracking-base:    0;
+  --tracking-eyebrow: 0.3em;
+
+  /* --- Espacements --- */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.5rem;
+  --space-6:  2rem;
+  --space-7:  3rem;
+  --space-8:  4rem;
+  --space-9:  4.75rem;
+  --space-10: 7rem;
+
+  /* --- Rayon / élévation --- */
+  --radius-sm:   5px;
+  --radius-md:   7px;
+  --radius-lg:   10px;
+  --radius-pill: 6px;
+
+  --shadow-sm: 0 1px 3px rgba(15, 22, 28, 0.18);
+  --shadow-md: 0 24px 52px -30px rgba(15, 22, 28, 0.62);
+  --shadow-cta: 0 10px 24px -10px rgba(47, 191, 113, 0.9);
+
+  /* --- Layout --- */
+  --container-max: 1180px;
+  --container-pad: 22px;
+
+  --transition-fast: 120ms ease;
+  --transition-base: 220ms ease;
+}

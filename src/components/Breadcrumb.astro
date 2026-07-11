@@ -1,0 +1,91 @@
+---
+/**
+ * Breadcrumb — fil d'Ariane VISIBLE + JSON-LD BreadcrumbList générés
+ * depuis la même liste d'items (libellés/URLs strictement identiques).
+ * Le dernier item est la page courante (non cliquable).
+ */
+import { NAP } from '~/data/nap.ts';
+
+export interface Crumb {
+  label: string;
+  /** Chemin relatif ('/', '/services'…). Absent = page courante. */
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+  /** Chemin de la page courante, pour l'URL du dernier item du JSON-LD. */
+  currentPath: string;
+}
+const { items, currentPath } = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((it, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: it.label,
+    item: `${NAP.baseUrl}${it.href ?? currentPath}`.replace(/\/+$/, '') || NAP.baseUrl,
+  })),
+};
+---
+
+<nav class="crumbs" aria-label="Fil d'Ariane">
+  <div class="container">
+    <ol>
+      {items.map((it, i) => (
+        <li>
+          {it.href && i < items.length - 1 ? (
+            <a href={it.href}>{it.label}</a>
+          ) : (
+            <span aria-current="page">{it.label}</span>
+          )}
+        </li>
+      ))}
+    </ol>
+  </div>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+<style>
+  .crumbs {
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--ligne-fonce);
+    padding-block: var(--space-2);
+  }
+  .crumbs ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45em;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.02em;
+  }
+  .crumbs li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45em;
+    color: var(--c-fg-subtle);
+  }
+  .crumbs li + li::before {
+    content: '›';
+    color: var(--c-fg-subtle);
+    opacity: 0.7;
+  }
+  .crumbs a {
+    color: var(--c-fg-muted);
+    text-decoration: none;
+  }
+  .crumbs a:hover {
+    color: var(--c-link);
+    text-decoration: underline;
+  }
+  .crumbs [aria-current='page'] {
+    color: var(--c-fg-muted);
+    font-weight: 500;
+  }
+</style>

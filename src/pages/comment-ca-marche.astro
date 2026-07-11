@@ -1,0 +1,249 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PhoneCTA from '~/components/PhoneCTA.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Faq from '~/components/Faq.astro';
+import { FAQ_GENERALE } from '~/data/faq.ts';
+import { NAP } from '~/data/nap.ts';
+
+const STEPS = [
+  {
+    title: 'Tout part d’un coup de fil',
+    text: `Composez le ${NAP.phoneDisplay} : ce numéro sonne à toute heure, y compris en pleine nuit. Dites-nous ce qui coince, la marque de la voiture et où elle est immobilisée — sur un quai de Seine rive gauche, dans une montée vers Bois-Guillaume, sur une aire de l’A150 ou le long du Robec.`,
+  },
+  {
+    title: 'Le montant, avant toute chose',
+    text: 'Avant même d’enclencher une vitesse, Lucas chiffre l’intervention de bout en bout : trajet, temps passé, éventuel supplément nocturne ou dominical, et une heure d’arrivée réaliste. Rien ne démarre tant que vous n’avez pas dit oui — aucune surprise ne vous attend au moment de payer.',
+  },
+  {
+    title: 'Le fourgon rejoint la voiture',
+    text: 'Démonte-pneu, équilibreuse, batteries 12V et un jeu de gommes dans les dimensions les plus demandées : l’atelier roulant embarque tout. Il traverse la métropole pour venir à vous, des boucles de Seine côté Oissel ou Elbeuf jusqu’aux hauteurs de Canteleu, sur le créneau qu’on vous a réservé au téléphone.',
+  },
+  {
+    title: 'Vous reprenez le volant',
+    text: 'Crevaison réparée dans le respect de la norme NF U85-200 ou monte d’une paire neuve, batterie changée, roue de secours posée et boulonnée au couple : la voiture s’en va par ses propres roues, sur la route, sans jamais être hissée sur un plateau.',
+  },
+];
+---
+
+<BaseLayout
+  title="Le déroulé d’une intervention — Dépannage pneu Rouen"
+  description="Tarif fixé au téléphone, atelier mobile qui vient jusqu’à votre voiture partout dans la métropole rouennaise : le pas-à-pas complet, jusqu’au redémarrage, sans remorquage."
+  canonicalPath="/comment-ca-marche"
+>
+  <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/comment-ca-marche`} />
+
+  <section class="how-hero">
+    <div class="container">
+      <p class="eyebrow">Le déroulé, sans détour</p>
+      <h1>De votre appel au redémarrage, en quatre temps</h1>
+      <p class="how-hero__lede">
+        Aucun formulaire, aucune file d’attente, aucun camion-plateau : un
+        appel suffit, le prix est fixé, l’atelier roulant vient trouver votre
+        voiture, et vous repartez au volant. Voici, dans le détail, tout ce
+        qui se joue entre le moment où vous décrochez et celui où le moteur
+        redémarre.
+      </p>
+      <PhoneCTA hint="Prix et heure d’arrivée annoncés dès l’appel" />
+    </div>
+    <div class="hazard-stripe" aria-hidden="true"></div>
+  </section>
+
+  <section class="how-steps">
+    <div class="container">
+      <header class="how-head">
+        <p class="eyebrow eyebrow--center">Étape par étape</p>
+        <h2>Le fil de l’intervention</h2>
+      </header>
+      <ol class="steps">
+        {STEPS.map((s) => (
+          <li class="step">
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="how-rules band-nuit">
+    <div class="container">
+      <header class="how-head">
+        <p class="eyebrow eyebrow--center">Nos deux principes</p>
+        <h2>Les deux lignes que Lucas ne franchit pas</h2>
+      </header>
+      <div class="rules-grid">
+        <article class="rule">
+          <h3>Aucune voiture n’est remorquée</h3>
+          <p>
+            Ni plateau, ni treuil, ni crochet : dépanner, ce n’est pas
+            embarquer. Lucas redonne à la voiture les moyens de rouler à
+            l’endroit exact où elle s’est arrêtée — un tablier de pont sur la
+            Seine aussi bien qu’une bretelle de l’A13 — et vous poursuivez au
+            volant. Et si le contrôle met au jour un souci qui déborde du pneu
+            ou de la batterie, il vous le signale sans tourner autour du pot :
+            à vous de décider de la suite.
+          </p>
+        </article>
+        <article class="rule">
+          <h3>Un pneu ne se change jamais seul</h3>
+          <p>
+            Toujours par deux, par quatre ou par six, mais jamais à l’unité.
+            Sur un même essieu, deux gommes usées différemment déséquilibrent
+            le freinage — un vrai danger dans une descente détrempée depuis
+            Bonsecours ou Sainte-Catherine. Ce n’est pas de la vente forcée,
+            c’est de la sécurité : tant que votre pneu peut être réparé, il
+            l’est, et vous ne payez pas le moindre remplacement.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <Faq
+    items={FAQ_GENERALE}
+    title="Les questions qui reviennent au bout du fil"
+    eyebrow="On vous répond"
+  />
+
+  <section class="how-final">
+    <div class="container how-final__inner">
+      <p class="eyebrow eyebrow--center">Quand vous en avez besoin</p>
+      <h2>Une roue au sol ne se règle pas plus tard</h2>
+      <p class="how-final__lede">
+        À trois heures du matin, un dimanche, un jour férié : quelqu’un
+        décroche, le tarif vous est donné d’emblée, et le fourgon-atelier met
+        le cap sur vous, où que vous soyez dans la métropole.
+      </p>
+      <a class="btn btn--primary btn--lg" href={`tel:${NAP.phoneE164}`}>
+        Appeler le {NAP.phoneDisplay}
+      </a>
+      <p class="how-final__hours">{NAP.hoursLabel} · {NAP.area}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Hero bande ardoise dégradée, liseré en pied */
+  .how-hero {
+    position: relative;
+    padding-block: var(--space-9) var(--space-8);
+    background:
+      radial-gradient(1100px 460px at 80% -10%, rgba(47, 191, 113, 0.2), transparent 60%),
+      linear-gradient(160deg, var(--c-ardoise) 0%, var(--c-ardoise-fonce) 55%, var(--c-ardoise-nuit) 100%);
+    color: var(--c-blanc);
+  }
+  .how-hero .hazard-stripe {
+    position: absolute;
+    inset: auto 0 0 0;
+  }
+  .how-hero h1 {
+    font-size: var(--fs-3xl);
+    margin: var(--space-4) 0;
+    color: #fff;
+  }
+  .how-hero__lede {
+    color: var(--c-ficelle);
+    font-size: var(--fs-lg);
+    max-width: 60ch;
+    margin-bottom: var(--space-6);
+  }
+
+  .how-head {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto var(--space-7);
+  }
+  .how-head h2 {
+    margin: 14px 0 0;
+    color: var(--c-ardoise);
+  }
+
+  /* Étapes : cartes blanches numérotées 01-04 (compteur CSS façon C) */
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    counter-reset: st;
+  }
+  .step {
+    position: relative;
+    padding: 30px 22px 26px;
+    background: #fff;
+    border: 1px solid var(--ligne-fonce);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+  .step::before {
+    counter-increment: st;
+    content: counter(st, decimal-leading-zero);
+    display: block;
+    margin-bottom: 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--c-orange);
+  }
+  .step h3 {
+    font-size: 1.16rem;
+    color: var(--c-ardoise);
+    margin-bottom: var(--space-2);
+  }
+  .step p {
+    margin: 0;
+    color: var(--c-texte-doux);
+    font-size: 0.96rem;
+  }
+
+  /* Règles maison sur bande nuit : grandes cartes à bord gauche orange */
+  .how-rules .how-head h2 {
+    color: #fff;
+  }
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-4);
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .rule {
+    background: rgba(198, 208, 215, 0.06);
+    border: 1px solid var(--ligne);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    padding: var(--space-6) var(--space-5);
+  }
+  .rule h3 {
+    color: var(--c-orange-clair);
+    font-size: 1.28rem;
+    margin-bottom: var(--space-3);
+  }
+  .rule p {
+    margin: 0;
+    color: var(--c-ficelle);
+  }
+
+  /* CTA final sur fond clair, bouton orange centré */
+  .how-final__inner {
+    text-align: center;
+    max-width: 720px;
+  }
+  .how-final h2 {
+    color: var(--c-ardoise);
+    margin: 14px 0 var(--space-3);
+  }
+  .how-final__lede {
+    color: var(--c-texte-doux);
+    font-size: 1.08rem;
+    margin-bottom: var(--space-6);
+  }
+  .how-final__hours {
+    margin-top: var(--space-4);
+    font-size: var(--fs-sm);
+    color: var(--c-fg-subtle);
+  }
+</style>

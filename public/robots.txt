@@ -1,0 +1,48 @@
+# Lucas Dépannage Pneu Rouen — robots.txt
+# Stratégie GEO : ouvert aux moteurs ET aux bots IA (cf. llms.txt).
+# NB : le domaine n'est pas encore acheté → le site est en NOINDEX
+#      (X-Robots-Tag dans _headers + meta robots). Ce fichier prépare la mise en ligne.
+
+User-agent: *
+Allow: /
+Disallow: /404
+
+# Bots IA explicitement autorisés (visibilité ChatGPT / Perplexity / Google AI)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+# Signal de consentement (search + input IA + entraînement autorisés)
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+
+# Ressource GEO dédiée : /llms.txt
+Sitemap: https://depannage-pneu-rouen.fr/sitemap-index.xml

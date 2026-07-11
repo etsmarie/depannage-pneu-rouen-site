@@ -1,0 +1,124 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  title: string;
+  hook: string;
+  number: string;
+  priceFrom?: number;
+}
+const { href, label, title, hook, number, priceFrom } = Astro.props;
+---
+
+<a href={href} class="service-card">
+  <span class="service-card__num" aria-hidden="true">{number} · {label}</span>
+  <h3>{title}</h3>
+  <p>{hook}</p>
+  <span class="service-card__foot">
+    {priceFrom && <span class="service-card__price">dès {priceFrom}&nbsp;€</span>}
+    <span class="service-card__arrow" aria-hidden="true">→</span>
+  </span>
+</a>
+
+<style>
+  /* Défaut (fond clair) : carte blanche ombrée, bord gauche orange */
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 26px 22px;
+    background: #fff;
+    border: 1px solid var(--ligne-fonce);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    box-shadow: var(--shadow-md);
+    color: var(--c-ardoise-fonce);
+    text-decoration: none;
+    position: relative;
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+  }
+  .service-card:hover {
+    transform: translateY(-3px);
+    text-decoration: none;
+    color: var(--c-ardoise-fonce);
+  }
+
+  .service-card__num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-orange-nuit);
+  }
+  .service-card h3 {
+    margin: var(--space-2) 0 0;
+    font-size: 1.28rem;
+    font-weight: 600;
+    color: var(--c-ardoise);
+  }
+  .service-card p {
+    margin: 0;
+    color: var(--c-texte-doux);
+    font-size: 0.96rem;
+  }
+  .service-card__foot {
+    margin-top: auto;
+    padding-top: var(--space-3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    border-top: 2px solid var(--c-orange);
+    align-self: stretch;
+  }
+  .service-card__price {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--c-orange-nuit);
+  }
+  .service-card__arrow {
+    margin-left: auto;
+    color: var(--c-orange);
+    font-size: var(--fs-lg);
+    line-height: 1;
+    transition: transform var(--transition-fast);
+  }
+  .service-card:hover .service-card__arrow {
+    transform: translateX(4px);
+  }
+
+  /* Sur bandes sombres : carte nuit translucide, bord orange au survol */
+  :global(.band-ardoise) .service-card,
+  :global(.band-nuit) .service-card {
+    background: rgba(25, 31, 38, 0.55);
+    border: 1px solid var(--ligne);
+    border-radius: var(--radius-lg);
+    box-shadow: none;
+    color: var(--c-blanc);
+  }
+  :global(.band-ardoise) .service-card:hover,
+  :global(.band-nuit) .service-card:hover {
+    border-color: var(--c-orange);
+    color: var(--c-blanc);
+  }
+  :global(.band-ardoise) .service-card__num,
+  :global(.band-nuit) .service-card__num {
+    color: var(--c-orange-clair);
+  }
+  :global(.band-ardoise) .service-card h3,
+  :global(.band-nuit) .service-card h3 {
+    color: #fff;
+  }
+  :global(.band-ardoise) .service-card p,
+  :global(.band-nuit) .service-card p {
+    color: var(--c-ficelle);
+  }
+  :global(.band-ardoise) .service-card__price,
+  :global(.band-nuit) .service-card__price {
+    color: var(--c-orange-clair);
+  }
+</style>

@@ -1,0 +1,56 @@
+---
+import { NAP } from '~/data/nap.ts';
+import { CITIES_83 } from '~/data/cities-83.ts';
+
+interface Props {
+  /** Si présent, ajoute un mainEntityOfPage pointant sur cette page */
+  pageUrl?: string;
+}
+const { pageUrl = NAP.baseUrl } = Astro.props;
+
+/**
+ * JSON-LD AutoRepair : aucun aggregateRating ni review (aucun avis réel),
+ * areaServed = la liste exacte des communes couvertes (CITIES_83).
+ */
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'AutoRepair',
+  '@id': `${NAP.baseUrl}#business`,
+  name: NAP.name,
+  alternateName: NAP.shortName,
+  url: NAP.baseUrl,
+  telephone: NAP.phoneE164,
+  priceRange: '€€',
+  description:
+    'Dépannage pneu et batterie à domicile à Rouen et dans toute la Seine-Maritime (76), 24h/24 et 7j/7. Intervention directement sur place, là où le véhicule est garé : il repart roulant, sans remorquage.',
+  address: {
+    '@type': 'PostalAddress',
+    postalCode: NAP.postalCode,
+    addressLocality: NAP.city,
+    addressRegion: NAP.serviceArea.name,
+    addressCountry: 'FR',
+  },
+  areaServed: CITIES_83.map((c) => ({ '@type': 'City', name: c.name })),
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: [
+        'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+        'Friday', 'Saturday', 'Sunday',
+      ],
+      opens: '00:00',
+      closes: '23:59',
+    },
+  ],
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: NAP.geo.lat,
+    longitude: NAP.geo.lng,
+  },
+  hasMap: NAP.googleMapsUrl,
+  sameAs: [NAP.googleMapsUrl],
+  mainEntityOfPage: pageUrl,
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

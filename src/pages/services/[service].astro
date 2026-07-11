@@ -1,0 +1,405 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PhoneCTA from '~/components/PhoneCTA.astro';
+import Faq from '~/components/Faq.astro';
+import Guarantees from '~/components/Guarantees.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import { SERVICES, type Service } from '~/data/services.ts';
+import { CITIES_83 } from '~/data/cities-83.ts';
+import { serviceFaq } from '~/data/faq.ts';
+import { NAP } from '~/data/nap.ts';
+
+export function getStaticPaths() {
+  return SERVICES.map((service) => ({
+    params: { service: service.slug },
+    props: { service },
+  }));
+}
+
+interface Props {
+  service: Service;
+}
+const { service } = Astro.props;
+
+const otherServices = SERVICES.filter((s) => s.slug !== service.slug);
+
+/** Fil d'Ariane : mêmes libellés/URLs pour le rendu visible et le JSON-LD. */
+const crumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Services', href: '/services' },
+  { label: service.shortLabel },
+];
+
+/**
+ * Description JSON-LD : la meta description reste intacte à l'écran,
+ * mais aucune mention de remorquage ne doit figurer dans un schema —
+ * on reformule uniquement la version injectée dans le JSON-LD.
+ */
+const schemaDescription = service.metaDescription.replace(
+  /\s*Sans remorquage,\s*/g,
+  ' Intervention directement sur place, là où le véhicule est garé : ',
+);
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.title,
+  serviceType: service.primaryKw,
+  description: schemaDescription,
+  url: `${NAP.baseUrl}/services/${service.slug}`,
+  provider: { '@id': `${NAP.baseUrl}#business` },
+  areaServed: CITIES_83.map((c) => ({ '@type': 'City', name: c.name })),
+  availableChannel: {
+    '@type': 'ServiceChannel',
+    servicePhone: NAP.phoneE164,
+    availableLanguage: 'fr',
+  },
+  offers: {
+    '@type': 'Offer',
+    priceCurrency: 'EUR',
+    price: service.priceFrom,
+    url: `${NAP.baseUrl}/services/${service.slug}`,
+    availability: 'https://schema.org/InStock',
+    priceSpecification: {
+      '@type': 'PriceSpecification',
+      priceCurrency: 'EUR',
+      minPrice: service.priceFrom,
+      valueAddedTaxIncluded: true,
+    },
+  },
+};
+---
+
+<BaseLayout
+  title={`${service.title} — Rouen`}
+  description={service.metaDescription}
+  canonicalPath={`/services/${service.slug}`}
+  schema={serviceSchema}
+>
+  <SchemaLocalBusiness slot="schema"
+    pageUrl={`${NAP.baseUrl}/services/${service.slug}`} />
+
+  <Breadcrumb items={crumbs} currentPath={`/services/${service.slug}`} />
+
+  <section class="sp-hero">
+    <div class="container">
+      <p class="eyebrow">{service.shortLabel}</p>
+      <h1>{service.title}</h1>
+      <div class="sp-hero__pills">
+        <span class="sp-pill"><span class="sp-pill__dot" aria-hidden="true"></span>{NAP.hoursLabel}</span>
+        <span class="sp-pill"><span class="sp-pill__dot" aria-hidden="true"></span>Sans remorquage</span>
+        <span class="sp-pill"><span class="sp-pill__dot" aria-hidden="true"></span>Rouen &amp; Seine-Maritime</span>
+      </div>
+      <p class="sp-hero__lede">{service.hookLine}</p>
+      <PhoneCTA hint="L’atelier mobile roule déjà, des quais de Seine aux coteaux" />
+    </div>
+    <div class="hazard-stripe" aria-hidden="true"></div>
+  </section>
+
+  <section class="sp-detail">
+    <div class="container sp-detail__grid">
+      <aside class="sp-price">
+        <p class="sp-price__label">Le prix, annoncé avant de rouler</p>
+        <p class="sp-price__amount">
+          dès <strong>{service.priceFrom}&nbsp;€</strong>
+        </p>
+        {service.priceNote && (
+          <p class="sp-price__note">{service.priceNote}</p>
+        )}
+        <p class="sp-price__hint">
+          Le tarif exact est calé au téléphone <strong>avant le moindre
+          déplacement</strong>, majoration de nuit ou de dimanche incluse.
+          Aucune clé ne tourne tant que vous n’avez pas validé.
+        </p>
+        <a class="btn btn--primary" href={`tel:${NAP.phoneE164}`}>
+          {NAP.phoneDisplay}
+        </a>
+      </aside>
+      <div class="sp-bullets">
+        <p class="eyebrow">Dans le détail</p>
+        <h2>Ce que Lucas règle concrètement</h2>
+        <ul>
+          {service.bullets.map((b) => <li>{b}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <Faq
+    items={serviceFaq(service)}
+    title={`On vous répond — ${service.shortLabel}`}
+    eyebrow="Avant d'appeler"
+  />
+
+  <section class="sp-others">
+    <div class="container">
+      <header class="sp-others__head">
+        <p class="eyebrow">Le reste de l’atelier mobile</p>
+        <h2>Les autres interventions sur place</h2>
+      </header>
+      <ul class="sp-others__list">
+        {otherServices.map((s) => (
+          <li>
+            <a href={`/services/${s.slug}`}>
+              <span class="sp-others__label">{s.shortLabel}</span>
+              <strong>{s.title}</strong>
+              <span class="sp-others__arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="sp-others__zone">
+        Intervention sur {NAP.area} — les deux rives de la Seine, des quais
+        rive gauche aux côtes de Bois-Guillaume et Canteleu, jusqu’aux boucles
+        d’Oissel et d’Elbeuf via les rocades A13, A28 et A150.
+        <a href="/zones-intervention">Voir toutes les communes couvertes</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="sp-final band-nuit">
+    <div class="container sp-final__grid">
+      <div>
+        <p class="eyebrow">Un souci, un appel</p>
+        <h2>La voiture reste bloquée, l’atelier vient à elle</h2>
+        <p>
+          Indiquez votre point de galère — une adresse, un parking, un bas-côté
+          de rocade — et le créneau d’arrivée vous est donné dans la foulée,
+          prix compris.
+        </p>
+        <a class="btn btn--primary btn--lg" href={`tel:${NAP.phoneE164}`}>
+          Appeler le {NAP.phoneDisplay}
+        </a>
+      </div>
+      <Guarantees variant="aside" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Hero bande ardoise dégradée, liseré signalétique en pied */
+  .sp-hero {
+    position: relative;
+    padding-block: var(--space-9) var(--space-8);
+    background:
+      radial-gradient(1100px 460px at 78% -10%, rgba(47, 191, 113, 0.2), transparent 60%),
+      linear-gradient(160deg, var(--c-ardoise) 0%, var(--c-ardoise-fonce) 55%, var(--c-ardoise-nuit) 100%);
+    color: var(--c-blanc);
+  }
+  .sp-hero .hazard-stripe {
+    position: absolute;
+    inset: auto 0 0 0;
+  }
+  .sp-hero h1 {
+    font-size: var(--fs-3xl);
+    margin: var(--space-4) 0;
+    color: #fff;
+    max-width: 24ch;
+  }
+  .sp-hero__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: var(--space-5);
+  }
+  .sp-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    background: rgba(198, 208, 215, 0.08);
+    border: 1px solid var(--ligne);
+    padding: 0.42em 0.85em;
+    border-radius: var(--radius-pill);
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--c-ficelle);
+  }
+  .sp-pill__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-orange);
+    box-shadow: 0 0 0 4px rgba(47, 191, 113, 0.22);
+  }
+  .sp-hero__lede {
+    color: var(--c-ficelle);
+    font-size: var(--fs-lg);
+    max-width: 62ch;
+    margin-bottom: var(--space-6);
+  }
+
+  /* Bloc prix (carte ardoise) + bullets, sur fond clair */
+  .sp-detail__grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 380px) 1fr;
+    gap: var(--space-7);
+    align-items: start;
+  }
+  .sp-price {
+    background: var(--c-ardoise);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    box-shadow: var(--shadow-md);
+    padding: var(--space-6) var(--space-5);
+    color: var(--c-ficelle);
+  }
+  .sp-price__label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-orange-clair);
+    margin-bottom: var(--space-3);
+  }
+  .sp-price__amount {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    color: #fff;
+    font-size: var(--fs-lg);
+    margin-bottom: var(--space-1);
+  }
+  .sp-price__amount strong {
+    font-size: var(--fs-4xl);
+    font-weight: 700;
+    color: var(--c-orange-clair);
+    line-height: 1;
+  }
+  .sp-price__note {
+    font-size: var(--fs-sm);
+    color: var(--c-brume);
+    margin-bottom: var(--space-4);
+  }
+  .sp-price__hint {
+    font-size: var(--fs-sm);
+    line-height: var(--lh-base);
+    border-top: 1px solid var(--ligne);
+    padding-top: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+  .sp-price__hint strong {
+    color: #fff;
+  }
+  .sp-bullets h2 {
+    color: var(--c-ardoise);
+    margin: var(--space-3) 0 var(--space-5);
+  }
+  .sp-bullets ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+  .sp-bullets li {
+    background: #fff;
+    border: 1px solid var(--ligne-fonce);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-4) var(--space-5) var(--space-4) calc(var(--space-5) + 1.5rem);
+    position: relative;
+    color: var(--c-texte-doux);
+  }
+  .sp-bullets li::before {
+    content: '›';
+    position: absolute;
+    left: var(--space-4);
+    top: var(--space-4);
+    color: var(--c-orange);
+    font-weight: 700;
+    font-size: 1.2em;
+    line-height: 1;
+  }
+
+  /* Autres services : liste horizontale sobre sur fond clair */
+  .sp-others__head {
+    max-width: 720px;
+    margin-bottom: var(--space-6);
+  }
+  .sp-others__head h2 {
+    color: var(--c-ardoise);
+    margin: var(--space-3) 0 0;
+  }
+  .sp-others__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-3);
+  }
+  .sp-others__list a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    height: 100%;
+    padding: var(--space-4) var(--space-5);
+    background: #fff;
+    border: 1px solid var(--ligne-fonce);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    box-shadow: var(--shadow-sm);
+    color: var(--c-ardoise-fonce);
+    text-decoration: none;
+    transition: transform var(--transition-fast);
+  }
+  .sp-others__list a:hover {
+    transform: translateY(-3px);
+    text-decoration: none;
+    color: var(--c-ardoise-fonce);
+  }
+  .sp-others__label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-orange-nuit);
+  }
+  .sp-others__list strong {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--c-ardoise);
+  }
+  .sp-others__arrow {
+    margin-top: auto;
+    color: var(--c-orange);
+  }
+  .sp-others__zone {
+    margin-top: var(--space-5);
+    font-size: var(--fs-sm);
+    color: var(--c-texte-doux);
+    max-width: 68ch;
+  }
+  .sp-others__zone a {
+    margin-left: 0.4em;
+  }
+
+  /* Bande nuit finale : texte + garanties en aside */
+  .sp-final__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: var(--space-7);
+    align-items: center;
+  }
+  .sp-final__grid h2 {
+    margin: var(--space-3) 0 var(--space-4);
+  }
+  .sp-final__grid p {
+    max-width: 52ch;
+    margin-bottom: var(--space-5);
+  }
+
+  @media (max-width: 860px) {
+    .sp-detail__grid,
+    .sp-final__grid {
+      grid-template-columns: 1fr;
+    }
+    .sp-price {
+      max-width: 480px;
+    }
+  }
+</style>

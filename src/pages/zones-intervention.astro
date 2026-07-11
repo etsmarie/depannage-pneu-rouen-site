@@ -1,0 +1,247 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import CityCard from '~/components/CityCard.astro';
+import PhoneCTA from '~/components/PhoneCTA.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import { CITIES_83, EPCI_LABEL, type EpciSlug } from '~/data/cities-83.ts';
+import { NAP } from '~/data/nap.ts';
+
+/**
+ * Hub des communes — un seul EPCI : la Métropole Rouen Normandie.
+ * Les 15 communes de CITIES_83 s'y rattachent toutes ; on les présente
+ * en un bloc unique, des deux rives de la Seine aux coteaux.
+ */
+const EPCI_ORDER: EpciSlug[] = ['metropole-rouen-normandie'];
+
+const EPCI_BLURB: Record<EpciSlug, { h2: string; text: string }> = {
+  'metropole-rouen-normandie': {
+    h2: 'Les deux rives, du fleuve aux coteaux',
+    text:
+      "Tout se joue autour de la Seine : la rive droite historique sous la cathédrale et le Gros-Horloge, la rive gauche industrielle avec ses zones d'activité et ses quais. L'atelier mobile grimpe aussi bien les côtes de Bois-Guillaume, de Canteleu ou de Mont-Saint-Aignan qu'il descend les vallées du Cailly et du Robec, et pousse jusqu'aux boucles de Seine, d'Oissel à Elbeuf. Une seule règle sur toute l'agglo : on remet la voiture d'aplomb là où elle s'est arrêtée, elle repart roulante.",
+  },
+};
+
+const groups = EPCI_ORDER.map((epci) => ({
+  epci,
+  label: EPCI_LABEL[epci],
+  blurb: EPCI_BLURB[epci],
+  cities: CITIES_83.filter((c) => c.epci === epci)
+    .sort((a, b) => b.population - a.population),
+}));
+
+const totalCities = CITIES_83.length;
+const description = `${totalCities} communes couvertes autour de Rouen, de Barentin à Elbeuf sur les deux rives de la Seine : dépannage pneu et batterie sur place, 24h/24, sans remorquage.`;
+---
+
+<BaseLayout
+  title="Zones d'intervention — Dépannage pneu Rouen"
+  description={description}
+  canonicalPath="/zones-intervention"
+>
+  <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/zones-intervention`} />
+
+  <!-- Intro claire -->
+  <section class="z-hero">
+    <div class="container">
+      <p class="eyebrow">Rouen & Métropole Rouen Normandie</p>
+      <h1>Zones d'intervention</h1>
+      <p class="z-hero__lede">
+        Pas d'atelier à pousser la porte : c'est l'atelier mobile qui sillonne
+        l'agglo, où que soit garée la voiture. Des quais de Seine aux coteaux de
+        Sainte-Catherine et de Bonsecours, de la rive gauche industrielle aux
+        vallées du Cailly et du Robec, une seule règle — on répare sur place,
+        rien n'est remorqué.
+      </p>
+      <PhoneCTA
+        eyebrow="Un seul numéro pour toute l'agglo"
+        hint="Délai annoncé selon votre commune, 24h/24"
+        size="md"
+      />
+    </div>
+  </section>
+
+  <!-- Bande nuit « zone d'intervention » façon signalétique -->
+  <div class="hazard-stripe" aria-hidden="true"></div>
+  <section class="z-map band-nuit">
+    <div class="container z-map__grid">
+      <div>
+        <p class="eyebrow">Zone d'intervention</p>
+        <h2>D'une rive à l'autre de la Seine</h2>
+        <p class="z-map__note">
+          <strong>Rouen</strong> au centre — cathédrale, place du Vieux-Marché,
+          quais bas. Autour, les deux rives reliées par les ponts Flaubert,
+          Guillaume-le-Conquérant et Mathilde, les coteaux et les boucles du
+          fleuve, desservis par les grands axes qui ceinturent l'agglomération.
+        </p>
+        <div class="z-axes">
+          <b>A13 · axe Paris–Le Havre</b>
+          <b>A28 · vers Abbeville & Alençon</b>
+          <b>A150 · vers Barentin & Yvetot</b>
+          <b>Ponts Flaubert &amp; Mathilde</b>
+        </div>
+        <p class="z-map__note z-map__note--fine">
+          Bouchon de rocade en pleine journée ou nuit noire sur un coteau : la
+          ligne répond, l'heure d'arrivée est donnée avant que l'atelier mobile
+          ne prenne la route.
+        </p>
+      </div>
+      <nav class="z-pills" aria-label="Communes couvertes">
+        {CITIES_83.map((c) => (
+          <a href={`/${c.slug}`} class={c.tier === 1 ? 'z-pill z-pill--main' : 'z-pill'}>
+            {c.name}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <!-- Détail par intercommunalité -->
+  {groups.map((g) => (
+    <section class="z-epci">
+      <div class="container">
+        <header class="z-head">
+          <p class="eyebrow">{g.label}</p>
+          <h2>{g.blurb.h2}</h2>
+          <p class="z-head__lede">{g.blurb.text}</p>
+        </header>
+        {g.cities.length > 0 && (
+          <div class="z-grid">
+            {g.cities.map((c) => (
+              <CityCard
+                href={`/${c.slug}`}
+                name={c.name}
+                postalCode={c.postalCode}
+                hook={c.hookLine}
+                axes={c.axes}
+              />
+            ))}
+          </div>
+        )}
+        <p class="z-more">
+          <a href={`/secteur/${g.epci}`}>La page secteur {g.label} →</a>
+        </p>
+      </div>
+    </section>
+  ))}
+</BaseLayout>
+
+<style>
+  .z-hero {
+    padding-block: var(--space-8) var(--space-8);
+  }
+  .z-hero h1 {
+    color: var(--c-ardoise);
+    font-size: var(--fs-3xl);
+    margin: var(--space-3) 0 var(--space-4);
+  }
+  .z-hero__lede {
+    color: var(--c-texte-doux);
+    font-size: var(--fs-lg);
+    max-width: 62ch;
+    margin-bottom: var(--space-6);
+  }
+
+  /* Bande nuit signalétique */
+  .z-map__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: var(--space-8);
+    align-items: center;
+  }
+  @media (max-width: 900px) {
+    .z-map__grid { grid-template-columns: 1fr; gap: var(--space-6); }
+  }
+  .z-map h2 {
+    color: #fff;
+    font-size: var(--fs-2xl);
+    margin-top: var(--space-3);
+  }
+  .z-map__note {
+    color: var(--c-ficelle);
+    max-width: 52ch;
+  }
+  .z-map__note strong { color: #fff; }
+  .z-map__note--fine {
+    margin-top: var(--space-4);
+    font-size: var(--fs-sm);
+    color: var(--c-brume);
+  }
+  .z-axes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-block: var(--space-4);
+  }
+  .z-axes b {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--c-orange-clair);
+    border: 1px dashed rgba(47, 191, 113, 0.5);
+    padding: 0.35em 0.7em;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+  }
+  .z-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    align-content: start;
+  }
+  .z-pill {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.92rem;
+    letter-spacing: 0.03em;
+    background: rgba(198, 208, 215, 0.07);
+    border: 1px solid var(--ligne);
+    padding: 0.5em 0.95em;
+    border-radius: var(--radius-md);
+    color: var(--c-ficelle);
+    transition: border-color var(--transition-fast), color var(--transition-fast);
+  }
+  .z-pill:hover {
+    border-color: var(--c-orange);
+    color: #fff;
+    text-decoration: none;
+  }
+  .z-pill--main {
+    background: var(--c-orange);
+    border-color: var(--c-orange);
+    color: #fff;
+    font-weight: 600;
+  }
+  .z-pill--main:hover {
+    background: var(--c-orange-clair);
+  }
+
+  /* Blocs EPCI */
+  .z-epci + .z-epci {
+    border-top: 1px solid var(--ligne-fonce);
+  }
+  .z-epci:nth-of-type(even) {
+    background: var(--c-bg-elev);
+  }
+  .z-head {
+    max-width: 760px;
+    margin-bottom: var(--space-6);
+  }
+  .z-head h2 {
+    color: var(--c-ardoise);
+    font-size: var(--fs-2xl);
+    margin: var(--space-3) 0 0;
+  }
+  .z-head__lede {
+    color: var(--c-texte-doux);
+    margin-top: var(--space-3);
+  }
+  .z-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-4);
+  }
+  .z-more {
+    margin-top: var(--space-5);
+    font-size: var(--fs-sm);
+  }
+</style>

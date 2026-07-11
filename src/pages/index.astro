@@ -1,0 +1,664 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import ServiceCard from '~/components/ServiceCard.astro';
+import Guarantees from '~/components/Guarantees.astro';
+import Faq from '~/components/Faq.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import JumpLinks from '~/components/JumpLinks.astro';
+import { NAP } from '~/data/nap.ts';
+import { CITIES_83 } from '~/data/cities-83.ts';
+import { SERVICES } from '~/data/services.ts';
+import { FAQ_GENERALE } from '~/data/faq.ts';
+
+/** Les quatre questions People-Also-Ask de la maquette validée. */
+const homeFaq = FAQ_GENERALE.slice(0, 4);
+
+/** Sommaire (jump links) : ancres vers les sections réellement présentes. */
+const jumpLinks = [
+  { href: '#services', label: 'Prestations' },
+  { href: '#etapes', label: 'Comment ça marche' },
+  { href: '#zones', label: 'Zone couverte' },
+  { href: '#garanties', label: 'Garanties' },
+  { href: '#faq', label: 'FAQ' },
+];
+---
+
+<BaseLayout
+  title="Dépannage pneu à domicile Rouen — 24h/24"
+  description="Intervention sur place à Rouen et en Seine-Maritime, sans remorquage : pneu réparé ou remplacé, batterie changée là où stationne votre voiture, 24h/24 et 7j/7. Un appel et Lucas arrive."
+  canonicalPath="/"
+>
+  <SchemaLocalBusiness slot="schema" />
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero__inner">
+      <div class="hero__badges" aria-label="Points clés">
+        <span class="pill"><span class="pill__dot" aria-hidden="true"></span>Rouen &amp; Seine-Maritime</span>
+        <span class="pill"><span class="pill__dot" aria-hidden="true"></span>24h/24 · 7j/7</span>
+        <span class="pill"><span class="pill__dot" aria-hidden="true"></span>Sans remorquage</span>
+      </div>
+      <h1 id="hero-title">
+        Dépannage pneu &amp; batterie<br />
+        <span class="hero__accent">à domicile</span> à Rouen
+      </h1>
+      <p class="hero__lede">
+        Un pneu qui siffle en descendant la côte Sainte-Catherine, un
+        démarreur resté muet sur un parking de la rive gauche ? Inutile de
+        bouger : Lucas rejoint votre voiture <b>là où elle s'est arrêtée</b>,
+        du pied d'un immeuble du Vieux-Marché à une aire de l'A28.
+        <b>Tout se règle sur place, sans remorquage.</b>
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary btn--lg" href={`tel:${NAP.phoneE164}`}>
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M3 5.5C3 4.12 4.12 3 5.5 3h1.46a1 1 0 0 1 .97.76l1.04 4.16a1 1 0 0 1-.5 1.13l-1.6.8a14 14 0 0 0 6.28 6.28l.8-1.6a1 1 0 0 1 1.13-.5l4.16 1.04a1 1 0 0 1 .76.97V19.5C20 20.88 18.88 22 17.5 22h-1A14.5 14.5 0 0 1 2 7.5v-1Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          </svg>
+          Appeler maintenant
+        </a>
+        <span class="hero__sub"><b>~45&nbsp;min</b> sur place · sans remorquage</span>
+      </div>
+      <div class="hero__facts">
+        <div class="fact">
+          <div class="fact__n">24/7</div>
+          <div class="fact__l">Toujours ouvert</div>
+        </div>
+        <div class="fact">
+          <div class="fact__n">~45</div>
+          <div class="fact__l">min d'attente</div>
+        </div>
+        <div class="fact">
+          <div class="fact__n">0</div>
+          <div class="fact__l">véhicule tracté</div>
+        </div>
+      </div>
+    </div>
+    <div class="hazard-stripe" aria-hidden="true"></div>
+  </section>
+
+  <!-- BANDEAU CONFIANCE -->
+  <JumpLinks links={jumpLinks} />
+
+  <div class="trust-strip band-nuit">
+    <div class="container">
+      <span>
+        Ici, c'est le garage qui vient à vous : le fourgon-atelier connaît
+        aussi bien les ruelles du centre que les bretelles de la rocade, et il
+        se gare <b>juste à côté de votre voiture</b>. Vous, vous ne déplacez
+        rien.
+      </span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="services band-ardoise" id="services" aria-labelledby="svc-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow eyebrow--center">Ce qu'on fait</p>
+        <h2 id="svc-title">Pneu et batterie réglés là où vous êtes garé</h2>
+        <p>
+          De l'hyper-centre aux boucles de Seine d'Oissel et d'Elbeuf, un
+          véhicule-atelier complet se déplace jusqu'à vous. Chaque panne se
+          traite sur place ; jamais votre voiture n'est tractée vers un garage.
+        </p>
+      </div>
+      <div class="services__grid">
+        {SERVICES.map((s, i) => (
+          <ServiceCard
+            href={`/services/${s.slug}`}
+            label={s.shortLabel}
+            title={s.title}
+            hook={s.metaDescription}
+            number={String(i + 1).padStart(2, '0')}
+            priceFrom={s.priceFrom}
+          />
+        ))}
+        <ServiceCard
+          href="/comment-ca-marche"
+          label="Confiance"
+          title="Tarif annoncé avant"
+          hook="Prix clair au téléphone, pas de mauvaise surprise. On vous dit ce qu'on fait et combien ça coûte avant de commencer — majorations de nuit comprises."
+          number="06"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section class="how" id="etapes" aria-labelledby="how-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow eyebrow--center">Le déroulé</p>
+        <h2 id="how-title">Du coup de fil au redémarrage, en quatre temps</h2>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <h3>Un appel suffit</h3>
+          <p>
+            Composez le {NAP.phoneDisplay}, joignable de jour comme de nuit.
+            Dites ce qui bloque et indiquez où vous êtes, dans Rouen
+            intra-muros ou n'importe où en Seine-Maritime.
+          </p>
+        </li>
+        <li class="step">
+          <h3>Le prix, tout de suite</h3>
+          <p>
+            Selon la prestation, le montant vous est communiqué au téléphone,
+            avec une heure d'arrivée réaliste. Rien ne commence sans votre
+            feu vert.
+          </p>
+        </li>
+        <li class="step">
+          <h3>Lucas prend la route</h3>
+          <p>
+            Le fourgon-atelier converge vers vous en une quarantaine de
+            minutes, chargé du nécessaire de montage, d'équilibrage et de
+            redémarrage.
+          </p>
+        </li>
+        <li class="step">
+          <h3>Vous reprenez le volant</h3>
+          <p>
+            Pneu réparé ou changé, batterie ranimée : la voiture s'en va par
+            ses propres roues, sans le moindre remorquage.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ZONES -->
+  <section class="zones band-nuit" id="zones" aria-labelledby="zones-title">
+    <div class="container zones__wrap">
+      <div>
+        <p class="eyebrow">Zone d'intervention</p>
+        <h2 id="zones-title">Des coteaux à la rive gauche</h2>
+        <p class="zones__note">
+          Notre terrain, c'est d'abord Rouen : les <b>quais de Seine</b>, le
+          Gros-Horloge et la place du Vieux-Marché, puis la grimpe vers
+          Bonsecours, Mont-Saint-Aignan, Bois-Guillaume et Canteleu. On
+          prolonge sur toute la <b>Métropole Rouen Normandie</b> et le reste du
+          76 — boucles d'Oissel et d'Elbeuf, vallées du Cailly et du Robec
+          incluses.
+        </p>
+        <div class="zones__axes" aria-label="Axes desservis">
+          <b>A13</b><b>A28</b><b>A150</b><b>Ponts Flaubert &amp; Mathilde</b>
+        </div>
+        <p class="zones__note zones__note--small">
+          Bouchon du matin sur les ponts ou coup de fil à 3 h, la ligne répond
+          sans coupure.
+          <a href="/zones-intervention">Voir toute la zone couverte →</a>
+        </p>
+      </div>
+      <nav class="zones__list" aria-label="Communes desservies">
+        {CITIES_83.map((c) => (
+          <a href={`/${c.slug}`} class:list={['zones__chip', { 'zones__chip--main': c.tier === 1 }]}>
+            {c.name}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <!-- SAISONS (bloc contextes urbains rouennais) -->
+  <section class="season band-ardoise" aria-labelledby="season-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow eyebrow--center">Deux terrains, un métier</p>
+        <h2 id="season-title">Sous le Gros-Horloge ou sur la rocade : deux façons de crever</h2>
+        <p>
+          Entre les ruelles médiévales et les quatre voies de l'A150, une même
+          crevaison ne se traite pas de la même main. Selon le secteur, on
+          calcule l'accès du camion et le temps de route autrement.
+        </p>
+      </div>
+      <div class="season__grid">
+        <article class="season__card">
+          <span class="season__tag">Hyper-centre</span>
+          <h3>Ruelles médiévales &amp; pavés</h3>
+          <p>
+            Entre la cathédrale, le Gros-Horloge et le Vieux-Marché, le pavé
+            irrégulier et les bordures hautes cisaillent les flancs et marquent
+            les jantes au moindre créneau. Ajoutez les secteurs piétons et une
+            circulation qui n'avance pas : chaque arrêt se complique. Mettez-vous
+            en sécurité, warnings enclenchés, et donnez un point de repère net —
+            une devanture, un angle de rue. Le fourgon se glisse au plus près,
+            et cet accès serré est déjà compté dans l'horaire qu'on vous annonce.
+          </p>
+        </article>
+        <article class="season__card">
+          <span class="season__tag">Rive gauche &amp; rocades</span>
+          <h3>Zones industrielles &amp; voies rapides</h3>
+          <p>
+            Côté rive gauche industrielle, dans les boucles de Seine ou lancé
+            sur l'A13, l'A28 et l'A150, ce sont les gravillons de chantier, les
+            nids-de-poule et les longues files aux heures de pointe qui déciment
+            pneus et batteries. Rangez-vous sur la bande d'arrêt d'urgence ou
+            une aire dégagée, feux de détresse allumés, et notez la borne
+            kilométrique la plus proche. On débarque outillé pour réparer ou
+            remonter directement là — la voiture repart roulante, sans
+            remorquage.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- RÉASSURANCE / GARANTIES -->
+  <section class="reassure" id="garanties" aria-labelledby="re-title">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow eyebrow--center">Nos engagements</p>
+        <h2 id="re-title">Direct, ponctuel, sans embrouille</h2>
+        <p>
+          Pas de grandes déclarations, des faits : le tarif dit au téléphone est
+          celui que vous réglez une fois la roue remontée, majorations
+          nocturnes incluses — et une note de 5,0/5 sur Google qui n'est pas là
+          par hasard.
+        </p>
+      </div>
+      <Guarantees variant="grid" />
+    </div>
+  </section>
+
+  <!-- FAQ (rend aussi le schema FAQPage) -->
+  <Faq id="faq" items={homeFaq} eyebrow="Questions fréquentes" title="Ce qu'on nous demande" />
+
+  <!-- CTA FINAL -->
+  <section class="final" aria-labelledby="final-title">
+    <div class="hazard-stripe" aria-hidden="true"></div>
+    <div class="container final__inner">
+      <p class="eyebrow eyebrow--center">Une galère, un numéro</p>
+      <h2 id="final-title">Un pépin à Rouen ? Lucas arrive</h2>
+      <p class="final__lede">
+        Roue à plat au petit matin sur les quais, batterie qui rend l'âme sur un
+        parking de Bois-Guillaume : un coup de fil, et le reste vous échappe.
+        Tout se règle sur place, sans le moindre remorquage.
+      </p>
+      <a class="btn btn--primary btn--lg" href={`tel:${NAP.phoneE164}`}>
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M3 5.5C3 4.12 4.12 3 5.5 3h1.46a1 1 0 0 1 .97.76l1.04 4.16a1 1 0 0 1-.5 1.13l-1.6.8a14 14 0 0 0 6.28 6.28l.8-1.6a1 1 0 0 1 1.13-.5l4.16 1.04a1 1 0 0 1 .76.97V19.5C20 20.88 18.88 22 17.5 22h-1A14.5 14.5 0 0 1 2 7.5v-1Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+        Appeler le dépannage
+      </a>
+      <a class="final__phone" href={`tel:${NAP.phoneE164}`}>{NAP.phoneDisplay}</a>
+      <p class="final__hours">{NAP.hoursLabel} · Rouen &amp; Seine-Maritime</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---------- Têtes de section (style maquette C) ---------- */
+  .section-head {
+    max-width: 720px;
+    margin: 0 auto var(--space-7);
+  }
+  .section-head--center {
+    text-align: center;
+  }
+  .section-head .eyebrow {
+    margin: 0;
+  }
+  .section-head h2 {
+    margin: 14px 0 0;
+    color: var(--c-ardoise);
+  }
+  .section-head p:not(.eyebrow) {
+    margin: 14px 0 0;
+    color: var(--c-texte-doux);
+    font-size: 1.05rem;
+  }
+  :global(.band-ardoise) .section-head h2,
+  :global(.band-nuit) .section-head h2 {
+    color: #fff;
+  }
+  :global(.band-ardoise) .section-head p:not(.eyebrow),
+  :global(.band-nuit) .section-head p:not(.eyebrow) {
+    color: var(--c-ficelle);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    padding-block: 0;
+    color: var(--c-blanc);
+    background:
+      radial-gradient(1200px 500px at 78% -10%, rgba(47, 191, 113, 0.22), transparent 60%),
+      linear-gradient(160deg, var(--c-ardoise) 0%, var(--c-ardoise-fonce) 55%, var(--c-ardoise-nuit) 100%);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(198, 208, 215, 0.05) 0 1px,
+      transparent 1px 46px
+    );
+    pointer-events: none;
+  }
+  .hero__inner {
+    position: relative;
+    z-index: 2;
+    padding-block: 64px 78px;
+  }
+  .hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    background: rgba(198, 208, 215, 0.08);
+    border: 1px solid var(--ligne);
+    padding: 0.42em 0.85em;
+    border-radius: var(--radius-pill);
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--c-ficelle);
+  }
+  .pill__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-orange);
+    box-shadow: 0 0 0 4px rgba(47, 191, 113, 0.22);
+  }
+  .hero h1 {
+    margin: 22px 0 0;
+    letter-spacing: 0.005em;
+  }
+  .hero__accent {
+    color: var(--c-orange-clair);
+  }
+  .hero__lede {
+    margin: 20px 0 0;
+    font-size: 1.14rem;
+    color: var(--c-ficelle);
+    max-width: 36ch;
+  }
+  .hero__lede b {
+    color: #fff;
+    font-weight: 600;
+  }
+  .hero__actions {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+  }
+  .hero__sub {
+    font-size: 0.88rem;
+    color: var(--c-brume);
+    letter-spacing: 0.03em;
+  }
+  .hero__sub b {
+    color: var(--c-ficelle);
+    font-weight: 600;
+  }
+  .hero__facts {
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--ligne);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    max-width: 520px;
+  }
+  .fact {
+    padding: 16px 14px;
+    text-align: center;
+    background: rgba(25, 31, 38, 0.35);
+  }
+  .fact + .fact {
+    border-left: 1px solid var(--ligne);
+  }
+  .fact__n {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: var(--c-orange-clair);
+    line-height: 1;
+  }
+  .fact__l {
+    margin-top: 6px;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-brume);
+  }
+
+  /* ---------- Bandeau confiance ---------- */
+  .trust-strip {
+    border-bottom: 1px solid var(--ligne);
+    font-size: var(--fs-base);
+  }
+  .trust-strip .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: 15px;
+    text-align: center;
+    color: var(--c-ficelle);
+  }
+  .trust-strip b {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* ---------- Saisons ---------- */
+  .season__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-4);
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .season__card {
+    background: rgba(25, 31, 38, 0.55);
+    border: 1px solid var(--ligne);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    padding: var(--space-6) var(--space-5);
+  }
+  .season__tag {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.76rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-orange-clair);
+  }
+  .season__card h3 {
+    margin: var(--space-2) 0 var(--space-3);
+    font-size: 1.28rem;
+    color: #fff;
+  }
+  .season__card p {
+    margin: 0;
+    color: var(--c-ficelle);
+    line-height: var(--lh-loose);
+  }
+
+  /* ---------- Services ---------- */
+  .services__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+    gap: 18px;
+  }
+
+  /* ---------- Étapes ---------- */
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    counter-reset: st;
+  }
+  .step {
+    padding: 30px 22px 26px;
+    background: #fff;
+    border: 1px solid var(--ligne-fonce);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+  .step::before {
+    counter-increment: st;
+    content: counter(st, decimal-leading-zero);
+    display: block;
+    margin-bottom: 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--c-orange);
+  }
+  .step h3 {
+    margin: 0 0 8px;
+    font-size: 1.16rem;
+    color: var(--c-ardoise);
+  }
+  .step p {
+    margin: 0;
+    color: var(--c-texte-doux);
+    font-size: 0.96rem;
+  }
+
+  /* ---------- Zones ---------- */
+  .zones__wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 44px;
+    align-items: center;
+  }
+  .zones h2 {
+    margin: 14px 0 0;
+    font-size: clamp(1.9rem, 4.5vw, 2.9rem);
+  }
+  .zones__note {
+    margin: 16px 0 0;
+    color: var(--c-ficelle);
+    font-size: 1.02rem;
+  }
+  .zones__note b {
+    color: #fff;
+  }
+  .zones__note--small {
+    margin-top: 20px;
+    font-size: 0.94rem;
+  }
+  .zones__note a {
+    color: var(--c-orange-clair);
+  }
+  .zones__axes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .zones__axes b {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--c-orange-clair);
+    border: 1px dashed rgba(47, 191, 113, 0.5);
+    padding: 0.35em 0.7em;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+  }
+  .zones__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+  }
+  .zones__chip {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.92rem;
+    letter-spacing: 0.03em;
+    background: rgba(198, 208, 215, 0.07);
+    border: 1px solid var(--ligne);
+    padding: 0.5em 0.95em;
+    border-radius: var(--radius-md);
+    color: var(--c-ficelle);
+    text-decoration: none;
+    transition: border-color var(--transition-fast), color var(--transition-fast);
+  }
+  .zones__chip:hover {
+    border-color: var(--c-orange);
+    color: #fff;
+    text-decoration: none;
+  }
+  .zones__chip--main {
+    background: var(--c-orange);
+    border-color: var(--c-orange);
+    color: #fff;
+  }
+  .zones__chip--main:hover {
+    background: var(--c-orange-clair);
+  }
+  @media (max-width: 900px) {
+    .zones__wrap {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+  }
+
+  /* ---------- CTA final ---------- */
+  .final {
+    position: relative;
+    padding-block: 0;
+    text-align: center;
+    color: #fff;
+    background:
+      radial-gradient(900px 400px at 20% 0%, rgba(47, 191, 113, 0.28), transparent 60%),
+      linear-gradient(150deg, var(--c-ardoise) 0%, var(--c-ardoise-nuit) 100%);
+    overflow: hidden;
+  }
+  .final > .hazard-stripe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .final__inner {
+    padding-block: 74px;
+  }
+  .final h2 {
+    margin: 14px 0 0;
+    color: #fff;
+  }
+  .final__lede {
+    color: var(--c-ficelle);
+    max-width: 44ch;
+    margin: 16px auto 30px;
+    font-size: 1.08rem;
+  }
+  .final__phone {
+    display: block;
+    margin-top: 18px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 6vw, 3rem);
+    letter-spacing: 0.02em;
+    color: var(--c-orange-clair);
+    text-decoration: none;
+  }
+  .final__phone:hover {
+    color: var(--c-orange);
+    text-decoration: none;
+  }
+  .final__hours {
+    margin: 14px 0 0;
+    font-size: 0.9rem;
+    color: var(--c-brume);
+  }
+</style>

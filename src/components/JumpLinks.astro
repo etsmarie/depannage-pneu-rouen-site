@@ -1,0 +1,63 @@
+---
+/**
+ * JumpLinks — mini sommaire discret avec ancres vers des sections
+ * réellement présentes sur la page (id= posés sur les <section>).
+ */
+interface Props {
+  links: { href: string; label: string }[];
+  label?: string;
+}
+const { links, label = 'Sur cette page' } = Astro.props;
+---
+
+<nav class="jump" aria-label="Sommaire de la page">
+  <div class="container jump__in">
+    <span class="jump__label">{label}</span>
+    <ul>
+      {links.map((l) => (
+        <li><a href={l.href}>{l.label}</a></li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .jump {
+    background: var(--c-bg-elev);
+    border-bottom: 1px solid var(--ligne-fonce);
+    padding-block: var(--space-2);
+  }
+  .jump__in {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+  }
+  .jump__label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-fg-subtle);
+  }
+  .jump ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35em var(--space-4);
+    font-size: var(--fs-xs);
+  }
+  .jump a {
+    color: var(--c-fg-muted);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(47, 191, 113, 0.45);
+    padding-bottom: 1px;
+  }
+  .jump a:hover {
+    color: var(--c-link);
+    border-bottom-style: solid;
+  }
+</style>

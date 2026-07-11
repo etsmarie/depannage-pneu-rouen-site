@@ -1,0 +1,169 @@
+---
+import { NAP } from '~/data/nap.ts';
+import { SERVICES } from '~/data/services.ts';
+
+const year = new Date().getFullYear();
+
+/** Libellés courts pour la colonne « Interventions » du pied de page. */
+const FOOT_LABELS: Record<string, string> = {
+  'depannage-pneu-urgence-24-7': 'Urgence pneu 24/7, sur place',
+  'changement-pneu-domicile': 'Pneus posés par paire à domicile',
+  'crevaison-reparation': 'Crevaison réparée à la mèche',
+  'changement-batterie': 'Batterie 12V changée sur place',
+  'roue-de-secours': 'Roue de secours montée au couple',
+};
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="foot-grid">
+      <section>
+        <h3 class="foot-title">{NAP.name}</h3>
+        <p class="foot-nap">
+          Dépannage pneu &amp; batterie à domicile, sur place et sans remorquage.<br />
+          <b>{NAP.area}</b><br />
+          {NAP.hoursLabel}
+        </p>
+      </section>
+
+      <section>
+        <h3 class="foot-title">Appeler</h3>
+        <p>
+          <a class="foot-phone" href={`tel:${NAP.phoneE164}`}>{NAP.phoneDisplay}</a>
+        </p>
+        <p><a class="foot-link" href={`tel:${NAP.phoneE164}`}>Ligne d'urgence pneu, jour et nuit</a></p>
+        <p><a class="foot-link" href="/tarifs">Nos ordres de prix indicatifs</a></p>
+      </section>
+
+      <section>
+        <h3 class="foot-title">Interventions</h3>
+        <ul class="foot-list">
+          {SERVICES.map((s) => (
+            <li>
+              <a class="foot-link" href={`/services/${s.slug}`}>
+                {FOOT_LABELS[s.slug] ?? s.shortLabel}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© {year} {NAP.name}</span>
+      <span>Rouen · Sotteville · Grand-Quevilly · Mont-Saint-Aignan · Elbeuf · Barentin · Seine-Maritime</span>
+      <nav aria-label="Pages légales" class="foot-legal">
+        <a href="/mentions-legales">Mentions légales</a>
+        <a href="/politique-confidentialite">Confidentialité</a>
+        <a href="/contact">Contact</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--c-ardoise-nuit);
+    color: var(--c-ficelle);
+    border-top: 2px solid var(--c-orange);
+    padding-block: var(--space-8) var(--space-6);
+    margin-top: 0;
+  }
+
+  .foot-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: var(--space-6);
+  }
+
+  .foot-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.82rem;
+    color: var(--c-orange-clair);
+    margin: 0 0 14px;
+  }
+
+  .foot-nap,
+  .site-footer p {
+    color: var(--c-ficelle);
+    font-size: 0.94rem;
+    line-height: 1.9;
+    margin: 0 0 var(--space-2);
+  }
+  .foot-nap b {
+    color: #fff;
+  }
+
+  .foot-phone {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #fff;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+  .foot-phone:hover {
+    color: var(--c-orange-clair);
+    text-decoration: none;
+  }
+
+  .foot-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-1);
+  }
+  .foot-link {
+    color: var(--c-ficelle);
+    font-size: 0.94rem;
+    line-height: 1.9;
+    text-decoration: none;
+  }
+  .foot-link:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .foot-bottom {
+    border-top: 1px solid var(--ligne);
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    color: var(--c-brume);
+  }
+  .foot-legal {
+    display: flex;
+    gap: var(--space-4);
+  }
+  .foot-legal a {
+    color: var(--c-brume);
+    text-decoration: none;
+  }
+  .foot-legal a:hover {
+    color: var(--c-orange-clair);
+  }
+
+  @media (max-width: 900px) {
+    .foot-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 620px) {
+    .foot-grid {
+      grid-template-columns: 1fr;
+    }
+    .foot-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

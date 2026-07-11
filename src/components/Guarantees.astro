@@ -1,0 +1,90 @@
+---
+/**
+ * Bloc « garanties » — engagements concrets affichés à la place de toute
+ * note ou avis (il n'existe aucun avis réel, on n'en invente pas).
+ * Version C : cartes ardoise à bord gauche orange, chiffre Oswald orange.
+ */
+interface Props {
+  variant?: 'grid' | 'aside';
+}
+const { variant = 'grid' } = Astro.props;
+
+const ITEMS = [
+  {
+    num: '~45 min',
+    label: "d'attente en moyenne dans l'agglo rouennaise ; sur les boucles de Seine et jusqu'à Elbeuf, l'heure d'arrivée est annoncée dès l'appel",
+  },
+  {
+    num: 'Sur place',
+    label: 'tout se règle là où le véhicule est garé — rien n’est tracté, il repart roulant',
+  },
+  {
+    num: '2 · 4 · 6',
+    label: 'les pneus se montent par paire, pour un essieu homogène qui freine droit',
+  },
+  {
+    num: '24h/24',
+    label: 'la ligne décroche aussi la nuit, les dimanches et les jours fériés',
+  },
+];
+---
+
+<div class={`guarantees guarantees--${variant}`}>
+  {ITEMS.map((it) => (
+    <div class="g-card">
+      <span class="g-card__num">{it.num}</span>
+      <span class="g-card__label">{it.label}</span>
+    </div>
+  ))}
+</div>
+
+<style>
+  .guarantees {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .guarantees--grid {
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  }
+  .guarantees--aside {
+    grid-template-columns: 1fr 1fr;
+    max-width: 480px;
+  }
+
+  .g-card {
+    background: var(--c-ardoise);
+    border: 1px solid var(--ligne);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    padding: var(--space-5) var(--space-5) var(--space-4);
+    box-shadow: var(--shadow-md);
+  }
+  .g-card__num {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.7rem;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--c-orange-clair);
+  }
+  .g-card__label {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: var(--fs-sm);
+    color: var(--c-ficelle);
+  }
+
+  /* Sur la bande la plus sombre, l'ardoise ressort déjà ;
+     sur bande ardoise, on fonce la carte pour garder le contraste. */
+  :global(.band-ardoise) .g-card {
+    background: rgba(25, 31, 38, 0.55);
+  }
+
+  @media (max-width: 440px) {
+    .guarantees--aside {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

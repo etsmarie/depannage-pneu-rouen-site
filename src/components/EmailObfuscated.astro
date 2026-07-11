@@ -1,0 +1,88 @@
+---
+/**
+ * Email obfuscation : décodage côté client uniquement (après interaction)
+ * pour empêcher Google et les scrapers de récolter l'adresse de contact.
+ *
+ * Stratégie :
+ *  - le HTML statique ne contient JAMAIS le @, jamais le domaine en clair
+ *  - le cipher rot13 est dérivé de NAP.emailObfuscated au build (rien en dur)
+ *  - le mailto: est composé en JS au moment du click
+ *  - aucun href visible dans le DOM tant que l'utilisateur n'a pas cliqué
+ */
+import { NAP } from '~/data/nap.ts';
+
+interface Props {
+  label?: string;
+  className?: string;
+}
+const { label = 'Nous écrire', className = '' } = Astro.props;
+
+const email = NAP.emailObfuscated.replace('[at]', '@').replace('[dot]', '.');
+const cipher = email.replace(/[a-z]/gi, (c) => {
+  const code = c.charCodeAt(0);
+  const base = code <= 90 ? 65 : 97;
+  return String.fromCharCode(((code - base + 13) % 26) + base);
+});
+---
+
+<button
+  type="button"
+  class={`email-obf ${className}`.trim()}
+  data-c={cipher}
+  aria-label="Afficher l'adresse email"
+>
+  <span aria-hidden="true">{label}</span>
+</button>
+
+<script>
+  function rot13(s: string): string {
+    return s.replace(/[a-z]/gi, (c) => {
+      const code = c.charCodeAt(0);
+      const base = code <= 90 ? 65 : 97;
+      return String.fromCharCode(((code - base + 13) % 26) + base);
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const btn = target?.closest?.('.email-obf') as HTMLElement | null;
+    if (!btn) return;
+    e.preventDefault();
+    const cipher = btn.getAttribute('data-c') || '';
+    const email = rot13(cipher);
+    window.location.href = `mailto:${email}`;
+  });
+</script>
+
+<style>
+  .email-obf {
+    background: transparent;
+    border: 2px solid rgba(25, 31, 38, 0.25);
+    color: var(--c-ardoise);
+    padding: 0.7em 1.3em;
+    border-radius: var(--radius-md);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color var(--transition-fast), color var(--transition-fast);
+  }
+  .email-obf:hover {
+    border-color: var(--c-orange);
+    color: var(--c-orange-nuit);
+  }
+
+  /* Sur bandes sombres : bord ficelle, hover orange clair */
+  :global(.band-ardoise) .email-obf,
+  :global(.band-nuit) .email-obf {
+    border-color: rgba(198, 208, 215, 0.4);
+    color: var(--c-blanc);
+  }
+  :global(.band-ardoise) .email-obf:hover,
+  :global(.band-nuit) .email-obf:hover {
+    border-color: var(--c-orange);
+    color: var(--c-orange-clair);
+  }
+</style>

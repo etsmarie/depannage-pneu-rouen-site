@@ -1,0 +1,222 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import EmailObfuscated from '~/components/EmailObfuscated.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import { NAP } from '~/data/nap.ts';
+---
+
+<BaseLayout
+  title="Contact — Dépannage pneu Rouen 24h/24"
+  description={`Un numéro qui décroche jour et nuit : ${NAP.phoneDisplay}. Atelier 100 % mobile sur Rouen et toute la Seine-Maritime (76), réparation sur place, sans remorquage.`}
+  canonicalPath="/contact"
+>
+  <SchemaLocalBusiness slot="schema" />
+
+  <!-- Bande sombre : le numéro d'abord -->
+  <section class="c-hero band-nuit">
+    <div class="container">
+      <p class="eyebrow">Contact</p>
+      <h1>Une panne, ça se règle en direct.</h1>
+      <p class="c-hero__lede">
+        Expliquez-nous ce qui coince — pneu à plat, batterie morte, roue de
+        secours à poser — et indiquez où stationne la voiture. Lucas chiffre
+        l&rsquo;intervention et donne l&rsquo;heure d&rsquo;arrivée pendant
+        l&rsquo;appel, puis l&rsquo;atelier mobile file sur les quais.
+      </p>
+      <a class="c-hero__tel" href={`tel:${NAP.phoneE164}`}>
+        <span class="c-hero__tel-label">Ligne directe, jour et nuit</span>
+        <span class="c-hero__tel-num">{NAP.phoneDisplay}</span>
+      </a>
+      <ul class="c-hero__pills" role="list">
+        <li><span class="dot" aria-hidden="true"></span>{NAP.hoursLabel}</li>
+        <li><span class="dot" aria-hidden="true"></span>Sans remorquage — le véhicule repart roulant</li>
+        <li><span class="dot" aria-hidden="true"></span>{NAP.area}</li>
+      </ul>
+    </div>
+    <div class="hazard-stripe" aria-hidden="true"></div>
+  </section>
+
+  <!-- Fond clair : coordonnées complètes -->
+  <section class="c-infos">
+    <div class="container">
+      <p class="eyebrow">Nos coordonnées</p>
+      <h2>Comment nous joindre, comment nous écrire</h2>
+
+      <div class="c-infos__grid">
+        <div class="c-card">
+          <h3>Un service 100 % mobile</h3>
+          <p>
+            <strong>{NAP.name}</strong><br />
+            Pas d&rsquo;atelier ni de guichet à pousser&nbsp;: l&rsquo;atelier
+            mobile sillonne l&rsquo;agglo, des quais de Seine aux coteaux de
+            Bois-Guillaume, et vient là où se trouve la voiture. Tout se cale
+            au téléphone.
+          </p>
+        </div>
+
+        <div class="c-card">
+          <h3>Horaires</h3>
+          <p>
+            {NAP.hoursLabel}.<br />
+            Nuits, dimanches et jours fériés inclus — l&rsquo;appel ne bascule
+            jamais sur répondeur, même aux heures creuses.
+          </p>
+        </div>
+
+        <div class="c-card">
+          <h3>Secteur desservi</h3>
+          <p>
+            {NAP.area}&nbsp;: la rive gauche industrielle, les côtes de
+            Canteleu et de Mont-Saint-Aignan, et les boucles de Seine jusqu&rsquo;à
+            Oissel et Elbeuf.
+          </p>
+          <a href="/zones-intervention">Voir toutes les communes couvertes</a>
+        </div>
+
+        <div class="c-card c-card--mail">
+          <h3>Par écrit</h3>
+          <p>
+            Pour ce qui ne presse pas — devis de pneus par paire, flottes
+            d&rsquo;entreprise, questions administratives — passez par
+            l&rsquo;email. Réponse sous 48&nbsp;h ouvrées.
+          </p>
+          <EmailObfuscated label="Afficher l'adresse email" />
+        </div>
+      </div>
+
+      <p class="c-infos__note">
+        La voiture est déjà immobilisée&nbsp;? Ne perdez pas de temps à
+        écrire&nbsp;: appelez le
+        <a href={`tel:${NAP.phoneE164}`}>{NAP.phoneDisplay}</a>, c&rsquo;est le
+        seul canal traité en temps réel.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .c-hero {
+    position: relative;
+    padding-block: var(--space-9) var(--space-8);
+    background:
+      radial-gradient(900px 420px at 82% -10%, rgba(47, 191, 113, 0.2), transparent 62%),
+      var(--c-ardoise-nuit);
+  }
+  .c-hero .hazard-stripe {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .c-hero h1 {
+    color: #fff;
+    margin: var(--space-3) 0 var(--space-4);
+  }
+  .c-hero__lede {
+    color: var(--c-ficelle);
+    font-size: var(--fs-lg);
+    max-width: 58ch;
+    margin-bottom: var(--space-6);
+  }
+  .c-hero__tel {
+    display: inline-block;
+    text-decoration: none;
+    border: 1px solid var(--ligne);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    background: rgba(198, 208, 215, 0.06);
+    padding: var(--space-4) var(--space-6);
+  }
+  .c-hero__tel:hover {
+    text-decoration: none;
+    border-color: var(--c-orange);
+  }
+  .c-hero__tel-label {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--c-brume);
+  }
+  .c-hero__tel-num {
+    display: block;
+    margin-top: var(--space-2);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 6vw, 3.1rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: var(--c-orange-clair);
+  }
+  .c-hero__tel:hover .c-hero__tel-num {
+    color: var(--c-orange);
+  }
+  .c-hero__pills {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+  }
+  .c-hero__pills li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    background: rgba(198, 208, 215, 0.08);
+    border: 1px solid var(--ligne);
+    border-radius: var(--radius-pill);
+    padding: 0.42em 0.85em;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--c-ficelle);
+  }
+  .c-hero__pills .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--c-orange);
+    box-shadow: 0 0 0 4px rgba(47, 191, 113, 0.22);
+  }
+
+  .c-infos {
+    padding-block: var(--space-9);
+  }
+  .c-infos h2 {
+    color: var(--c-ardoise);
+    margin: var(--space-3) 0 var(--space-6);
+  }
+  .c-infos__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-4);
+  }
+  .c-card {
+    background: var(--c-bg-elev);
+    border: 1px solid var(--ligne-fonce);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    padding: var(--space-5);
+    box-shadow: var(--shadow-sm);
+  }
+  .c-card h3 {
+    font-size: var(--fs-lg);
+    color: var(--c-ardoise);
+    margin-bottom: var(--space-2);
+  }
+  .c-card p {
+    color: var(--c-texte-doux);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-base);
+  }
+  .c-card--mail :global(.email-obf) {
+    margin-top: var(--space-2);
+  }
+  .c-infos__note {
+    margin-top: var(--space-6);
+    color: var(--c-texte-doux);
+    max-width: 68ch;
+  }
+</style>

@@ -1,0 +1,347 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PhoneCTA from '~/components/PhoneCTA.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import Faq from '~/components/Faq.astro';
+import { NAP } from '~/data/nap.ts';
+import type { FaqItem } from '~/data/faq.ts';
+
+/** Fil d'Ariane : mêmes libellés/URLs pour le rendu visible et le JSON-LD. */
+const crumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Tarifs' },
+];
+
+/** Grille indicative validée — montants « tout compris » (déplacement inclus). */
+const GRILLE = [
+  {
+    label: 'Crevaison',
+    title: 'Crevaison réparée sur place',
+    price: 'à partir de 79 €',
+    note: "Déplacement inclus. Pose d'une mèche ou d'un champignon selon la norme NF U85-200, vérification de la carcasse et regonflage à la pression préconisée par le constructeur.",
+  },
+  {
+    label: 'Batterie',
+    title: 'Batterie remplacée sur site',
+    price: 'à partir de 149 €',
+    note: "Batterie neuve fournie, choisie selon sa capacité et sa technologie (standard, Start & Stop, AGM ou EFB). Contrôle de la batterie et de l'alternateur inclus, reprise et recyclage de l'ancienne.",
+  },
+  {
+    label: 'Pneus',
+    title: 'Pneus neufs montés sur place',
+    price: 'sur devis',
+    note: "Par paire uniquement — 2, 4 ou 6 —, montage et équilibrage compris. Le tarif suit la dimension et la gamme retenue ; valves remplacées à chaque fois.",
+  },
+];
+
+/** Ce qui fait bouger le montant final. */
+const FACTEURS = [
+  {
+    t: 'Le format et la qualité du pneu',
+    d: "Entre une petite citadine et un gros SUV, la monte n'a rien de comparable : c'est la taille du pneu, son indice de charge et la gamme retenue — entrée de gamme, intermédiaire ou premium — qui creusent le plus l'écart quand on remplace un train complet.",
+  },
+  {
+    t: "L'heure de l'appel",
+    d: "Intervenir en plein après-midi ou à trois heures du matin n'engage pas le même effort. Aussi une majoration vient s'ajouter la nuit (22 h - 7 h), le dimanche et les jours fériés ; elle vous est toujours annoncée avant le départ.",
+  },
+  {
+    t: 'Le trajet jusqu\'à vous',
+    d: `Roulant en continu à travers l'agglo, des berges de Seine aux hauteurs de Mont-Saint-Aignan, l'atelier mobile ne glisse jamais de frais surprise. Que vous soyez du côté d'Elbeuf, dans les boucles d'Oissel ou vers Darnétal, seul le temps de route bouge — et il est déjà compté dans le prix.`,
+  },
+  {
+    t: "Le type d'opération",
+    d: "Colmater une crevaison, poser la roue de secours, monter une paire de pneus ou changer une batterie : chaque geste réclame un temps et des pièces différents. C'est le diagnostic qui fixe la ligne, et le tarif se cale dessus.",
+  },
+];
+
+/** FAQ tarifaire — People-Also-Ask « prix », ancrées Rouen / Seine-Maritime. */
+const TARIFS_FAQ: FaqItem[] = [
+  {
+    q: "À combien revient la réparation d'une crevaison à Rouen ?",
+    a: `Prévoyez, en ordre de grandeur, 79 € minimum déplacement inclus, dès lors que la bande de roulement autorise la réparation sur place. Le chiffre définitif tient à votre commune dans la métropole, à l'horaire et à l'usure du pneu ; Lucas vous le communique au ${NAP.phoneDisplay} avant de s'engager sur la rocade — un devis ferme et gratuit, toujours en amont du déplacement.`,
+  },
+  {
+    q: 'Combien faut-il prévoir pour une batterie remplacée sur place ?',
+    a: `Une batterie neuve posée part de 149 €, fourniture comprise, en fonction de sa capacité et de sa technologie (standard, Start & Stop, AGM ou EFB). Le contrôle de la batterie et de l'alternateur est compris : il arrive qu'une simple recharge règle tout, et vous ne payez alors aucune pièce. Le tarif définitif vous est indiqué par téléphone avant toute intervention.`,
+  },
+  {
+    q: 'Pourquoi changer les pneus deux par deux plutôt qu\'un seul ?',
+    a: `Deux gommes d'usure inégale sur un même essieu font dévier le freinage, en particulier quand on descend les côtes de Bonsecours ou de Canteleu vers les quais sous la pluie. On remplace donc les pneus par paire, montage et équilibrage inclus, sur devis selon la dimension et la gamme. Et lorsqu'un pneu peut encore être sauvé, Lucas le répare plutôt que de le changer.`,
+  },
+  {
+    q: 'Y a-t-il un supplément la nuit, le week-end ou les jours fériés ?',
+    a: `Effectivement, la nuit (de 22 h à 7 h), le dimanche et les jours fériés, une majoration vient s'ajouter : c'est la contrepartie d'un service encore joignable quand tout est fermé sur l'agglo. Elle vous est signalée par téléphone et fondue dans le total, avant même que l'atelier mobile ne se mette en route. Rien n'est facturé sans votre accord.`,
+  },
+  {
+    q: 'Le déplacement jusqu\'à chez moi coûte-t-il un supplément ?',
+    a: `Non : le déplacement figure déjà dans le montant énoncé, sans ligne surprise au moment de payer. L'atelier mobile couvre l'ensemble de la Métropole Rouen Normandie ; d'une commune à l'autre — de Sotteville-lès-Rouen à Barentin — seul le temps de trajet évolue, et il est chiffré dès votre appel au ${NAP.phoneDisplay}.`,
+  },
+  {
+    q: 'Les montants indiqués ici sont-ils définitifs ?',
+    a: `Les prix de cette page servent de repère, pas de contrat : ils situent l'ordre de grandeur sans se substituer à un devis. Ce dernier, ferme et sans frais, vous est transmis au téléphone une fois la panne identifiée et l'adresse connue, avant tout déplacement. À vous de valider, ou non, en toute connaissance de cause.`,
+  },
+];
+---
+
+<BaseLayout
+  title="Tarifs dépannage pneu Rouen — prix indicatifs"
+  description="Prix indicatifs du dépannage pneu à Rouen et en Seine-Maritime : crevaison dès 79 €, batterie posée 149 €, pneus par paire sur devis. Devis ferme et gratuit au téléphone."
+  canonicalPath="/tarifs"
+>
+  <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/tarifs`} />
+
+  <Breadcrumb items={crumbs} currentPath="/tarifs" />
+
+  <!-- HERO -->
+  <section class="t-hero band-ardoise">
+    <div class="container">
+      <p class="eyebrow">Tarifs · agglomération de Rouen</p>
+      <h1>Ce que coûte un dépannage pneu à Rouen</h1>
+      <p class="t-hero__lede">
+        Ici, aucun montant dissimulé : vous trouverez l'échelle de prix de nos
+        interventions les plus demandées, à Rouen comme dans toute la
+        Seine-Maritime. Ces chiffres restent <b>à titre indicatif</b> — le
+        <b>devis ferme et gratuit</b>, lui, vous est systématiquement énoncé au
+        téléphone, <b>avant tout déplacement</b>.
+      </p>
+      <PhoneCTA
+        eyebrow="Un prix, avant même que l'atelier mobile démarre"
+        hint="Devis ferme et gratuit au téléphone, avant tout déplacement"
+      />
+    </div>
+  </section>
+  <div class="hazard-stripe" aria-hidden="true"></div>
+
+  <!-- GRILLE -->
+  <section class="t-grille">
+    <div class="container">
+      <header class="t-head">
+        <p class="eyebrow">Des repères de prix, sans engagement</p>
+        <h2>Trois prestations, trois ordres de grandeur</h2>
+      </header>
+      <div class="t-grid">
+        {GRILLE.map((g) => (
+          <article class="t-card">
+            <span class="t-card__label">{g.label}</span>
+            <h3>{g.title}</h3>
+            <p class="t-card__price">{g.price}</p>
+            <p class="t-card__note">{g.note}</p>
+          </article>
+        ))}
+      </div>
+      <p class="t-majo">
+        <b>Nuit (22 h - 7 h), dimanche et jours fériés :</b> une majoration
+        entre en compte ; elle vous est précisée au téléphone et déjà comprise
+        dans le montant donné avant que l'atelier mobile ne démarre.
+      </p>
+      <p class="t-disclaimer">
+        Ces montants sont indicatifs, exprimés TTC, déplacement inclus. Ils ne
+        tiennent pas lieu de devis : le prix ferme se calcule au
+        {NAP.phoneDisplay}, une fois la panne et votre adresse connues,
+        gratuitement et sans le moindre déplacement préalable.
+      </p>
+    </div>
+  </section>
+
+  <!-- CE QUI FAIT VARIER -->
+  <section class="t-vary band-nuit">
+    <div class="container">
+      <header class="t-head t-head--center">
+        <p class="eyebrow eyebrow--center">Pourquoi un « à partir de »</p>
+        <h2>Ce qui fait varier le prix</h2>
+        <p class="t-head__lede">
+          Aucun dépannage ne se facture au forfait unique : quatre paramètres
+          entrent en jeu, et Lucas les passe en revue dès l'appel pour que le
+          prix annoncé reste le prix payé.
+        </p>
+      </header>
+      <div class="t-vary__grid">
+        {FACTEURS.map((f) => (
+          <article class="t-vary__item">
+            <h3>{f.t}</h3>
+            <p>{f.d}</p>
+          </article>
+        ))}
+      </div>
+      <p class="t-vary__note">
+        Une précision qui revient à chaque appel : on ne monte jamais un pneu
+        neuf seul, mais <b>toujours par paire</b>, pose et équilibrage compris —
+        question de tenue au freinage, pas de commerce. Le détail prestation par
+        prestation se trouve sur la page
+        <a href="/services">nos interventions</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ tarifaire (rend aussi le schema FAQPage) -->
+  <Faq
+    items={TARIFS_FAQ}
+    title="Vos questions sur les tarifs"
+    eyebrow="Prix : ce qu'on nous demande"
+  />
+
+  <!-- CTA FINAL -->
+  <section class="t-final">
+    <div class="container t-final__in">
+      <p class="eyebrow eyebrow--center">Une hésitation sur le montant ? Décrochez</p>
+      <h2>Votre devis, gratuit, se règle par téléphone</h2>
+      <p class="t-final__lede">
+        Exposez la panne, indiquez où vous êtes dans l'agglomération
+        rouennaise : on vous chiffre l'ensemble, majoration éventuelle incluse,
+        avant même que l'atelier mobile ne s'élance.
+      </p>
+      <a class="btn btn--primary btn--lg" href={`tel:${NAP.phoneE164}`}>
+        Appeler le {NAP.phoneDisplay}
+      </a>
+      <p class="t-final__hours">{NAP.hoursLabel} · {NAP.area}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .t-hero {
+    background:
+      radial-gradient(1000px 460px at 82% -12%, rgba(47, 191, 113, 0.2), transparent 60%),
+      linear-gradient(160deg, var(--c-ardoise) 0%, var(--c-ardoise-fonce) 60%, var(--c-ardoise-nuit) 100%);
+    padding-block: var(--space-8) var(--space-9);
+  }
+  .t-hero h1 {
+    color: #fff;
+    font-size: var(--fs-3xl);
+    margin: var(--space-3) 0 var(--space-4);
+  }
+  .t-hero__lede {
+    color: var(--c-ficelle);
+    font-size: var(--fs-lg);
+    max-width: 60ch;
+    margin-bottom: var(--space-6);
+  }
+  .t-hero__lede b { color: #fff; }
+
+  /* Têtes de section */
+  .t-head {
+    max-width: 720px;
+    margin-bottom: var(--space-7);
+  }
+  .t-head--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .t-head h2 { margin: var(--space-3) 0 0; color: var(--c-ardoise); }
+  .t-head__lede { margin-top: var(--space-3); color: var(--c-texte-doux); }
+  :global(.band-nuit) .t-head h2 { color: #fff; }
+  :global(.band-nuit) .t-head__lede { color: var(--c-ficelle); }
+
+  /* Grille de prix */
+  .t-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+    gap: 18px;
+  }
+  .t-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid var(--ligne-fonce);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    box-shadow: var(--shadow-md);
+    padding: 26px 24px;
+  }
+  .t-card__label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-orange-nuit);
+  }
+  .t-card h3 {
+    margin: var(--space-2) 0 var(--space-3);
+    font-size: 1.22rem;
+    color: var(--c-ardoise);
+  }
+  .t-card__price {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.7rem;
+    line-height: 1;
+    color: var(--c-orange-nuit);
+    margin: 0 0 var(--space-3);
+    padding-bottom: var(--space-3);
+    border-bottom: 2px solid var(--c-orange);
+  }
+  .t-card__note {
+    margin: 0;
+    color: var(--c-texte-doux);
+    font-size: 0.94rem;
+    line-height: var(--lh-base);
+  }
+  .t-majo {
+    margin-top: var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    background: rgba(47, 191, 113, 0.07);
+    border: 1px dashed rgba(47, 191, 113, 0.5);
+    border-radius: var(--radius-md);
+    color: var(--c-texte-doux);
+    font-size: 0.96rem;
+  }
+  .t-majo b { color: var(--c-ardoise); }
+  .t-disclaimer {
+    margin-top: var(--space-4);
+    font-size: var(--fs-sm);
+    color: var(--c-fg-subtle);
+    max-width: 74ch;
+  }
+
+  /* Ce qui fait varier */
+  .t-vary__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-4);
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .t-vary__item {
+    background: rgba(198, 208, 215, 0.06);
+    border: 1px solid var(--ligne);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    padding: var(--space-5);
+  }
+  .t-vary__item h3 {
+    color: var(--c-orange-clair);
+    font-size: 1.12rem;
+    margin-bottom: var(--space-2);
+  }
+  .t-vary__item p { margin: 0; color: var(--c-ficelle); font-size: 0.96rem; }
+  .t-vary__note {
+    max-width: 820px;
+    margin: var(--space-6) auto 0;
+    text-align: center;
+    color: var(--c-brume);
+    font-size: 0.98rem;
+  }
+  .t-vary__note b { color: #fff; }
+  .t-vary__note a { color: var(--c-orange-clair); }
+
+  /* CTA final */
+  .t-final__in {
+    text-align: center;
+    max-width: 720px;
+  }
+  .t-final h2 { color: var(--c-ardoise); margin: 14px 0 var(--space-3); }
+  .t-final__lede {
+    color: var(--c-texte-doux);
+    font-size: 1.06rem;
+    max-width: 56ch;
+    margin: 0 auto var(--space-6);
+  }
+  .t-final__hours {
+    margin-top: var(--space-4);
+    font-size: var(--fs-sm);
+    color: var(--c-fg-subtle);
+  }
+</style>

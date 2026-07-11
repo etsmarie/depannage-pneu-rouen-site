@@ -1,0 +1,95 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import EmailObfuscated from '~/components/EmailObfuscated.astro';
+import { NAP } from '~/data/nap.ts';
+---
+
+<BaseLayout
+  title="Mentions légales — Dépannage pneu Rouen 76"
+  description={`Mentions légales du site ${NAP.domain}, édité par ${NAP.legalEntity} sous le nom commercial ${NAP.name}, service mobile de dépannage pneu et batterie à Rouen et en Seine-Maritime.`}
+  canonicalPath="/mentions-legales"
+  noindex
+>
+  <section class="legal">
+    <div class="container">
+      <p class="eyebrow">Informations légales</p>
+      <h1>Mentions légales</h1>
+
+      <h2>Éditeur du site</h2>
+      <p>
+        {NAP.legalEntity}<br />
+        SIREN&nbsp;: {NAP.legalSiren}<br />
+        Nom commercial&nbsp;: {NAP.name}<br />
+        Activité&nbsp;: service mobile — Rouen et toute la Seine-Maritime (76)<br />
+        Téléphone&nbsp;: <a href={`tel:${NAP.phoneE164}`}>{NAP.phoneDisplay}</a><br />
+        Contact&nbsp;: <EmailObfuscated label="afficher l'email" />
+      </p>
+
+      <h2>Hébergeur</h2>
+      <p>
+        Cloudflare, Inc. — Cloudflare Pages<br />
+        101 Townsend Street, San Francisco, California 94107, États-Unis<br />
+        <a href="https://www.cloudflare.com/" rel="noopener">cloudflare.com</a>
+      </p>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        L&rsquo;ensemble des textes, photos, logos et éléments graphiques
+        diffusés sur {NAP.domain} appartient à l&rsquo;éditeur et bénéficie de
+        la protection du code de la propriété intellectuelle. Toute
+        reproduction, y compris partielle, est interdite sans autorisation
+        écrite préalable.
+      </p>
+
+      <h2>Responsabilité</h2>
+      <p>
+        Les informations présentées sur ce site (délais d&rsquo;intervention,
+        tarifs d&rsquo;appel, communes couvertes autour de Rouen et de la
+        métropole Rouen Normandie) ont une valeur indicative et sont
+        systématiquement confirmées par téléphone avant chaque intervention. Le
+        service étant entièrement mobile, l&rsquo;atelier se déplace là où se
+        trouve le véhicule, sur les quais de Seine comme sur les coteaux.
+        L&rsquo;éditeur ne saurait être tenu pour responsable des conséquences
+        directes ou indirectes d&rsquo;une éventuelle inexactitude ou omission.
+      </p>
+
+      <h2>Données personnelles</h2>
+      <p>
+        La simple navigation sur le site n&rsquo;entraîne aucune collecte de
+        données personnelles. Le détail des traitements liés aux appels
+        téléphoniques et aux emails est décrit dans la
+        <a href="/politique-confidentialite">politique de confidentialité</a>.
+      </p>
+
+      <h2>Loi applicable</h2>
+      <p>
+        Ce site relève du droit français. En cas de différend portant sur son
+        utilisation, seules les juridictions françaises sont compétentes.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal {
+    padding-block: var(--space-9);
+  }
+  .legal h1 {
+    color: var(--c-ardoise);
+    font-size: var(--fs-3xl);
+    margin: var(--space-3) 0 var(--space-7);
+  }
+  .legal h2 {
+    margin-top: var(--space-7);
+    font-size: var(--fs-xl);
+    color: var(--c-ardoise);
+    text-transform: none;
+    padding-left: var(--space-3);
+    border-left: 4px solid var(--c-orange);
+  }
+  .legal p {
+    max-width: 70ch;
+    color: var(--c-texte-doux);
+    line-height: var(--lh-loose);
+  }
+</style>
