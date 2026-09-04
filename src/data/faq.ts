@@ -49,7 +49,7 @@ function aVille(name: string): string {
 export const FAQ_GENERALE: FaqItem[] = [
   {
     q: 'Qui appeler quand on a un pneu crevé à Rouen ?',
-    a: `Composez le ${NAP.phoneDisplay} : Lucas décroche 24h/24 et l'atelier roule jusqu'à vous. Pas de garage où pousser la voiture, pas de dépanneuse à charger — le fourgon équipé se gare à côté de la vôtre, que vous soyez bloqué rue du Gros-Horloge, sur un parking de la rive gauche ou arrêté au bord de l'A28. Diagnostic fait sur le trottoir, puis réparation ou remplacement de la gomme immédiatement : vous remontez au volant, jamais sur un plateau.`,
+    a: `Composez le ${NAP.phoneDisplay} : Lucas décroche 24h/24 et l'atelier roule jusqu'à vous. Pas de garage où pousser la voiture, pas de dépanneuse à charger — le fourgon équipé se gare à côté de la vôtre, que vous soyez bloqué rue du Gros-Horloge, sur un parking de la rive gauche ou garé sur un parking à la sortie de l'A28. Diagnostic fait sur le trottoir, puis réparation ou remplacement de la gomme immédiatement : vous remontez au volant, jamais sur un plateau.`,
   },
   {
     q: 'Quel tarif pour un dépannage de pneu à domicile ?',
