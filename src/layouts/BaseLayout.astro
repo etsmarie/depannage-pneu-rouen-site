@@ -42,6 +42,11 @@ const schemaArray = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${NAP.baseUrl}/og.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={`${NAP.baseUrl}/og.png`} />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:site_name" content={NAP.name} />
 
@@ -62,5 +67,9 @@ const schemaArray = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
       <slot />
     </main>
     <Footer />
+      <script is:inline data-mpm-a>
+      (function(){try{var s=location.hostname.replace('www.','').replace('depannage-pneu-','').replace('.fr','');var u='https://files.mariepneumobile.fr/a/';var b=function(e,d){d.s=s;d.p=location.pathname;try{navigator.sendBeacon(u+e,new Blob([JSON.stringify(d)],{type:'application/json'}))}catch(x){}};
+      b('v',{r:document.referrer.slice(0,200)});document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a');if(!a)return;var h=a.getAttribute('href')||'';if(h.indexOf('tel:')===0)b('c',{k:'tel'});else if(h.indexOf('wa.me')>-1||h.indexOf('whatsapp')>-1)b('c',{k:'wa'});else if(/contact|rappel/.test(h))b('c',{k:'cta'})},true)}catch(e){}})();
+    </script>
   </body>
 </html>
