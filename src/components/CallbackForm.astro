@@ -1,0 +1,42 @@
+---
+/** Formulaire « Être rappelé » (sans dépendance) → https://files.mariepneumobile.fr/a/rappel → pipeline Demandes + alerte Telegram. */
+interface Props { title?: string; ville?: string }
+const { title = 'Être rappelé', ville = '' } = Astro.props;
+---
+<section class="rappel" aria-labelledby="rappel-h">
+  <h2 id="rappel-h">{title}</h2>
+  <p class="rappel__lede">Laissez un numéro, on vous rappelle pour confirmer le délai et le devis. Rien n'est facturé sans votre accord.</p>
+  <form class="rappel__form" method="post" action="https://files.mariepneumobile.fr/a/rappel" data-rappel novalidate>
+    <input type="text" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px" />
+    <label>Votre nom<input name="nom" type="text" required autocomplete="name" maxlength="80" /></label>
+    <label>Téléphone<input name="tel" type="tel" required autocomplete="tel" inputmode="tel" maxlength="20" placeholder="06 …" /></label>
+    <label>Où est le véhicule ?<input name="lieu" type="text" maxlength="200" placeholder="Commune, rue, parking…" /></label>
+    <label>Besoin<select name="type"><option value="pneu">Pneu crevé / à changer</option><option value="batterie">Batterie</option><option value="roue">Roue de secours</option><option value="autre">Autre</option></select></label>
+    <label class="rappel__check"><input name="urgent" type="checkbox" value="1" /> Je suis immobilisé maintenant</label>
+    <button type="submit">Demander le rappel</button>
+    <p class="rappel__ok" hidden>C'est noté, on vous rappelle très vite.</p>
+    <p class="rappel__err" hidden>Nom et numéro de téléphone sont nécessaires pour vous rappeler.</p>
+    <p class="rappel__rgpd">Vos coordonnées servent uniquement à vous rappeler (ETS MARIE SARL, voir la politique de confidentialité).</p>
+  </form>
+  <input type="hidden" data-rappel-ville value={ville} />
+</section>
+<script is:inline>
+  (function(){var f=document.querySelector('form[data-rappel]');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();var d={};new FormData(f).forEach(function(v,k){d[k]=v});d.s=location.hostname.replace('www.','').replace('depannage-pneu-','').replace('.fr','');d.p=location.pathname;var vi=document.querySelector('[data-rappel-ville]');d.ville=(vi&&vi.value)||d.s;var ok=f.querySelector('.rappel__ok'),er=f.querySelector('.rappel__err');ok.hidden=er.hidden=true;
+  fetch(f.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(function(r){return r.json()}).then(function(j){if(j.ok){ok.hidden=false;f.querySelector('button').disabled=true}else{er.hidden=false}}).catch(function(){er.hidden=false})})})();
+</script>
+<style>
+  .rappel { max-width: 40rem; margin: 2.5rem auto 0; padding: 1.5rem clamp(1rem, 4vw, 2rem); border: 1px solid color-mix(in srgb, currentColor 18%, transparent); border-radius: 12px; }
+  .rappel h2 { font-size: 1.35rem; margin: 0 0 .4rem; }
+  .rappel__lede { margin: 0 0 1rem; opacity: .85; }
+  .rappel__form { display: grid; gap: .8rem; }
+  .rappel__form label { display: grid; gap: .3rem; font-weight: 600; font-size: .95rem; }
+  .rappel__form input:not([type=checkbox]), .rappel__form select { font: inherit; padding: .65rem .8rem; border: 1px solid color-mix(in srgb, currentColor 30%, transparent); border-radius: 8px; background: transparent; color: inherit; }
+  .rappel__check { display: flex !important; align-items: center; gap: .5rem; font-weight: 500 !important; }
+  .rappel__form button { font: inherit; font-weight: 700; padding: .8rem 1.2rem; border: 0; border-radius: 8px; cursor: pointer; background: currentColor; }
+  .rappel__form button span, .rappel__form button { color: inherit; }
+  .rappel__form button { color: #fff; background: #1a1c20; }
+  .rappel__form button:disabled { opacity: .6; cursor: default; }
+  .rappel__ok { color: #1f8a4c; font-weight: 600; margin: 0; }
+  .rappel__err { color: #b3261e; font-weight: 600; margin: 0; }
+  .rappel__rgpd { font-size: .8rem; opacity: .7; margin: 0; }
+</style>

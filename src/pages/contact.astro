@@ -1,4 +1,5 @@
 ---
+import CallbackForm from '~/components/CallbackForm.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import EmailObfuscated from '~/components/EmailObfuscated.astro';
 import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
@@ -96,6 +97,7 @@ const crumbs = [{ label: 'Accueil', href: '/' }, { label: 'Contact' }];
       </p>
     </div>
   </section>
+  <CallbackForm />
 </BaseLayout>
 
 <style>
