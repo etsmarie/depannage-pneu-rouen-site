@@ -1,0 +1,164 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import PhoneCTA from '~/components/PhoneCTA.astro';
+import { NAP } from '~/data/nap.ts';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+    pubDate: string;
+    updatedDate?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+const { title, description, pubDate, updatedDate } = frontmatter;
+
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/+$/, '') || '/';
+
+const crumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Blog', href: '/blog' },
+  { label: title },
+];
+
+/** Parsing manuel (évite tout décalage de fuseau horaire avec new Date('YYYY-MM-DD')). */
+function formatDate(iso: string): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: pubDate,
+  dateModified: updatedDate ?? pubDate,
+  inLanguage: 'fr-FR',
+  author: {
+    '@type': 'Organization',
+    name: NAP.name,
+    url: NAP.baseUrl,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: NAP.name,
+    url: NAP.baseUrl,
+  },
+  mainEntityOfPage: `${NAP.baseUrl}${path}`,
+  url: `${NAP.baseUrl}${path}`,
+};
+---
+
+<BaseLayout title={title} description={description} canonicalPath={path} schema={schema}>
+  <Breadcrumb items={crumbs} currentPath={path} />
+
+  <article class="blog-article">
+    <header class="blog-hero band-ardoise">
+      <div class="container">
+        <p class="eyebrow">Conseils · {NAP.area}</p>
+        <h1>{title}</h1>
+        <p class="blog-date">
+          Publié le <time datetime={pubDate}>{formatDate(pubDate)}</time>
+        </p>
+      </div>
+    </header>
+    <div class="hazard-stripe" aria-hidden="true"></div>
+
+    <div class="container blog-body">
+      <slot />
+    </div>
+
+    <section class="blog-cta">
+      <div class="container blog-cta__in">
+        <p class="eyebrow eyebrow--center">Une question, un doute sur un pneu ?</p>
+        <h2>Lucas répond, 24h/24</h2>
+        <p class="blog-cta__lede">
+          Diagnostic par téléphone, intervention sur place à Rouen et dans
+          toute la Seine-Maritime : la voiture repart roulante, sans
+          remorquage.
+        </p>
+        <PhoneCTA align="center" hint={`${NAP.hoursLabel} · ${NAP.area}`} />
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .blog-hero {
+    padding-block: var(--space-8) var(--space-7);
+  }
+  .blog-hero h1 {
+    color: #fff;
+    font-size: var(--fs-3xl);
+    margin: var(--space-3) 0 var(--space-3);
+    max-width: 24ch;
+  }
+  .blog-date {
+    color: var(--c-brume);
+    font-size: var(--fs-sm);
+    margin: 0;
+  }
+
+  .blog-body {
+    max-width: 74ch;
+    padding-block: var(--space-8);
+  }
+  .blog-body :global(h2) {
+    color: var(--c-ardoise);
+    font-size: var(--fs-2xl);
+    margin-top: var(--space-7);
+  }
+  .blog-body :global(h3) {
+    color: var(--c-ardoise);
+    font-size: var(--fs-lg);
+    margin-top: var(--space-5);
+  }
+  .blog-body :global(p) {
+    color: var(--c-fg);
+    font-size: var(--fs-base);
+  }
+  .blog-body :global(ul),
+  .blog-body :global(ol) {
+    margin: 0 0 var(--space-4);
+    padding-left: 1.3em;
+    color: var(--c-fg);
+  }
+  .blog-body :global(li) {
+    margin-bottom: var(--space-2);
+    line-height: var(--lh-base);
+  }
+  .blog-body :global(a) {
+    text-decoration: underline;
+  }
+  .blog-body :global(strong) {
+    color: var(--c-fg);
+  }
+
+  .blog-cta {
+    background: var(--c-ardoise-nuit);
+    color: #fff;
+    padding-block: var(--space-9);
+  }
+  .blog-cta__in {
+    text-align: center;
+    max-width: 640px;
+  }
+  .blog-cta h2 {
+    color: #fff;
+    margin: var(--space-3) 0 var(--space-3);
+  }
+  .blog-cta__lede {
+    color: var(--c-ficelle);
+    font-size: 1.02rem;
+    margin: 0 auto var(--space-6);
+    max-width: 52ch;
+  }
+</style>

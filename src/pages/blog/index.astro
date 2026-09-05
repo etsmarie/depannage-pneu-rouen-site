@@ -1,0 +1,135 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import { NAP } from '~/data/nap.ts';
+
+interface PostModule {
+  frontmatter: {
+    title: string;
+    description: string;
+    pubDate: string;
+  };
+}
+
+const modules = import.meta.glob<PostModule>('./*.md', { eager: true });
+
+const posts = Object.entries(modules)
+  .map(([path, mod]) => ({
+    slug: path.replace('./', '').replace(/\.md$/, ''),
+    frontmatter: mod.frontmatter,
+  }))
+  .sort(
+    (a, b) =>
+      new Date(b.frontmatter.pubDate).getTime() -
+      new Date(a.frontmatter.pubDate).getTime()
+  );
+
+const crumbs = [{ label: 'Accueil', href: '/' }, { label: 'Blog' }];
+
+function formatDate(iso: string): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString('fr-FR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+---
+
+<BaseLayout
+  title="Conseils pneu et batterie — Blog Rouen"
+  description="Conseils pratiques et locaux pour entretenir pneus et batterie à Rouen et en Seine-Maritime : pression, usure, saison, pannes courantes."
+  canonicalPath="/blog"
+>
+  <Breadcrumb items={crumbs} currentPath="/blog" />
+
+  <section class="blog-index-hero band-ardoise">
+    <div class="container">
+      <p class="eyebrow">Conseils · {NAP.area}</p>
+      <h1>Conseils pneu &amp; batterie</h1>
+      <p class="blog-index-hero__lede">
+        Des repères pratiques, ancrés dans l'agglomération rouennaise, pour
+        anticiper les pannes plutôt que les subir.
+      </p>
+    </div>
+  </section>
+  <div class="hazard-stripe" aria-hidden="true"></div>
+
+  <section class="blog-list">
+    <div class="container">
+      {posts.length === 0 ? (
+        <p>Les premiers articles arrivent bientôt.</p>
+      ) : (
+        <ul class="blog-list__grid">
+          {posts.map((post) => (
+            <li class="blog-list__item">
+              <a href={`/blog/${post.slug}`}>
+                <h2>{post.frontmatter.title}</h2>
+                <p class="blog-list__date">
+                  <time datetime={post.frontmatter.pubDate}>
+                    {formatDate(post.frontmatter.pubDate)}
+                  </time>
+                </p>
+                <p>{post.frontmatter.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-index-hero {
+    padding-block: var(--space-8) var(--space-7);
+  }
+  .blog-index-hero h1 {
+    color: #fff;
+    font-size: var(--fs-3xl);
+    margin: var(--space-3) 0 var(--space-3);
+  }
+  .blog-index-hero__lede {
+    color: var(--c-ficelle);
+    font-size: var(--fs-lg);
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .blog-list__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-5);
+  }
+  .blog-list__item {
+    background: #fff;
+    border: 1px solid var(--ligne-fonce);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    box-shadow: var(--shadow-md);
+    padding: var(--space-5);
+  }
+  .blog-list__item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .blog-list__item h2 {
+    color: var(--c-ardoise);
+    font-size: var(--fs-xl);
+    margin: 0 0 var(--space-2);
+  }
+  .blog-list__date {
+    color: var(--c-fg-subtle);
+    font-size: var(--fs-xs);
+    margin: 0 0 var(--space-3);
+  }
+  .blog-list__item p:not(.blog-list__date) {
+    color: var(--c-texte-doux);
+    font-size: 0.96rem;
+    margin: 0;
+  }
+</style>
