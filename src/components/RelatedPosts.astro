@@ -28,6 +28,7 @@ const picked = [...posts].sort((a, b) => b.score - a.score || (b.date > a.date ?
         <li><a href={p.url}>{p.title}</a>{p.description && <p>{p.description}</p>}</li>
       ))}
     </ul>
+    <p class="conseils-lies__all"><a href="/blog">Tous nos conseils</a></p>
   </section>
 )}
 <style>
@@ -35,5 +36,6 @@ const picked = [...posts].sort((a, b) => b.score - a.score || (b.date > a.date ?
   .conseils-lies h2 { font-size: 1.25rem; margin: 0 0 1rem; }
   .conseils-lies ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
   .conseils-lies li a { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .conseils-lies__all { margin: 1rem 0 0; font-size: .92rem; }
   .conseils-lies li p { margin: .35rem 0 0; font-size: .92rem; opacity: .8; }
 </style>

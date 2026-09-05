@@ -9,7 +9,7 @@
     "build": "astro build",
     "preview": "astro preview --host 0.0.0.0",
     "astro": "astro",
-    "postbuild": "python3 /home/ubuntu/depannage-network/seo-auto/set_lastmod.py ."
+    "postbuild": "python3 /home/ubuntu/depannage-network/seo-auto/set_lastmod.py . && python3 /home/ubuntu/depannage-network/seo-auto/preload_fonts.py ."
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",

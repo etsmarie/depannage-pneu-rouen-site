@@ -15,7 +15,7 @@ interface Props {
 const {
   title,
   description,
-  canonicalPath = Astro.url.pathname.replace(/\/+$/, '') || '/',
+  canonicalPath = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '').replace(/\/+$/, '') || '/',
   noindex = false,
   schema,
 } = Astro.props;
