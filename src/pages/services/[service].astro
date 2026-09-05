@@ -8,7 +8,6 @@ import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
 import Breadcrumb from '~/components/Breadcrumb.astro';
 import { SERVICES, type Service } from '~/data/services.ts';
 import { CITIES_83 } from '~/data/cities-83.ts';
-import { serviceFaq } from '~/data/faq.ts';
 import { NAP } from '~/data/nap.ts';
 
 export function getStaticPaths() {
@@ -55,19 +54,6 @@ const serviceSchema = {
     '@type': 'ServiceChannel',
     servicePhone: NAP.phoneE164,
     availableLanguage: 'fr',
-  },
-  offers: {
-    '@type': 'Offer',
-    priceCurrency: 'EUR',
-    price: service.priceFrom,
-    url: `${NAP.baseUrl}/services/${service.slug}`,
-    availability: 'https://schema.org/InStock',
-    priceSpecification: {
-      '@type': 'PriceSpecification',
-      priceCurrency: 'EUR',
-      minPrice: service.priceFrom,
-      valueAddedTaxIncluded: true,
-    },
   },
 };
 ---
@@ -128,7 +114,7 @@ const serviceSchema = {
   </section>
 
   <Faq
-    items={serviceFaq(service)}
+    items={service.faq}
     title={`On vous répond — ${service.shortLabel}`}
     eyebrow="Avant d'appeler"
   />

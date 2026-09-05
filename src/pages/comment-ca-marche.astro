@@ -2,9 +2,12 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PhoneCTA from '~/components/PhoneCTA.astro';
 import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
 import Faq from '~/components/Faq.astro';
 import { FAQ_GENERALE } from '~/data/faq.ts';
 import { NAP } from '~/data/nap.ts';
+
+const crumbs = [{ label: 'Accueil', href: '/' }, { label: 'Comment ça marche' }];
 
 const STEPS = [
   {
@@ -32,6 +35,7 @@ const STEPS = [
   canonicalPath="/comment-ca-marche"
 >
   <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/comment-ca-marche`} />
+  <Breadcrumb items={crumbs} currentPath="/comment-ca-marche" visible={false} />
 
   <section class="how-hero">
     <div class="container">

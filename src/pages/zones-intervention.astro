@@ -3,8 +3,11 @@ import BaseLayout from '~/layouts/BaseLayout.astro';
 import CityCard from '~/components/CityCard.astro';
 import PhoneCTA from '~/components/PhoneCTA.astro';
 import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
 import { CITIES_83, EPCI_LABEL, type EpciSlug } from '~/data/cities-83.ts';
 import { NAP } from '~/data/nap.ts';
+
+const crumbs = [{ label: 'Accueil', href: '/' }, { label: "Zones d'intervention" }];
 
 /**
  * Hub des communes — un seul EPCI : la Métropole Rouen Normandie.
@@ -39,6 +42,7 @@ const description = `${totalCities} communes couvertes autour de Rouen, de Baren
   canonicalPath="/zones-intervention"
 >
   <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/zones-intervention`} />
+  <Breadcrumb items={crumbs} currentPath="/zones-intervention" visible={false} />
 
   <!-- Intro claire -->
   <section class="z-hero">

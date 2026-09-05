@@ -6,6 +6,11 @@
  * Descriptions ancrées dans le terrain rouennais (quais de Seine, rive gauche
  * industrielle, coteaux, ponts, A13/A28/A150) pour se démarquer du réseau.
  */
+export interface ServiceFaqItem {
+  q: string;
+  a: string;
+}
+
 export interface Service {
   slug: string;
   title: string;
@@ -18,6 +23,8 @@ export interface Service {
   priceFrom: number;
   /** Précision affichée à côté du prix (assiette, exclusions). */
   priceNote?: string;
+  /** FAQ propre à la prestation, ancrée Rouen — 3 questions, rédigées à neuf. */
+  faq: ServiceFaqItem[];
 }
 
 export const SERVICES: Service[] = [
@@ -36,6 +43,20 @@ export const SERVICES: Service[] = [
     ],
     priceFrom: 79,
     priceNote: "déplacement + intervention, hors fourniture",
+    faq: [
+      {
+        q: "Un pneu explose sur l'A13 en pleine nuit à hauteur de Rouen : que faire en premier ?",
+        a: "Rangez-vous d'abord en sécurité — gilet, feux de détresse — puis rejoignez la première aire ou sortie : sur la voie elle-même, seuls les dépanneurs agréés via la borne orange ou le 112 interviennent. Une fois hors circulation, appelez Lucas : il termine le trajet jusqu'à vous et répare sur place.",
+      },
+      {
+        q: 'Le dimanche à 2h du matin, la ligne répond vraiment ?',
+        a: "Oui, sans standard ni renvoi : c'est directement Lucas qui décroche, dimanche ou pas, 22h ou 3h. La majoration de nuit s'applique, mais elle est dite avant le départ du fourgon, jamais découverte sur la note.",
+      },
+      {
+        q: 'Vous intervenez dans tout Rouen ou seulement en centre-ville ?',
+        a: "Sur toute la Seine-Maritime, pas seulement le centre : le fourgon roule aussi bien devant le Gros-Horloge que jusqu'aux boucles d'Oissel ou d'Elbeuf. Seul le temps de trajet change avec la distance, et il est annoncé dès l'appel.",
+      },
+    ],
   },
   {
     slug: "changement-pneu-domicile",
@@ -52,6 +73,20 @@ export const SERVICES: Service[] = [
     ],
     priceFrom: 35,
     priceNote: "par pneu posé, hors prix du pneu",
+    faq: [
+      {
+        q: 'Faut-il être présent pendant le montage des pneus à domicile ?',
+        a: "Idéalement oui, au moins pour l'état des lieux avant et après : Lucas vérifie l'usure des pneus, valide la dimension avec vous, puis lance le montage sur le parking ou devant chez vous, à Rouen comme dans les communes alentour. Comptez une trentaine de minutes pour un train de deux pneus.",
+      },
+      {
+        q: 'Puis-je choisir la marque des pneus posés à domicile ?',
+        a: "Oui : au téléphone, Lucas propose plusieurs gammes — entrée, milieu ou haut de gamme — selon votre budget et l'usage du véhicule, en respectant la dimension d'origine. Le choix se fait avant le rendez-vous, pas une fois le fourgon garé devant chez vous.",
+      },
+      {
+        q: 'Le montage à domicile fonctionne aussi pour un utilitaire ou un SUV rouennais ?',
+        a: "Oui, le fourgon embarque du matériel pour citadines, berlines, SUV et utilitaires. Sur les modèles à jantes larges ou runflat, plus fréquents sur les zones d'activité de la rive gauche, le temps de montage est simplement un peu plus long.",
+      },
+    ],
   },
   {
     slug: "crevaison-reparation",
@@ -68,6 +103,20 @@ export const SERVICES: Service[] = [
     ],
     priceFrom: 49,
     priceNote: "réparation sur place",
+    faq: [
+      {
+        q: "J'ai crevé sur les pavés du Vieux-Marché, la réparation est possible directement là ?",
+        a: "Souvent oui : le pavé et les bordures hautes du centre marquent surtout le flanc, mais tant que le trou est sur la bande de roulement et de petit diamètre, la réparation NF U85-200 se fait sur place, pavés ou pas. Si la carcasse est touchée sur le flanc, direction le remplacement, par paire.",
+      },
+      {
+        q: 'Combien de temps dure une réparation de crevaison chez moi ?',
+        a: "Une vingtaine de minutes une fois le fourgon garé : démontage, localisation de la fuite, pose de la mèche ou du champignon et regonflage à la pression constructeur. Le temps de trajet jusqu'à votre adresse dans l'agglo s'ajoute à part.",
+      },
+      {
+        q: 'Une crevaison lente répétée sur la rocade A150, ça se répare aussi ?',
+        a: "Oui, et c'est même le cas le plus fréquent : un objet ramassé sur la rocade se loge souvent au centre de la bande de roulement, réparable sans changer le pneu. Lucas démonte, contrôle l'intérieur de la carcasse et pose la réparation homologuée avant de vous rendre la route.",
+      },
+    ],
   },
   {
     slug: "changement-batterie",
@@ -84,6 +133,20 @@ export const SERVICES: Service[] = [
     ],
     priceFrom: 59,
     priceNote: "pose, hors prix de la batterie",
+    faq: [
+      {
+        q: 'Comment savoir si c\'est la batterie et pas l\'alternateur, ma voiture calant souvent dans les côtes de Bonsecours ?',
+        a: "Impossible à trancher à l'oreille : Lucas mesure d'abord la tension de la batterie puis la charge réellement délivrée par l'alternateur avant de vendre quoi que ce soit. Si l'alternateur est en cause, il vous le dit clairement plutôt que de poser une batterie neuve pour rien.",
+      },
+      {
+        q: 'La batterie de ma voiture Start & Stop se change comme une batterie classique ?',
+        a: "Non, elle demande une référence spécifique (AGM ou EFB selon les modèles) et parfois une reprogrammation du calculateur après la pose. Lucas identifie la techno exacte au téléphone avant de charger la bonne batterie dans le fourgon.",
+      },
+      {
+        q: "L'humidité de la vallée de Seine use vraiment plus vite les batteries à Rouen ?",
+        a: "C'est un facteur réel : une voiture qui dort dehors dans l'air humide et n'enchaîne que de courts trajets d'agglo recharge mal sa batterie, qui rend l'âme plus tôt qu'ailleurs. D'où l'intérêt de faire contrôler tension et alternateur dès les premiers signes de faiblesse, avant la panne complète.",
+      },
+    ],
   },
   {
     slug: "roue-de-secours",
@@ -91,7 +154,7 @@ export const SERVICES: Service[] = [
     shortLabel: "Roue de secours",
     primaryKw: "pose roue de secours",
     metaDescription: "Pose de roue de secours ou galette à Rouen : écrous serrés au couple, pneu d'origine inspecté. Lucas vient, vous reprenez la route.",
-    hookLine: "Desserrer des écrous grippés avec le cric d'origine, accroupi sur la bande d'arrêt de l'A28 dans le vent, ce n'est pas une partie de plaisir. Lucas s'en occupe : votre roue de secours est montée dans les règles, chaque écrou serré au couple constructeur, et le pneu d'origine passe à l'inspection avant que vous ne repreniez la route.",
+    hookLine: "Desserrer des écrous grippés avec le cric d'origine, immobilisé sur le bas-côté dans le vent, ce n'est pas une partie de plaisir. Une fois la voiture rangée en sécurité, Lucas s'en occupe : votre roue de secours est montée dans les règles, chaque écrou serré au couple constructeur, et le pneu d'origine passe à l'inspection avant que vous ne repreniez la route.",
     bullets: [
       "Galette ou roue de secours pleine dimension, montée proprement",
       "Écrous serrés au couple prescrit par le constructeur",
@@ -100,5 +163,19 @@ export const SERVICES: Service[] = [
     ],
     priceFrom: 39,
     priceNote: "pose et contrôle du serrage",
+    faq: [
+      {
+        q: 'Mes écrous sont grippés, la roue de secours est-elle quand même récupérable seul ?',
+        a: "Mieux vaut ne pas insister avec le cric d'origine : un écrou qui résiste peut casser ou arracher le goujon. Lucas embarque une clé à choc et respecte le couple de serrage constructeur pour déposer proprement la roue et reposer la roue de secours sans rien abîmer.",
+      },
+      {
+        q: "Ma voiture n'a qu'une galette étroite, elle suffit jusqu'où à Rouen ?",
+        a: "Une galette limite la vitesse (souvent 80 km/h) et n'est pas faite pour durer : elle dépanne pour rejoindre un point où traiter le pneu d'origine, pas pour rouler des jours sur les rocades A13 ou A28. Lucas la monte proprement et vous conseille sur le délai avant remplacement.",
+      },
+      {
+        q: 'Une fois la roue de secours posée, que devient mon pneu crevé ?',
+        a: "Il repart avec Lucas pour inspection : si la perforation est réparable, il revient monté et regonflé lors d'un second passage ; sinon, le remplacement se fait par paire sur l'essieu concerné. Dans les deux cas, rien n'est décidé sans vous en parler au téléphone.",
+      },
+    ],
   },
 ];

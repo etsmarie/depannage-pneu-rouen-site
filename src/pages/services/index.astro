@@ -4,8 +4,11 @@ import ServiceCard from '~/components/ServiceCard.astro';
 import PhoneCTA from '~/components/PhoneCTA.astro';
 import Guarantees from '~/components/Guarantees.astro';
 import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
 import { SERVICES } from '~/data/services.ts';
 import { NAP } from '~/data/nap.ts';
+
+const crumbs = [{ label: 'Accueil', href: '/' }, { label: 'Services' }];
 ---
 
 <BaseLayout
@@ -14,6 +17,7 @@ import { NAP } from '~/data/nap.ts';
   canonicalPath="/services"
 >
   <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/services`} />
+  <Breadcrumb items={crumbs} currentPath="/services" visible={false} />
 
   <section class="sv-hero">
     <div class="container">

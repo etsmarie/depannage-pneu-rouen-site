@@ -8,10 +8,10 @@ import JumpLinks from '~/components/JumpLinks.astro';
 import { NAP } from '~/data/nap.ts';
 import { CITIES_83 } from '~/data/cities-83.ts';
 import { SERVICES } from '~/data/services.ts';
-import { FAQ_GENERALE } from '~/data/faq.ts';
+import { FAQ_ACCUEIL } from '~/data/faq.ts';
 
-/** Les quatre questions People-Also-Ask de la maquette validée. */
-const homeFaq = FAQ_GENERALE.slice(0, 4);
+/** FAQ dédiée à l'accueil, distincte de FAQ_GENERALE (page « comment ça marche »). */
+const homeFaq = FAQ_ACCUEIL;
 
 /** Sommaire (jump links) : ancres vers les sections réellement présentes. */
 const jumpLinks = [
@@ -234,8 +234,8 @@ const jumpLinks = [
             sur l'A13, l'A28 et l'A150, ce sont les gravillons de chantier, les
             nids-de-poule et les longues files aux heures de pointe qui déciment
             pneus et batteries. Sortez à la première bretelle et garez-vous sur un parking, feux de détresse
-            allumés — sur l'autoroute, la bande d'arrêt d'urgence relève des dépanneurs
-            agréés (borne orange ou 112). On débarque outillé pour réparer ou
+            allumés — sur l'autoroute, la bande d'arrêt d'urgence relève des dépanneurs agréés
+            (borne orange ou 112). On débarque outillé pour réparer ou
             remonter directement là — la voiture repart roulante, sans
             remorquage.
           </p>

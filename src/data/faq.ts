@@ -18,7 +18,6 @@
  */
 import type { City } from '~/data/cities-83.ts';
 import { EPCI_LABEL } from '~/data/cities-83.ts';
-import type { Service } from '~/data/services.ts';
 import { NAP } from '~/data/nap.ts';
 
 export interface FaqItem {
@@ -65,7 +64,7 @@ export const FAQ_GENERALE: FaqItem[] = [
   },
   {
     q: "Je suis coincé dans les bouchons sur les quais ou entre deux ponts : vous venez quand même ?",
-    a: `C'est le quotidien de l'agglo, alors oui. Entre les quais bas saturés aux heures de pointe, les ponts Flaubert et Mathilde et les trois rocades A13, A28 et A150, une crevaison tombe rarement au calme. Mettez-vous à l'abri d'abord — bande d'arrêt, place libre, entrée de parking — feux allumés, puis lâchez votre repère le plus parlant (dernière sortie, nom de pont, enseigne). Le trafic est déjà compté dans le créneau que Lucas vous donne : l'heure annoncée est l'heure tenue.`,
+    a: `C'est le quotidien de l'agglo, alors oui. Entre les quais bas saturés aux heures de pointe, les ponts Flaubert et Mathilde et les trois rocades A13, A28 et A150, une crevaison tombe rarement au calme. Mettez-vous à l'abri d'abord — place libre, entrée de parking, jamais sur la bande d'arrêt d'urgence, réservée aux dépanneurs agréés (borne orange, 112) — feux allumés, puis lâchez votre repère le plus parlant (dernière sortie, nom de pont, enseigne). Le trafic est déjà compté dans le créneau que Lucas vous donne : l'heure annoncée est l'heure tenue.`,
   },
   {
     q: "L'humidité de la vallée de Seine abîme-t-elle vraiment les batteries ?",
@@ -78,6 +77,35 @@ export const FAQ_GENERALE: FaqItem[] = [
   {
     q: "Jusqu'où vous déplacez-vous autour de Rouen ?",
     a: `Sur ${NAP.area}. Les deux rives du centre d'abord, puis toute la couronne : la rive gauche de Sotteville à Saint-Étienne-du-Rouvray, les coteaux et plateaux du nord vers Mont-Saint-Aignan et Bois-Guillaume, les vallées du Cailly et du Robec, jusqu'aux boucles de Seine d'Oissel et d'Elbeuf. Comme le service est entièrement mobile, seule la distance joue sur le délai — il vous est précisé dès l'appel au ${NAP.phoneDisplay}, selon l'heure et votre position.`,
+  },
+];
+
+/**
+ * FAQ accueil — dédiée à la page d'accueil, distincte de FAQ_GENERALE
+ * (page « comment ça marche ») pour éviter tout contenu dupliqué entre
+ * les deux pages. Angles : délai réel par secteur, périmètre du métier,
+ * nuit/week-end, pose par paire, limite autoroute.
+ */
+export const FAQ_ACCUEIL: FaqItem[] = [
+  {
+    q: 'Quel est le délai d\'attente réel à Rouen ?',
+    a: `Il n'y a pas un chiffre unique : l'hyper-centre et les hauteurs de Bonsecours ou de Canteleu ne se traversent pas à la même vitesse. Comptez une petite demi-heure intra-muros, un peu plus vers les boucles d'Oissel ou d'Elbeuf selon le trafic des ponts. Lucas vous donne un créneau ferme dès l'appel au ${NAP.phoneDisplay}, pas une moyenne théorique.`,
+  },
+  {
+    q: 'Que fait Lucas, et que ne fait-il pas ?',
+    a: `Son métier : remettre la voiture en état de rouler là où elle est immobilisée — pneu réparé ou remplacé, batterie changée, roue de secours posée. Il ne charge aucun véhicule sur plateau et ne le dépose dans aucun garage. Si le diagnostic révèle un problème mécanique qui dépasse ce cadre, il vous le dit sans détour.`,
+  },
+  {
+    q: 'Intervenez-vous vraiment la nuit et le week-end à Rouen ?',
+    a: `Oui, sans exception : la ligne répond 24h/24, dimanches et jours fériés compris. Une majoration s'applique entre 22h et 7h ainsi que le dimanche, mais elle est annoncée au téléphone avant que le fourgon ne prenne la route, jamais découverte sur la facture.`,
+  },
+  {
+    q: 'Pourquoi remplacez-vous toujours les pneus par paire ?',
+    a: `Parce que deux pneus d'usure différente sur un même essieu déséquilibrent le freinage, un vrai risque dans les descentes des coteaux rouennais sous la pluie. Le remplacement se fait donc par paire — jamais à l'unité — et si votre pneu est réparable, Lucas le répare : vous n'achetez rien du tout.`,
+  },
+  {
+    q: "Intervenez-vous sur l'autoroute ou la rocade ?",
+    a: `Sur la chaussée elle-même, non : une fois arrêté sur une voie rapide ou la bande d'arrêt d'urgence, seuls les dépanneurs agréés, joignables via la borne orange ou le 112, sont habilités à intervenir. Rangez-vous dès que possible sur une aire, une sortie ou un parking : c'est là, hors de la circulation, que Lucas prend le relais.`,
   },
 ];
 
@@ -178,28 +206,3 @@ export function cityFaq(city: City): FaqItem[] {
   return items;
 }
 
-/* ------------------------------------------------------------------ */
-/*  FAQ par service — dérivée des champs du service                     */
-/* ------------------------------------------------------------------ */
-
-export function serviceFaq(service: Service): FaqItem[] {
-  const items: FaqItem[] = [
-    {
-      q: `Concrètement, comment se déroule un « ${service.shortLabel} » sur place ?`,
-      a: service.hookLine,
-    },
-    {
-      q: `Qu'est-ce qui est inclus dans ${service.primaryKw} ?`,
-      a: `Dans le détail : ${service.bullets.join(' ; ').toLowerCase()}. Rien ne part au garage : tout se fait au pied de la voiture, là où elle s'est arrêtée.`,
-    },
-    {
-      q: `Quel budget prévoir pour ${service.primaryKw} dans l'agglo rouennaise ?`,
-      a: `Le point de départ est ${service.priceFrom} € (${service.priceNote ?? 'intervention sur place'}). Ce qui bouge ensuite : votre secteur, l'heure de l'appel et, s'il faut une pièce, la fourniture. Lucas fait le total au ${NAP.phoneDisplay} avant de rouler — et c'est ce total, pas un autre, qui figure sur la facture.`,
-    },
-    {
-      q: `Sur quel secteur assurez-vous ${service.primaryKw} ?`,
-      a: `Partout sur ${NAP.area} : chez vous, au bureau, sur un parking de la rive gauche ou arrêté le long d'une rocade. ${NAP.hoursLabel} — et à la fin, la voiture s'en va par ses propres roues, jamais sur un plateau.`,
-    },
-  ];
-  return items;
-}

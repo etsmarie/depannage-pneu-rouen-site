@@ -16,8 +16,10 @@ interface Props {
   items: Crumb[];
   /** Chemin de la page courante, pour l'URL du dernier item du JSON-LD. */
   currentPath: string;
+  /** false = JSON-LD seul, sans fil d'Ariane visible (page sans fil d'Ariane existant). */
+  visible?: boolean;
 }
-const { items, currentPath } = Astro.props;
+const { items, currentPath, visible = true } = Astro.props;
 
 const schema = {
   '@context': 'https://schema.org',
@@ -31,21 +33,23 @@ const schema = {
 };
 ---
 
-<nav class="crumbs" aria-label="Fil d'Ariane">
-  <div class="container">
-    <ol>
-      {items.map((it, i) => (
-        <li>
-          {it.href && i < items.length - 1 ? (
-            <a href={it.href}>{it.label}</a>
-          ) : (
-            <span aria-current="page">{it.label}</span>
-          )}
-        </li>
-      ))}
-    </ol>
-  </div>
-</nav>
+{visible && (
+  <nav class="crumbs" aria-label="Fil d'Ariane">
+    <div class="container">
+      <ol>
+        {items.map((it, i) => (
+          <li>
+            {it.href && i < items.length - 1 ? (
+              <a href={it.href}>{it.label}</a>
+            ) : (
+              <span aria-current="page">{it.label}</span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </nav>
+)}
 <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 
 <style>

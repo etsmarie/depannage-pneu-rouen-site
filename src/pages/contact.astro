@@ -2,7 +2,10 @@
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import EmailObfuscated from '~/components/EmailObfuscated.astro';
 import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
 import { NAP } from '~/data/nap.ts';
+
+const crumbs = [{ label: 'Accueil', href: '/' }, { label: 'Contact' }];
 ---
 
 <BaseLayout
@@ -11,6 +14,7 @@ import { NAP } from '~/data/nap.ts';
   canonicalPath="/contact"
 >
   <SchemaLocalBusiness slot="schema" />
+  <Breadcrumb items={crumbs} currentPath="/contact" visible={false} />
 
   <!-- Bande sombre : le numéro d'abord -->
   <section class="c-hero band-nuit">
