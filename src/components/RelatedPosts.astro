@@ -1,0 +1,39 @@
+---
+/**
+ * Conseils liés — maillage automatique blog → pages (services, communes).
+ * Choisit jusqu'à 3 articles dont le titre/description/slug partagent des mots avec les mots-clés de la page ;
+ * sinon les 3 plus récents. Ne rend rien si le blog est vide.
+ */
+interface Props { keywords?: string[]; title?: string }
+const { keywords = [], title = 'Conseils liés' } = Astro.props;
+const mods = import.meta.glob('../pages/blog/*.md', { eager: true }) as Record<string, any>;
+const strip = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const STOP = new Set(['de','du','des','le','la','les','a','au','aux','en','et','ou','un','une','sur','pour','par','dans','sans','vos','votre','avec','que','qui','ce','ces','se','sa','son','ses','est','pas','plus','24','7','24h','7j','domicile','depannage','pneu','pneus','service','services']);
+const words = (s: string) => strip(s).split(/[^a-z0-9]+/).filter(w => w.length > 2 && !STOP.has(w));
+const kw = new Set(keywords.flatMap(words));
+const posts = Object.entries(mods).map(([path, m]) => {
+  const slug = path.split('/').pop()!.replace(/\.md$/, '');
+  const fm = m.frontmatter || {};
+  const hay = new Set(words(`${fm.title || ''} ${fm.description || ''} ${slug}`));
+  let score = 0; kw.forEach(w => { if (hay.has(w)) score++; });
+  return { url: `/blog/${slug}`, title: fm.title || slug, description: fm.description || '', date: fm.pubDate || '', score };
+});
+const picked = [...posts].sort((a, b) => b.score - a.score || (b.date > a.date ? 1 : -1)).slice(0, 3);
+---
+{picked.length > 0 && (
+  <section class="conseils-lies" aria-labelledby="conseils-lies-h">
+    <h2 id="conseils-lies-h">{title}</h2>
+    <ul>
+      {picked.map(p => (
+        <li><a href={p.url}>{p.title}</a>{p.description && <p>{p.description}</p>}</li>
+      ))}
+    </ul>
+  </section>
+)}
+<style>
+  .conseils-lies { max-width: 72rem; margin: 2.5rem auto 0; padding: 1.5rem clamp(1rem, 4vw, 2rem); border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+  .conseils-lies h2 { font-size: 1.25rem; margin: 0 0 1rem; }
+  .conseils-lies ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .conseils-lies li a { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .conseils-lies li p { margin: .35rem 0 0; font-size: .92rem; opacity: .8; }
+</style>

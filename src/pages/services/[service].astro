@@ -1,4 +1,5 @@
 ---
+import RelatedPosts from '~/components/RelatedPosts.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PhoneCTA from '~/components/PhoneCTA.astro';
 import Faq from '~/components/Faq.astro';
@@ -175,6 +176,7 @@ const serviceSchema = {
       <Guarantees variant="aside" />
     </div>
   </section>
+  <RelatedPosts keywords={[Astro.params.service ?? '']} />
 </BaseLayout>
 
 <style>

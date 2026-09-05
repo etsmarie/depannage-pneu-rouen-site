@@ -1,4 +1,5 @@
 ---
+import RelatedPosts from '~/components/RelatedPosts.astro';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PhoneCTA from '~/components/PhoneCTA.astro';
 import ServiceCard from '~/components/ServiceCard.astro';
@@ -241,6 +242,7 @@ const jumpLinks = [
       <p class="c-final__hours">{NAP.hoursLabel} · {NAP.area}</p>
     </div>
   </section>
+  <RelatedPosts keywords={[Astro.params.city ?? '']} />
 </BaseLayout>
 
 <style>
