@@ -52,8 +52,14 @@ const descTails = [
   'Roue, pneu ou batterie remis d’aplomb sur votre stationnement, 24h/24. Un appel, on file.',
   'Pneu remonté là où la voiture a calé, quai ou côte. Un appel, on file.',
 ];
-const tailIdx = Math.max(0, CITIES_83.findIndex((c) => c.slug === city.slug)) % descTails.length;
-const description = `Zéro remorquage : on intervient sur place en ~45 min ${villeLoc}. ${descTails[tailIdx]}`;
+/** Pour les noms de commune longs, ne garder que les variantes qui tiennent sous 155 caractères. */
+const descPrefix = `Zéro remorquage : on intervient sur place en ~45 min ${villeLoc}. `;
+const fittingTails = descTails.filter((t) => (descPrefix + t).length <= 155);
+const tailPool = fittingTails.length > 0
+  ? fittingTails
+  : [descTails.reduce((a, b) => (a.length <= b.length ? a : b))];
+const tailIdx = Math.max(0, CITIES_83.findIndex((c) => c.slug === city.slug)) % tailPool.length;
+const description = descPrefix + tailPool[tailIdx];
 
 /** Fil d'Ariane : mêmes libellés/URLs pour le rendu visible et le JSON-LD. */
 const crumbs = [
