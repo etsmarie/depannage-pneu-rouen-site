@@ -93,7 +93,7 @@ export const SERVICES: Service[] = [
     title: "Réparation de crevaison sur place",
     shortLabel: "Crevaison",
     primaryKw: "réparation crevaison sur place",
-    metaDescription: "Crevaison réparée au point de panne dans l'agglo rouennaise : mèche ou champignon selon la norme NF U85-200 quand la bande de roulement le permet, remplacement par paire sinon.",
+    metaDescription: "Crevaison réparée au point de panne à Rouen, mèche ou champignon selon la norme NF U85-200, ou remplacement par paire si besoin.",
     hookLine: "Un clou ramassé sur un chantier de la rive gauche, une vis attrapée le long des quais : tout se joue à l'examen, pas au jugé. Roue déposée, Lucas repère par où l'air s'échappe, sonde l'intérieur de la carcasse et regarde où le mal s'est logé. Perforation nette au centre de la bande de roulement ? Mèche ou champignon posé selon la norme NF U85-200, et la route reprend. Entaille sur le flanc ou l'épaulement ? Aucun remède ne tient : cap sur le remplacement, par paire sur l'essieu, dans la même halte.",
     bullets: [
       "Roue déposée, fuite localisée et carcasse sondée de l'intérieur",
