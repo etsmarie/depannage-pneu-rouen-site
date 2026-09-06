@@ -85,6 +85,29 @@ const crumbs = [{ label: 'Accueil', href: '/' }, { label: 'Services' }];
     </div>
   </section>
 
+  <section class="sv-specific">
+    <div class="container">
+      <header class="sv-head">
+        <p class="eyebrow">Des besoins un peu différents</p>
+        <h2>Trois situations traitées à part</h2>
+      </header>
+      <div class="sv-specific__grid">
+        <a class="sv-specific__card" href="/depannage-pneu-utilitaire">
+          <h3>Utilitaire &amp; camping-car</h3>
+          <p>Dimension renforcée, charge et poids à part : la fiche dédiée à ce cas.</p>
+        </a>
+        <a class="sv-specific__card" href="/flottes-vtc-professionnels">
+          <h3>Flottes, VTC &amp; professionnels</h3>
+          <p>Intervention sur le parking de l'entreprise, sans immobiliser l'activité.</p>
+        </a>
+        <a class="sv-specific__card" href="/depannage-pneu-nuit">
+          <h3>Dépannage la nuit</h3>
+          <p>Délai réel, majoration précisée au téléphone, sécurité en attendant.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <section class="sv-final">
     <div class="container sv-final__inner">
       <p class="eyebrow eyebrow--center">Un seul appel</p>
@@ -196,6 +219,41 @@ const crumbs = [{ label: 'Accueil', href: '/' }, { label: 'Services' }];
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--c-orange-clair);
+  }
+
+  /* Trois cas particuliers, cartes cliquables sur fond clair */
+  .sv-specific {
+    padding-block: var(--space-8);
+  }
+  .sv-specific__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  .sv-specific__card {
+    display: block;
+    background: #fff;
+    border: 1px solid var(--ligne-fonce);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    box-shadow: var(--shadow-md);
+    padding: 22px 24px;
+    text-decoration: none;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  .sv-specific__card:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+  .sv-specific__card h3 {
+    color: var(--c-ardoise);
+    font-size: 1.1rem;
+    margin: 0 0 var(--space-2);
+  }
+  .sv-specific__card p {
+    margin: 0;
+    color: var(--c-texte-doux);
+    font-size: 0.94rem;
   }
 
   /* CTA final sombre, liseré en tête, numéro géant */

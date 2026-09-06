@@ -1,0 +1,308 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PhoneCTA from '~/components/PhoneCTA.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import Faq from '~/components/Faq.astro';
+import { NAP } from '~/data/nap.ts';
+import type { FaqItem } from '~/data/faq.ts';
+
+const crumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Flottes, VTC et professionnels' },
+];
+
+const VTC_FAQ: FaqItem[] = [
+  {
+    q: 'Pouvez-vous intervenir directement sur le parking de notre entreprise ?',
+    a: `Oui : c'est même la situation la plus simple, puisque le véhicule reste sur place. Indiquez l'adresse du site et le repère du parking au ${NAP.phoneDisplay}, Lucas s'y gare à son tour et traite la roue à côté du véhicule, sans perturber l'activité autour.`,
+  },
+  {
+    q: 'Un chauffeur VTC peut-il appeler seul, sans passer par le gestionnaire de flotte ?',
+    a: "Oui, l'appel se fait directement depuis la route ou le parking où le véhicule est immobilisé. Le prix est annoncé au téléphone avant le déplacement, et le document remis à la fin de l'intervention correspond exactement à ce qui a été fait, pour être transmis ensuite à qui gère le compte du véhicule.",
+  },
+  {
+    q: 'Intervenez-vous tôt le matin avant la prise de poste ?',
+    a: `Oui, la ligne répond ${NAP.hoursLabel.toLowerCase()}, y compris avant 7h quand une flotte doit être sur la route dès l'ouverture. La majoration nocturne s'applique jusqu'à 7h et vous est précisée au téléphone, comme pour tout appel, avant que le fourgon ne parte.`,
+  },
+];
+---
+
+<BaseLayout
+  title="Flottes, VTC & pros — Dépannage pneu Rouen"
+  description="Pneu ou batterie sur véhicule pro à Rouen : intervention sur le parking de l'entreprise, créneaux tôt le matin, sans immobiliser la flotte."
+  canonicalPath="/flottes-vtc-professionnels"
+>
+  <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/flottes-vtc-professionnels`} />
+  <Breadcrumb items={crumbs} currentPath="/flottes-vtc-professionnels" />
+
+  <!-- HERO -->
+  <section class="vtc-hero band-ardoise">
+    <div class="container">
+      <p class="eyebrow">Flottes d'entreprise, VTC, artisans</p>
+      <h1>Dépannage pneu pour flottes, VTC et professionnels à Rouen</h1>
+      <p class="vtc-hero__lede">
+        Pour un chauffeur VTC ou une flotte d'entreprise, un pneu à plat
+        n'est pas un simple contretemps : c'est une journée de recette
+        perdue, ou un véhicule de service qui manque à l'appel. Lucas se
+        déplace sur le parking de la société ou à l'endroit exact où le
+        véhicule est immobilisé, répare ou remplace sur place, et l'activité
+        reprend.
+      </p>
+      <PhoneCTA hint="Créneaux possibles avant la prise de service, ligne ouverte 24h/24" />
+    </div>
+  </section>
+  <div class="hazard-stripe" aria-hidden="true"></div>
+
+  <!-- LE COUT REEL -->
+  <section class="vtc-section">
+    <div class="container">
+      <header class="vtc-head">
+        <p class="eyebrow">Ce qu'immobilise vraiment un pneu</p>
+        <h2>Le coût réel d'un véhicule à l'arrêt</h2>
+      </header>
+      <div class="vtc-cards">
+        <article class="vtc-card">
+          <span class="vtc-card__num">01</span>
+          <h3>Une journée de recette qui s'efface</h3>
+          <p>
+            Un chauffeur VTC bloqué sur un parking ne facture rien tant que
+            la roue n'est pas changée. Plus l'attente s'étire, plus la
+            journée devient déficitaire — c'est justement ce délai que Lucas
+            cherche à raccourcir, en annonçant un créneau ferme dès l'appel.
+          </p>
+        </article>
+        <article class="vtc-card">
+          <span class="vtc-card__num">02</span>
+          <h3>Un véhicule de service qui manque</h3>
+          <p>
+            Artisan, commercial ou société de livraison : un utilitaire
+            immobilisé perturbe souvent une tournée entière, pas seulement
+            un trajet. Traiter la roue sur site, sans faire remorquer le
+            véhicule vers un garage, évite ce blocage en cascade.
+          </p>
+        </article>
+        <article class="vtc-card">
+          <span class="vtc-card__num">03</span>
+          <h3>Plusieurs véhicules, une seule visite</h3>
+          <p>
+            Sur un même site, il arrive qu'une flotte présente plus d'un
+            véhicule à contrôler le même jour. Le fourgon-atelier traite les
+            interventions à la suite, sans repartir et revenir.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUR LE PARKING DE L'ENTREPRISE -->
+  <section class="vtc-parking band-nuit">
+    <div class="container vtc-parking__grid">
+      <div>
+        <p class="eyebrow">Discrétion et efficacité</p>
+        <h2>Intervenir sur le parking, sans déranger le reste</h2>
+        <p>
+          Zone d'activité, cour d'entrepôt ou parking dédié aux véhicules de
+          société : le fourgon se gare à l'écart du flux de circulation
+          interne et s'occupe de la roue là où le véhicule stationne déjà.
+          Aucun besoin de le déplacer vers une entrée ou une aire dégagée,
+          sauf si l'espace disponible l'impose pour lever la roue en
+          sécurité.
+        </p>
+        <p>
+          Certaines communes de l'agglomération concentrent une bonne part
+          de ce trafic professionnel : c'est le cas de
+          <a href="/boos">Boos</a>, où les parkings longue durée liés à
+          l'aéroport de Rouen Vallée-de-Seine voient passer une proportion
+          importante de véhicules VTC et de flottes de société.
+        </p>
+      </div>
+      <div>
+        <p class="eyebrow">La batterie, souvent oubliée</p>
+        <h2>L'usure intensive change aussi la donne côté batterie</h2>
+        <p>
+          Un véhicule VTC enchaîne les arrêts moteur au feu, en attente de
+          client ou en stationnement prolongé, avec relance fréquente des
+          équipements embarqués (climatisation, éclairage, systèmes
+          connectés). Cet usage intensif fatigue la batterie plus vite qu'un
+          usage particulier classique.
+        </p>
+        <p>
+          Le <a href="/services/changement-batterie">changement de batterie à domicile</a>
+          suit le même principe que pour un pneu : test de la tension et de
+          l'alternateur avant de remplacer quoi que ce soit, remplacement sur
+          place si la batterie est bien en cause, sans immobiliser le
+          véhicule ailleurs qu'à l'endroit où il est déjà garé.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRENEAU MATIN + FACTURATION -->
+  <section class="vtc-section">
+    <div class="container">
+      <p class="eyebrow">Avant la prise de service</p>
+      <h2>Un appel tôt le matin, la même ligne</h2>
+      <p class="vtc-lede">
+        La ligne d'urgence répond {NAP.hoursLabel.toLowerCase()}, y compris
+        avant 7h du matin quand une flotte doit prendre la route dès
+        l'ouverture. Rien de spécifique à demander : le même numéro, le même
+        principe — prix annoncé avant le départ du fourgon, majoration de
+        nuit précisée si l'horaire l'impose.
+      </p>
+      <p class="vtc-billing">
+        <b>Côté facturation :</b> le montant chiffré au téléphone est celui
+        payé une fois la roue remontée ou la batterie posée, et un document
+        correspondant exactement à la prestation réalisée vous est remis sur
+        place, à transmettre si besoin à qui gère le compte du véhicule.
+        Le détail des ordres de prix se trouve sur la page
+        <a href="/tarifs">tarifs</a>.
+      </p>
+    </div>
+  </section>
+
+  <Faq
+    items={VTC_FAQ}
+    title="Questions des flottes et chauffeurs VTC"
+    eyebrow="On vous répond"
+  />
+
+  <!-- CTA FINAL -->
+  <section class="vtc-final band-nuit">
+    <div class="container vtc-final__inner">
+      <p class="eyebrow eyebrow--center">Une flotte, un chauffeur, un artisan</p>
+      <h2>Le véhicule reprend la route, pas dans une semaine</h2>
+      <p>
+        Adresse du parking, type de véhicule, panne constatée : Lucas
+        chiffre l'intervention et vous donne un créneau avant de partir.
+      </p>
+      <a class="btn btn--primary btn--lg" href={`tel:${NAP.phoneE164}`}>
+        Appeler le {NAP.phoneDisplay}
+      </a>
+      <p class="vtc-final__hours">{NAP.hoursLabel} · {NAP.area}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .vtc-hero {
+    padding-block: var(--space-9) var(--space-8);
+    background:
+      radial-gradient(1100px 460px at 80% -10%, rgba(47, 191, 113, 0.2), transparent 60%),
+      linear-gradient(160deg, var(--c-ardoise) 0%, var(--c-ardoise-fonce) 55%, var(--c-ardoise-nuit) 100%);
+  }
+  .vtc-hero h1 {
+    color: #fff;
+    font-size: var(--fs-3xl);
+    margin: var(--space-4) 0;
+  }
+  .vtc-hero__lede {
+    color: var(--c-ficelle);
+    font-size: var(--fs-lg);
+    max-width: 64ch;
+    margin-bottom: var(--space-6);
+  }
+
+  .vtc-section {
+    padding-block: var(--space-8);
+  }
+  .vtc-head {
+    max-width: 720px;
+    margin-bottom: var(--space-7);
+  }
+  .vtc-head h2 {
+    color: var(--c-ardoise);
+    margin: var(--space-3) 0 0;
+  }
+  .vtc-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+    gap: 18px;
+  }
+  .vtc-card {
+    background: #fff;
+    border: 1px solid var(--ligne-fonce);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 26px 22px;
+  }
+  .vtc-card__num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--c-orange);
+  }
+  .vtc-card h3 {
+    color: var(--c-ardoise);
+    font-size: 1.1rem;
+    margin: var(--space-2) 0 var(--space-2);
+  }
+  .vtc-card p {
+    margin: 0;
+    color: var(--c-texte-doux);
+    font-size: 0.95rem;
+  }
+
+  .vtc-parking__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-7);
+  }
+  .vtc-parking__grid h2 {
+    margin: var(--space-3) 0 var(--space-4);
+    font-size: var(--fs-xl);
+  }
+  .vtc-parking__grid p {
+    line-height: var(--lh-loose);
+  }
+  .vtc-parking__grid p + p {
+    margin-top: var(--space-3);
+  }
+  .vtc-parking__grid a {
+    color: var(--c-orange-clair);
+    font-weight: 600;
+  }
+
+  .vtc-lede {
+    color: var(--c-texte-doux);
+    max-width: 68ch;
+    font-size: 1.04rem;
+    line-height: var(--lh-loose);
+  }
+  .vtc-lede + .vtc-billing {
+    margin-top: var(--space-5);
+  }
+  .vtc-billing {
+    padding: var(--space-4) var(--space-5);
+    background: rgba(47, 191, 113, 0.07);
+    border: 1px dashed rgba(47, 191, 113, 0.5);
+    border-radius: var(--radius-md);
+    color: var(--c-texte-doux);
+    max-width: 74ch;
+  }
+  .vtc-billing b {
+    color: var(--c-ardoise);
+  }
+  .vtc-billing a {
+    color: var(--c-orange-nuit);
+    font-weight: 600;
+  }
+
+  .vtc-final__inner {
+    text-align: center;
+    max-width: 640px;
+  }
+  .vtc-final h2 {
+    margin: 14px 0 var(--space-3);
+  }
+  .vtc-final p {
+    max-width: 52ch;
+    margin: 0 auto var(--space-6);
+    font-size: 1.04rem;
+  }
+  .vtc-final__hours {
+    margin-top: var(--space-3);
+    font-size: var(--fs-sm);
+    color: var(--c-brume);
+  }
+</style>

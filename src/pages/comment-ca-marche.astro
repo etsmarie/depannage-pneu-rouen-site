@@ -104,6 +104,18 @@ const STEPS = [
     </div>
   </section>
 
+  <section class="how-cases">
+    <div class="container">
+      <p class="how-cases__text">
+        Ce déroulé reste le même quel que soit le véhicule ou l'heure, avec
+        quelques particularités selon les cas : voir les pages dédiées au
+        <a href="/depannage-pneu-utilitaire">dépannage pneu utilitaire et camping-car</a>,
+        aux <a href="/flottes-vtc-professionnels">flottes, VTC et professionnels</a>,
+        et au <a href="/depannage-pneu-nuit">dépannage pneu la nuit</a>.
+      </p>
+    </div>
+  </section>
+
   <Faq
     items={FAQ_GENERALE}
     title="Les questions qui reviennent au bout du fil"
@@ -163,6 +175,21 @@ const STEPS = [
   .how-head h2 {
     margin: 14px 0 0;
     color: var(--c-ardoise);
+  }
+
+  .how-cases {
+    padding-block: var(--space-6) 0;
+  }
+  .how-cases__text {
+    max-width: 74ch;
+    margin: 0 auto;
+    text-align: center;
+    font-size: var(--fs-sm);
+    color: var(--c-fg-subtle);
+  }
+  .how-cases__text a {
+    color: var(--c-orange-nuit);
+    font-weight: 600;
   }
 
   /* Étapes : cartes blanches numérotées 01-04 (compteur CSS façon C) */

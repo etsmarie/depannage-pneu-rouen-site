@@ -1,0 +1,295 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PhoneCTA from '~/components/PhoneCTA.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import Faq from '~/components/Faq.astro';
+import { NAP } from '~/data/nap.ts';
+import type { FaqItem } from '~/data/faq.ts';
+
+const crumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Dépannage pneu la nuit' },
+];
+
+const NUIT_FAQ: FaqItem[] = [
+  {
+    q: 'Vous répondez vraiment au téléphone à 3h du matin ?',
+    a: `Oui, sans standard ni renvoi : c'est Lucas qui décroche directement, qu'il soit 22h ou 3h passées. Il note la panne, votre position exacte à Rouen ou ailleurs dans le 76, et annonce un créneau avant de raccrocher — pas une moyenne théorique.`,
+  },
+  {
+    q: 'Le tarif de nuit est-il précisé avant que le fourgon parte ?',
+    a: "Toujours. La majoration qui s'applique entre 22h et 7h fait partie du montant total annoncé au téléphone, avant tout déplacement : rien n'est ajouté sur place. Si la voiture peut patienter sans risque, rien n'empêche non plus de reporter l'appel au matin pour éviter cette majoration.",
+  },
+  {
+    q: "Où se garer en sécurité la nuit en attendant l'atelier mobile ?",
+    a: "Sur un emplacement éclairé si possible : parking de station-service ouverte, place de supermarché, rue avec éclairage public plutôt qu'un coin sombre. Feux de détresse allumés, warnings et gilet si vous devez sortir du véhicule, occupants regroupés à l'écart de la circulation. Sur une voie rapide, gagnez d'abord la prochaine sortie ou aire : la chaussée elle-même relève des dépanneurs agréés, joignables via la borne orange ou le 112.",
+  },
+];
+---
+
+<BaseLayout
+  title="Pneu crevé la nuit — Dépannage pneu Rouen"
+  description="Panne de pneu la nuit à Rouen : Lucas répond 24h/24, annonce le délai et la majoration au téléphone, puis répare sur place."
+  canonicalPath="/depannage-pneu-nuit"
+>
+  <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/depannage-pneu-nuit`} />
+  <Breadcrumb items={crumbs} currentPath="/depannage-pneu-nuit" />
+
+  <!-- HERO -->
+  <section class="nu-hero band-nuit">
+    <div class="container">
+      <p class="eyebrow">22h passées, et alors ?</p>
+      <h1>Dépannage pneu la nuit à Rouen</h1>
+      <p class="nu-hero__lede">
+        Entre la fin de soirée et le lever du jour, une roue à plat ne se
+        règle pas au même rythme qu'en pleine journée. Lucas décroche à
+        toute heure, annonce le délai et la majoration nocturne au téléphone,
+        puis vient réparer ou remplacer le pneu là où la voiture est
+        immobilisée.
+      </p>
+      <PhoneCTA hint="Prix de nuit annoncé au téléphone, avant que le fourgon ne parte" />
+    </div>
+  </section>
+  <div class="hazard-stripe" aria-hidden="true"></div>
+
+  <!-- LE DELAI REEL -->
+  <section class="nu-section">
+    <div class="container nu-grid">
+      <div>
+        <p class="eyebrow">Ni plus vite par magie, ni plus lent</p>
+        <h2>Le délai réel en pleine nuit</h2>
+        <p>
+          Passé 22h, les quais et les rocades A13, A28 et A150 se vident : le
+          trajet du fourgon peut, sur certains secteurs, aller un peu plus
+          vite qu'aux heures de pointe. Mais la nuit apporte ses propres
+          freins — repérer une voiture arrêtée en haut de la côte de
+          Bonsecours ou de Canteleu demande plus de précision qu'en plein
+          jour, et les ruelles du centre historique, mal éclairées passé
+          minuit, ralentissent le dernier tronçon.
+        </p>
+        <p>
+          Aucun chiffre générique ne résume ces écarts : au téléphone, Lucas
+          calcule le créneau selon l'heure exacte, votre secteur et un point
+          de repère net — une enseigne encore allumée, un croisement, le nom
+          d'un pont. C'est ce créneau-là qui est tenu, pas une estimation
+          moyenne affichée sur une page.
+        </p>
+      </div>
+      <div>
+        <p class="eyebrow">Le même geste, à la lampe du fourgon</p>
+        <h2>Ce qui se passe une fois sur place</h2>
+        <p>
+          Le diagnostic ne change pas avec l'heure : roue déposée, fuite
+          localisée, carcasse examinée de l'intérieur. Si le trou est sur la
+          bande de roulement et de petit diamètre, la réparation homologuée
+          selon la norme NF U85-200 est posée sur place. Sur le flanc ou
+          l'épaulement, direction le remplacement, toujours par paire sur le
+          même essieu.
+        </p>
+        <p>
+          Le fourgon embarque son propre éclairage de travail : ni la nuit ni
+          l'absence de lampadaire à proximité n'empêchent un contrôle
+          sérieux du pneu avant de vous rendre la route.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAJORATION -->
+  <section class="nu-majo band-ardoise">
+    <div class="container">
+      <p class="eyebrow eyebrow--center">Dite avant le départ, jamais sur la facture</p>
+      <h2 class="nu-majo__title">La majoration de nuit, précisée au téléphone</h2>
+      <p class="nu-majo__box">
+        Entre 22h et 7h, le dimanche et les jours fériés, une majoration
+        s'ajoute au tarif de base — la contrepartie d'une ligne qui répond
+        quand tout le reste de l'agglomération est fermé. Elle est toujours
+        annoncée avant que le fourgon ne prenne la route, fondue dans le
+        montant total que vous validez au téléphone. Le détail des ordres de
+        prix, crevaison, montage ou batterie, figure sur la page
+        <a href="/tarifs">tarifs</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- SECURITE EN ATTENDANT -->
+  <section class="nu-safety">
+    <div class="container">
+      <header class="nu-head">
+        <p class="eyebrow">En attendant l'atelier mobile</p>
+        <h2>Où et comment stationner la nuit</h2>
+      </header>
+      <ul class="nu-list">
+        <li>
+          <b>Un emplacement éclairé plutôt qu'un coin sombre :</b> parking de
+          station-service ouverte 24h/24, place de supermarché, rue avec
+          éclairage public.
+        </li>
+        <li>
+          <b>Feux de détresse allumés</b> dès l'arrêt, et gilet enfilé avant
+          de sortir du véhicule si vous devez descendre.
+        </li>
+        <li>
+          <b>Occupants regroupés à l'écart de la circulation</b>, jamais du
+          côté de la chaussée.
+        </li>
+        <li>
+          <b>Sur une voie rapide,</b> rejoignez d'abord la prochaine sortie
+          ou aire avant d'appeler : sur la chaussée elle-même, seuls les
+          dépanneurs agréés, via la borne orange ou le 112, sont habilités à
+          intervenir.
+        </li>
+      </ul>
+      <p class="nu-note">
+        Une fois en sécurité, un appel au {NAP.phoneDisplay} suffit pour que
+        Lucas prenne le relais et vienne traiter la roue sur place, comme
+        pour la <a href="/rouen">réparation de crevaison à Rouen</a> en plein
+        jour.
+      </p>
+    </div>
+  </section>
+
+  <Faq
+    items={NUIT_FAQ}
+    title="Questions sur le dépannage pneu de nuit"
+    eyebrow="On vous répond"
+  />
+
+  <!-- CTA FINAL -->
+  <section class="nu-final band-nuit">
+    <div class="container nu-final__inner">
+      <p class="eyebrow eyebrow--center">Il est tard, la roue est à plat</p>
+      <h2>La ligne répond, quelle que soit l'heure</h2>
+      <p>
+        Décrivez la panne, indiquez où vous êtes garé : le prix de nuit et
+        l'heure d'arrivée sont donnés avant que le fourgon ne démarre.
+      </p>
+      <a class="btn btn--primary btn--lg" href={`tel:${NAP.phoneE164}`}>
+        Appeler le {NAP.phoneDisplay}
+      </a>
+      <p class="nu-final__hours">{NAP.hoursLabel} · {NAP.area}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nu-hero {
+    padding-block: var(--space-9) var(--space-8);
+    background:
+      radial-gradient(1100px 460px at 80% -10%, rgba(47, 191, 113, 0.16), transparent 60%),
+      linear-gradient(160deg, var(--c-ardoise-nuit) 0%, var(--c-ardoise-fonce) 60%, var(--c-ardoise) 100%);
+  }
+  .nu-hero h1 {
+    color: #fff;
+    font-size: var(--fs-3xl);
+    margin: var(--space-4) 0;
+  }
+  .nu-hero__lede {
+    color: var(--c-ficelle);
+    font-size: var(--fs-lg);
+    max-width: 64ch;
+    margin-bottom: var(--space-6);
+  }
+
+  .nu-section {
+    padding-block: var(--space-8);
+  }
+  .nu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-7);
+  }
+  .nu-grid h2 {
+    color: var(--c-ardoise);
+    margin: var(--space-3) 0 var(--space-4);
+  }
+  .nu-grid p {
+    color: var(--c-texte-doux);
+    line-height: var(--lh-loose);
+  }
+  .nu-grid p + p {
+    margin-top: var(--space-3);
+  }
+
+  .nu-majo {
+    padding-block: var(--space-8);
+  }
+  .nu-majo__title {
+    text-align: center;
+    max-width: 720px;
+    margin: 14px auto var(--space-6);
+  }
+  .nu-majo__box {
+    max-width: 74ch;
+    margin: 0 auto;
+    padding: var(--space-5);
+    background: rgba(198, 208, 215, 0.06);
+    border: 1px dashed rgba(47, 191, 113, 0.5);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+  .nu-majo__box a {
+    color: var(--c-orange-clair);
+    font-weight: 600;
+  }
+
+  .nu-safety {
+    padding-block: var(--space-8);
+  }
+  .nu-head {
+    max-width: 720px;
+    margin-bottom: var(--space-6);
+  }
+  .nu-head h2 {
+    color: var(--c-ardoise);
+    margin: var(--space-3) 0 0;
+  }
+  .nu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+    max-width: 74ch;
+  }
+  .nu-list li {
+    padding: var(--space-4) var(--space-5);
+    background: #fff;
+    border: 1px solid var(--ligne-fonce);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    color: var(--c-texte-doux);
+  }
+  .nu-list b {
+    color: var(--c-ardoise);
+  }
+  .nu-note {
+    margin-top: var(--space-5);
+    font-size: var(--fs-sm);
+    color: var(--c-fg-subtle);
+    max-width: 74ch;
+  }
+  .nu-note a {
+    color: var(--c-orange-nuit);
+    font-weight: 600;
+  }
+
+  .nu-final__inner {
+    text-align: center;
+    max-width: 640px;
+  }
+  .nu-final h2 {
+    margin: 14px 0 var(--space-3);
+  }
+  .nu-final p {
+    max-width: 52ch;
+    margin: 0 auto var(--space-6);
+    font-size: 1.04rem;
+  }
+  .nu-final__hours {
+    margin-top: var(--space-3);
+    font-size: var(--fs-sm);
+    color: var(--c-brume);
+  }
+</style>

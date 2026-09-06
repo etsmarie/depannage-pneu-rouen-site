@@ -1,0 +1,316 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PhoneCTA from '~/components/PhoneCTA.astro';
+import SchemaLocalBusiness from '~/components/SchemaLocalBusiness.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import Faq from '~/components/Faq.astro';
+import { NAP } from '~/data/nap.ts';
+import type { FaqItem } from '~/data/faq.ts';
+
+const crumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Dépannage pneu utilitaire et camping-car' },
+];
+
+const UT_FAQ: FaqItem[] = [
+  {
+    q: 'Le fourgon-atelier peut-il poser un pneu de camping-car ?',
+    a: `Souvent oui, à condition que la dimension et l'indice de charge exacts figurent dans le stock embarqué ce jour-là : les montes de camping-car varient beaucoup d'un modèle à l'autre. Au ${NAP.phoneDisplay}, donnez la dimension inscrite sur le flanc (par exemple 225/75 R16 C) et le poids total en charge : Lucas confirme la disponibilité avant de prendre la route, et le remplacement se fait toujours par paire sur le même essieu.`,
+  },
+  {
+    q: "Vous déplacez-vous sur un site industriel ou une zone logistique de la rive gauche pour un utilitaire de société ?",
+    a: `Oui, sans qu'il soit nécessaire de sortir le véhicule du site : le fourgon se gare sur le parking de l'entreprise ou de l'entrepôt, au technopôle du Madrillet comme ailleurs dans l'agglomération. Une seule condition, valable partout : une place où lever la roue en sécurité, à l'écart de la circulation interne.`,
+  },
+  {
+    q: 'Intervenez-vous sur un poids lourd, un bus ou une semi-remorque ?',
+    a: "Non : le matériel embarqué (démonte-pneu et équilibreuse mobiles) est calibré pour les véhicules légers et utilitaires jusqu'à 3,5 tonnes, roues simples. Au-delà, les roues jumelées et les pneus poids lourd demandent un outillage spécifique que le fourgon ne transporte pas ; Lucas vous le dit clairement au téléphone plutôt que de se déplacer pour rien.",
+  },
+];
+---
+
+<BaseLayout
+  title="Utilitaire & camping-car — Dépannage pneu Rouen"
+  description="Fourgon, VUL ou camping-car immobilisé à Rouen : pneu réparé ou posé sur place selon la charge et la dimension exacte, sans remorquage."
+  canonicalPath="/depannage-pneu-utilitaire"
+>
+  <SchemaLocalBusiness slot="schema" pageUrl={`${NAP.baseUrl}/depannage-pneu-utilitaire`} />
+  <Breadcrumb items={crumbs} currentPath="/depannage-pneu-utilitaire" />
+
+  <!-- HERO -->
+  <section class="ut-hero band-ardoise">
+    <div class="container">
+      <p class="eyebrow">Fourgons, VUL, camping-cars</p>
+      <h1>Dépannage pneu utilitaire et camping-car à Rouen</h1>
+      <p class="ut-hero__lede">
+        Un fourgon, un véhicule utilitaire léger ou un camping-car ne se
+        dépanne pas comme une citadine : c'est la charge qui commande tout, de
+        la dimension du pneu à la pression de gonflage. À Rouen, Lucas se
+        déplace avec des montes renforcées adaptées à l'indice de charge du
+        véhicule, diagnostique et répare sur place, une fois le véhicule
+        rangé hors de la circulation.
+      </p>
+      <PhoneCTA hint="Donnez la dimension inscrite sur le flanc, on confirme le stock au téléphone" />
+    </div>
+  </section>
+  <div class="hazard-stripe" aria-hidden="true"></div>
+
+  <!-- POURQUOI C'EST DIFFERENT -->
+  <section class="ut-section">
+    <div class="container ut-grid">
+      <div>
+        <p class="eyebrow">Ce qui change avec la charge</p>
+        <h2>Pourquoi un utilitaire ne se traite pas comme une berline</h2>
+        <p>
+          Sur un fourgon ou un VUL, le pneu porte souvent la mention « C »
+          (Commercial) après sa dimension : une carcasse renforcée, pensée
+          pour rouler chargé sans que le flanc travaille de travers. Poser le
+          mauvais indice de charge, ou gonfler un pneu C à la pression d'une
+          voiture particulière, use la gomme de façon irrégulière et fragilise
+          la carcasse — un souci qui revient vite sous forme de nouvelle
+          crevaison.
+        </p>
+        <p>
+          La pression elle-même n'est pas fixe : un fourgon vide et le même
+          fourgon chargé de marchandises n'appellent pas le même gonflage,
+          souvent renseigné en deux valeurs distinctes sur l'étiquette de la
+          portière. Avant de remonter la roue, Lucas ajuste toujours au poids
+          réel du véhicule au moment de l'intervention, pas à une moyenne
+          théorique.
+        </p>
+      </div>
+      <div>
+        <p class="eyebrow">Ce que ça implique</p>
+        <h2>Le bon geste, la bonne pièce</h2>
+        <p>
+          Une crevaison réparable sur un utilitaire suit la même règle que
+          pour une voiture : perforation sur la bande de roulement, petit
+          diamètre, carcasse saine à l'examen. Quand le remplacement s'impose,
+          il se fait par paire sur l'essieu concerné, avec la dimension et la
+          gamme adaptées au <a href="/services/changement-pneu-domicile">montage à domicile</a>
+          — jamais un pneu C isolé posé à la va-vite à côté d'un pneu usé
+          différemment.
+        </p>
+        <p>
+          Camping-car compris : le poids change nettement entre un véhicule
+          vide et un véhicule prêt à partir, réservoirs d'eau pleins et
+          matériel chargé. C'est ce poids-là, pas celui indiqué sur la fiche
+          constructeur à vide, qui doit guider le choix de l'indice de charge
+          et la pression finale.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- OU ON INTERVIENT -->
+  <section class="ut-where band-nuit">
+    <div class="container">
+      <header class="ut-head ut-head--center">
+        <p class="eyebrow eyebrow--center">Le fourgon vient à vous</p>
+        <h2>Où nous intervenons sur un utilitaire ou un camping-car</h2>
+      </header>
+      <div class="ut-where__grid">
+        <article class="ut-where__item">
+          <h3>Parking d'entreprise, zone d'activité</h3>
+          <p>
+            Sur la rive gauche industrielle ou au
+            <a href="/saint-etienne-du-rouvray">technopôle du Madrillet à Saint-Étienne-du-Rouvray</a>,
+            le fourgon se gare directement sur le parking de la société ou de
+            l'entrepôt, sans qu'il faille sortir le véhicule du site.
+          </p>
+        </article>
+        <article class="ut-where__item">
+          <h3>Domicile ou aire de stationnement</h3>
+          <p>
+            Devant chez vous, sur une place de camping-car ou un parking de
+            supermarché où le véhicule attend son prochain départ, la roue se
+            traite là où le véhicule est garé, sans remorquage.
+          </p>
+        </article>
+        <article class="ut-where__item">
+          <h3>Hors emprise autoroutière</h3>
+          <p>
+            Sur une aire ou après une sortie d'autoroute, oui. Sur la voie
+            elle-même ou la bande d'arrêt d'urgence, non : cette portion
+            relève des dépanneurs agréés, joignables via la borne orange ou le
+            112. Une fois le véhicule rangé hors de la circulation, Lucas
+            prend le relais.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIMITES -->
+  <section class="ut-limits">
+    <div class="container">
+      <p class="eyebrow">Pour que le déplacement ne soit pas inutile</p>
+      <h2>Ce que le fourgon-atelier ne fait pas</h2>
+      <p class="ut-limits__box">
+        <b>Poids lourds, bus et semi-remorques ne relèvent pas de ce service.</b>
+        Le matériel embarqué — démonte-pneu et équilibreuse portables — est
+        dimensionné pour les véhicules légers et utilitaires jusqu'à 3,5
+        tonnes, à roues simples. Les roues jumelées et pneumatiques de poids
+        lourd demandent un outillage propre au transport routier ; dites-le
+        dès l'appel, Lucas vous orientera plutôt que de se déplacer sans
+        pouvoir intervenir.
+      </p>
+      <p class="ut-limits__note">
+        Les tarifs indicatifs — crevaison, montage, batterie — sont détaillés
+        sur la page <a href="/tarifs">tarifs</a> ; pour un utilitaire ou un
+        camping-car, le prix exact dépend de la dimension et du poids du
+        véhicule, chiffré au téléphone avant tout déplacement.
+      </p>
+    </div>
+  </section>
+
+  <Faq
+    items={UT_FAQ}
+    title="Questions sur le dépannage utilitaire et camping-car"
+    eyebrow="On vous répond"
+  />
+
+  <!-- CTA FINAL -->
+  <section class="ut-final band-nuit">
+    <div class="container ut-final__inner">
+      <p class="eyebrow eyebrow--center">Fourgon, VUL, camping-car</p>
+      <h2>Donnez la dimension, on confirme au téléphone</h2>
+      <p>
+        Poids du véhicule, dimension inscrite sur le flanc, endroit exact où
+        il est garé : Lucas chiffre l'intervention et vous dit si le pneu est
+        en stock avant de prendre la route.
+      </p>
+      <a class="btn btn--primary btn--lg" href={`tel:${NAP.phoneE164}`}>
+        Appeler le {NAP.phoneDisplay}
+      </a>
+      <p class="ut-final__hours">{NAP.hoursLabel} · {NAP.area}</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ut-hero {
+    padding-block: var(--space-9) var(--space-8);
+    background:
+      radial-gradient(1100px 460px at 80% -10%, rgba(47, 191, 113, 0.2), transparent 60%),
+      linear-gradient(160deg, var(--c-ardoise) 0%, var(--c-ardoise-fonce) 55%, var(--c-ardoise-nuit) 100%);
+  }
+  .ut-hero h1 {
+    color: #fff;
+    font-size: var(--fs-3xl);
+    margin: var(--space-4) 0;
+  }
+  .ut-hero__lede {
+    color: var(--c-ficelle);
+    font-size: var(--fs-lg);
+    max-width: 64ch;
+    margin-bottom: var(--space-6);
+  }
+
+  .ut-section {
+    padding-block: var(--space-8);
+  }
+  .ut-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-7);
+  }
+  .ut-grid h2 {
+    color: var(--c-ardoise);
+    margin: var(--space-3) 0 var(--space-4);
+  }
+  .ut-grid p {
+    color: var(--c-texte-doux);
+    line-height: var(--lh-loose);
+  }
+  .ut-grid p + p {
+    margin-top: var(--space-3);
+  }
+  .ut-grid a {
+    color: var(--c-orange-nuit);
+    font-weight: 600;
+  }
+
+  .ut-head {
+    max-width: 720px;
+    margin-bottom: var(--space-7);
+  }
+  .ut-head--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .ut-head h2 {
+    margin: 14px 0 0;
+    color: #fff;
+  }
+  .ut-where__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+    gap: var(--space-4);
+  }
+  .ut-where__item {
+    background: rgba(198, 208, 215, 0.06);
+    border: 1px solid var(--ligne);
+    border-left: 4px solid var(--c-orange);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    padding: var(--space-5);
+  }
+  .ut-where__item h3 {
+    color: var(--c-orange-clair);
+    font-size: 1.1rem;
+    margin-bottom: var(--space-2);
+  }
+  .ut-where__item p {
+    margin: 0;
+    color: var(--c-ficelle);
+    font-size: 0.96rem;
+  }
+  .ut-where__item a {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .ut-limits {
+    padding-block: var(--space-8);
+  }
+  .ut-limits h2 {
+    color: var(--c-ardoise);
+    margin: var(--space-3) 0 var(--space-5);
+  }
+  .ut-limits__box {
+    padding: var(--space-5) var(--space-5);
+    background: rgba(198, 208, 215, 0.08);
+    border: 1px dashed var(--ligne-fonce);
+    border-radius: var(--radius-md);
+    color: var(--c-texte-doux);
+    max-width: 74ch;
+  }
+  .ut-limits__box b {
+    display: block;
+    color: var(--c-ardoise);
+    margin-bottom: var(--space-2);
+  }
+  .ut-limits__note {
+    margin-top: var(--space-4);
+    font-size: var(--fs-sm);
+    color: var(--c-fg-subtle);
+    max-width: 74ch;
+  }
+
+  .ut-final__inner {
+    text-align: center;
+    max-width: 640px;
+  }
+  .ut-final h2 {
+    margin: 14px 0 var(--space-3);
+  }
+  .ut-final p {
+    max-width: 52ch;
+    margin: 0 auto var(--space-6);
+    font-size: 1.04rem;
+  }
+  .ut-final__hours {
+    margin-top: var(--space-3);
+    font-size: var(--fs-sm);
+    color: var(--c-brume);
+  }
+</style>
