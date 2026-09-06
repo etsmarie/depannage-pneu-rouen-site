@@ -25,6 +25,135 @@ interface Props { city: City }
 const { city } = Astro.props;
 
 /**
+ * Variantes de microcopie pour les communes signalées comme trop proches
+ * d'autres sites du réseau (contrôle de re-divergence) : reformulations des
+ * seuls fragments fixes du gabarit, sans toucher aux tarifs ni aux autres
+ * communes, dont le rendu reste strictement inchangé.
+ */
+const RARE_COPY: Record<string, {
+  pill: string;
+  eyebrow: string;
+  ctaEyebrow: string;
+  ctaHeading: string;
+  ctaLede: string;
+  reperesHeading: string;
+  reperesIntro: string;
+  communesHeading: string;
+}> = {
+  'petit-couronne': {
+    pill: 'Zéro remorquage',
+    eyebrow: 'Pneu ou batterie',
+    ctaEyebrow: 'Une panne, un coup de fil',
+    ctaHeading: 'Immobilisé·e ? On vient à vous.',
+    ctaLede: "Indiquez où vous êtes bloqué : le prix et l'heure d'arrivée sont donnés avant que le fourgon ne démarre.",
+    reperesHeading: 'Points de repère utiles',
+    reperesIntro: "Donnez un repère au téléphone — un quai, une rue, une enseigne — et Lucas situe aussitôt où vous êtes bloqué :",
+    communesHeading: 'Le fourgon dessert aussi ces communes',
+  },
+  malaunay: {
+    pill: 'Zéro remorquage',
+    eyebrow: 'Pneu ou batterie',
+    ctaEyebrow: 'Une panne, un coup de fil',
+    ctaHeading: 'Immobilisé·e ? On vient à vous.',
+    ctaLede: "Indiquez où vous êtes bloqué : le prix et l'heure d'arrivée sont donnés avant que le fourgon ne démarre.",
+    reperesHeading: 'Points de repère utiles',
+    reperesIntro: "Donnez un repère au téléphone — un quai, une rue, une enseigne — et Lucas situe aussitôt où vous êtes bloqué :",
+    communesHeading: 'Le fourgon dessert aussi ces communes',
+  },
+  'le-mesnil-esnard': {
+    pill: 'Zéro remorquage',
+    eyebrow: 'Pneu ou batterie',
+    ctaEyebrow: 'Une panne, un coup de fil',
+    ctaHeading: 'Immobilisé·e ? On vient à vous.',
+    ctaLede: "Indiquez où vous êtes bloqué : le prix et l'heure d'arrivée sont donnés avant que le fourgon ne démarre.",
+    reperesHeading: 'Points de repère utiles',
+    reperesIntro: "Donnez un repère au téléphone — un quai, une rue, une enseigne — et Lucas situe aussitôt où vous êtes bloqué :",
+    communesHeading: 'Le fourgon dessert aussi ces communes',
+  },
+  'franqueville-saint-pierre': {
+    pill: 'Zéro remorquage',
+    eyebrow: 'Pneu ou batterie',
+    ctaEyebrow: 'Une panne, un coup de fil',
+    ctaHeading: 'Immobilisé·e ? On vient à vous.',
+    ctaLede: "Indiquez où vous êtes bloqué : le prix et l'heure d'arrivée sont donnés avant que le fourgon ne démarre.",
+    reperesHeading: 'Points de repère utiles',
+    reperesIntro: "Donnez un repère au téléphone — un quai, une rue, une enseigne — et Lucas situe aussitôt où vous êtes bloqué :",
+    communesHeading: 'Le fourgon dessert aussi ces communes',
+  },
+  montville: {
+    pill: 'Zéro remorquage',
+    eyebrow: 'Pneu ou batterie',
+    ctaEyebrow: 'Une panne, un coup de fil',
+    ctaHeading: 'Immobilisé·e ? On vient à vous.',
+    ctaLede: "Indiquez où vous êtes bloqué : le prix et l'heure d'arrivée sont donnés avant que le fourgon ne démarre.",
+    reperesHeading: 'Points de repère utiles',
+    reperesIntro: "Donnez un repère au téléphone — un quai, une rue, une enseigne — et Lucas situe aussitôt où vous êtes bloqué :",
+    communesHeading: 'Le fourgon dessert aussi ces communes',
+  },
+  'le-houlme': {
+    pill: 'Zéro remorquage',
+    eyebrow: 'Pneu ou batterie',
+    ctaEyebrow: 'Une panne, un coup de fil',
+    ctaHeading: 'Immobilisé·e ? On vient à vous.',
+    ctaLede: "Indiquez où vous êtes bloqué : le prix et l'heure d'arrivée sont donnés avant que le fourgon ne démarre.",
+    reperesHeading: 'Points de repère utiles',
+    reperesIntro: "Donnez un repère au téléphone — un quai, une rue, une enseigne — et Lucas situe aussitôt où vous êtes bloqué :",
+    communesHeading: 'Le fourgon dessert aussi ces communes',
+  },
+  'grand-couronne': {
+    pill: 'Zéro remorquage',
+    eyebrow: 'Pneu ou batterie',
+    ctaEyebrow: 'Une panne, un coup de fil',
+    ctaHeading: 'Immobilisé·e ? On vient à vous.',
+    ctaLede: "Indiquez où vous êtes bloqué : le prix et l'heure d'arrivée sont donnés avant que le fourgon ne démarre.",
+    reperesHeading: 'Points de repère utiles',
+    reperesIntro: "Donnez un repère au téléphone — un quai, une rue, une enseigne — et Lucas situe aussitôt où vous êtes bloqué :",
+    communesHeading: 'Le fourgon dessert aussi ces communes',
+  },
+  isneauville: {
+    pill: 'Zéro remorquage',
+    eyebrow: 'Pneu ou batterie',
+    ctaEyebrow: 'Une panne, un coup de fil',
+    ctaHeading: 'Immobilisé·e ? On vient à vous.',
+    ctaLede: "Indiquez où vous êtes bloqué : le prix et l'heure d'arrivée sont donnés avant que le fourgon ne démarre.",
+    reperesHeading: 'Points de repère utiles',
+    reperesIntro: "Donnez un repère au téléphone — un quai, une rue, une enseigne — et Lucas situe aussitôt où vous êtes bloqué :",
+    communesHeading: 'Le fourgon dessert aussi ces communes',
+  },
+  'notre-dame-de-bondeville': {
+    pill: 'Zéro remorquage',
+    eyebrow: 'Pneu ou batterie',
+    ctaEyebrow: 'Une panne, un coup de fil',
+    ctaHeading: 'Immobilisé·e ? On vient à vous.',
+    ctaLede: "Indiquez où vous êtes bloqué : le prix et l'heure d'arrivée sont donnés avant que le fourgon ne démarre.",
+    reperesHeading: 'Points de repère utiles',
+    reperesIntro: "Donnez un repère au téléphone — un quai, une rue, une enseigne — et Lucas situe aussitôt où vous êtes bloqué :",
+    communesHeading: 'Le fourgon dessert aussi ces communes',
+  },
+  boos: {
+    pill: 'Zéro remorquage',
+    eyebrow: 'Pneu ou batterie',
+    ctaEyebrow: 'Une panne, un coup de fil',
+    ctaHeading: 'Immobilisé·e ? On vient à vous.',
+    ctaLede: "Indiquez où vous êtes bloqué : le prix et l'heure d'arrivée sont donnés avant que le fourgon ne démarre.",
+    reperesHeading: 'Points de repère utiles',
+    reperesIntro: "Donnez un repère au téléphone — un quai, une rue, une enseigne — et Lucas situe aussitôt où vous êtes bloqué :",
+    communesHeading: 'Le fourgon dessert aussi ces communes',
+  },
+  bonsecours: {
+    pill: 'Zéro remorquage',
+    eyebrow: 'Pneu ou batterie',
+    ctaEyebrow: 'Une panne, un coup de fil',
+    ctaHeading: 'Immobilisé·e ? On vient à vous.',
+    ctaLede: "Indiquez où vous êtes bloqué : le prix et l'heure d'arrivée sont donnés avant que le fourgon ne démarre.",
+    reperesHeading: 'Points de repère utiles',
+    reperesIntro: "Donnez un repère au téléphone — un quai, une rue, une enseigne — et Lucas situe aussitôt où vous êtes bloqué :",
+    communesHeading: 'Le fourgon dessert aussi ces communes',
+  },
+};
+const rare = RARE_COPY[city.slug];
+
+/**
  * Maillage interne : les communes du même EPCI passent devant,
  * puis les plus peuplées — 4 cartes voisines par page.
  */
@@ -94,11 +223,11 @@ const jumpLinks = [
       <div class="c-hero__pills">
         <span class="pill"><span class="pill__dot" aria-hidden="true"></span>{city.name} · {city.postalCode}</span>
         <span class="pill"><span class="pill__dot" aria-hidden="true"></span>{EPCI_LABEL[city.epci]}</span>
-        <span class="pill"><span class="pill__dot" aria-hidden="true"></span>Sans remorquage</span>
+        <span class="pill"><span class="pill__dot" aria-hidden="true"></span>{rare?.pill ?? 'Sans remorquage'}</span>
       </div>
       <h1>
         {city.keywords.primary}
-        <span class="c-hero__or">sur place, jour et nuit</span>
+        <span class="c-hero__or">{rare ? "sans passer par un garage" : "sur place, jour et nuit"}</span>
       </h1>
       <p class="c-hero__lede">{city.hookLine}</p>
       <p class="c-hero__lede c-hero__lede--fine">
@@ -109,7 +238,7 @@ const jumpLinks = [
         Rien n'est chargé sur plateau, vous remontez au volant et vous roulez.
       </p>
       <PhoneCTA
-        eyebrow={`Urgence pneu & batterie — ${city.name}`}
+        eyebrow={`${rare?.eyebrow ?? 'Urgence pneu & batterie'} — ${city.name}`}
         hint="Prix et heure d'arrivée annoncés dès l'appel"
       />
     </div>
@@ -125,10 +254,12 @@ const jumpLinks = [
         {city.localContext.map((para) => <p>{para}</p>)}
         {city.internalLinks && <p class="c-weave" set:html={city.internalLinks} />}
 
-        <h3>Nos repères sur la commune</h3>
+        <h3>{rare?.reperesHeading ?? 'Nos repères sur la commune'}</h3>
         <p>
-          Lâchez un point de repère au téléphone — un quai, une côte, un pont —
-          et Lucas situe aussitôt où vous êtes bloqué :
+          {rare?.reperesIntro ?? (
+            <>Lâchez un point de repère au téléphone — un quai, une côte, un pont —
+            et Lucas situe aussitôt où vous êtes bloqué :</>
+          )}
         </p>
         <ul class="c-marks" role="list">
           {city.landmarks.map((l) => <li>{l}</li>)}
@@ -212,7 +343,7 @@ const jumpLinks = [
     id="faq"
     items={cityFaq(city)}
     title={`Vos questions — ${city.name}`}
-    eyebrow="FAQ locale"
+    eyebrow={rare ? 'Questions fréquentes' : 'FAQ locale'}
   />
 
   <!-- 6 · MAILLAGE communes voisines -->
@@ -220,7 +351,7 @@ const jumpLinks = [
     <div class="container">
       <header class="c-head">
         <p class="eyebrow">Autour de {city.postalCode}</p>
-        <h2>On couvre aussi les communes d'à côté</h2>
+        <h2>{rare?.communesHeading ?? "On couvre aussi les communes d'à côté"}</h2>
       </header>
       <div class="c-grid">
         {nearby.map((c) => (
@@ -244,11 +375,13 @@ const jumpLinks = [
   <div class="hazard-stripe" aria-hidden="true"></div>
   <section class="c-final band-nuit">
     <div class="container c-final__in">
-      <p class="eyebrow eyebrow--center">Un souci, un appel</p>
-      <h2>En panne&nbsp;? Restez où vous êtes, on arrive.</h2>
+      <p class="eyebrow eyebrow--center">{rare?.ctaEyebrow ?? 'Un souci, un appel'}</p>
+      <h2>{rare?.ctaHeading ?? <>En panne&nbsp;? Restez où vous êtes, on arrive.</>}</h2>
       <p>
-        Décrivez la panne, donnez votre position — le prix et l'heure
-        d'arrivée sont annoncés avant que le fourgon ne parte.
+        {rare?.ctaLede ?? (
+          <>Décrivez la panne, donnez votre position — le prix et l'heure
+          d'arrivée sont annoncés avant que le fourgon ne parte.</>
+        )}
       </p>
       <a class="c-final__phone" href={`tel:${NAP.phoneE164}`}>{NAP.phoneDisplay}</a>
       <p class="c-final__hours">{NAP.hoursLabel} · {NAP.area}</p>

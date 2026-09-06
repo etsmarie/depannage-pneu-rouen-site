@@ -132,30 +132,30 @@ function hashSlug(slug: string): number {
 const CITY_FAQ_POOL: FaqGenerator[] = [
   // Délai d'arrivée
   (city) => ({
-    q: `En combien de temps arrivez-vous ${aVille(city.name)} ?`,
-    a: `L'atelier mobile sillonne l'agglo en continu : pour ${city.name} (${city.postalCode}), Lucas vous donne un créneau ferme dès l'appel au ${NAP.phoneDisplay}, calculé selon l'heure, le trafic et l'endroit exact où se trouve la voiture. La congestion aux heures de pointe et sur les axes de l'agglo peut rallonger le trajet — c'est intégré dans l'annonce, pas découvert en route.`,
+    q: `${city.name} est à combien de temps quand j'appelle ?`,
+    a: `Il n'existe pas de chiffre unique pour tout le secteur : selon que vous êtes en fond de vallée, sur un plateau ou près du centre de Rouen, le trajet du fourgon n'est pas le même. Au ${NAP.phoneDisplay}, Lucas situe votre position exacte à ${city.name} (${city.postalCode}) et annonce un horaire d'arrivée réaliste, en tenant compte du trafic du moment plutôt que d'une moyenne théorique. Un exemple concret : depuis un point de départ proche du centre, un secteur logé en fond de vallée demande souvent un peu plus de route qu'un point posé sur un axe direct, simplement parce que la voirie serpente davantage entre les coteaux.`,
   }),
   // Vente par paire
   (city) => ({
-    q: `Pourquoi me proposez-vous deux pneus alors qu'un seul est crevé ${aVille(city.name)} ?`,
-    a: `Parce qu'un essieu qui porte deux gommes d'usure différente ne freine pas droit, surtout sur les pavés du centre, les côtes des coteaux et les chaussées d'agglo détrempées par une averse. Les pneus sont donc montés par paire — 2, 4 ou 6 —, équilibrage compris, pour que la voiture reste saine au freinage. Et si votre pneu est réparable, Lucas le répare : vous n'achetez rien du tout.`,
+    q: `Un seul de mes pneus est crevé ${aVille(city.name)} : pourquoi m'en proposer deux ?`,
+    a: `Un essieu ne doit jamais porter deux gommes d'usure différente : le freinage devient inégal entre les deux roues, un vrai risque dans une côte mouillée ou sur les pavés du vieux Rouen. C'est pourquoi le remplacement se fait toujours en binôme sur le même essieu, jamais à l'unité, équilibrage compris. Et tant que la carcasse le permet, Lucas privilégie la réparation : rien n'est vendu qui ne soit nécessaire. Ce principe s'applique de la même façon à une petite citadine qu'à un utilitaire chargé, sur n'importe laquelle des communes couvertes par le fourgon.`,
   }),
   // Batterie
   (city) => ({
-    q: `Ma voiture refuse de démarrer ${aVille(city.name)} : vous changez la batterie sur place ?`,
-    a: `Oui, et sans précipitation : Lucas commence par mesurer la tension de la batterie et la charge délivrée par l'alternateur, parce qu'une batterie vide n'est pas forcément une batterie morte. Si elle est bien en fin de vie, il pose la référence 12V adaptée (standard, Start & Stop, AGM ou EFB) là où la voiture dort, et emporte l'ancienne pour recyclage. L'humidité de la vallée de Seine et les courts trajets d'agglo usent les batteries plus vite qu'ailleurs — aucun remorquage à prévoir : tout se règle sur place.`,
+    q: `La voiture ne démarre plus ${aVille(city.name)} : la batterie se change directement sur place ?`,
+    a: `Avant de proposer quoi que ce soit, Lucas vérifie si la batterie tient encore une charge et si l'alternateur recharge normalement — un moteur muet n'est pas toujours synonyme de batterie morte. Si le remplacement s'impose, il pose la référence 12V qui convient (classique, AGM, EFB ou Start & Stop) à l'endroit même où la voiture est garée, et récupère l'ancienne pour recyclage. Les écarts d'humidité propres à la vallée de Seine n'arrangent rien : ils fatiguent les batteries plus vite qu'ailleurs. Ce contrôle initial prend quelques minutes à peine, et évite bien souvent d'acheter une pièce neuve pour un problème qui ne vient que d'un mauvais contact ou d'une cosse oxydée.`,
   }),
   // Nuit / dimanche
   (city) => ({
-    q: `Vous intervenez aussi la nuit ou le dimanche ${aVille(city.name)} ?`,
-    a: `Oui : ${NAP.hoursLabel.toLowerCase()}, ${city.name} compris. Une majoration s'applique entre 22 h et 7 h, les dimanches et les jours fériés, et elle est incluse dans le montant annoncé au téléphone avant que l'atelier mobile ne prenne la route. Vous savez donc exactement à quoi vous engager — ou vous choisissez d'attendre le matin si la voiture peut patienter.`,
+    q: `Vous répondez aussi la nuit ou un dimanche ${aVille(city.name)} ?`,
+    a: `Sans exception : ${NAP.hoursLabel.toLowerCase()} concerne aussi ${city.name}. Entre 22 h et 7 h, ainsi que les dimanches et jours fériés, une majoration s'ajoute, mais elle figure dans le montant annoncé au téléphone avant que le fourgon ne se mette en route — jamais une surprise sur place. Si la voiture peut patienter sans risque, rien n'empêche d'attendre le matin. Cette disponibilité complète répond à une réalité simple : une panne ne prévient jamais de l'heure à laquelle elle va tomber.`,
   }),
   // Bord de route / axes
   (city) => {
     const axe = city.axes && city.axes.length > 0 ? `la ${city.axes[0]}` : "un grand axe de l'agglo";
     return {
-      q: `Je suis arrêté sur ${axe}, près ${deVille(city.name)} : vous venez sur le bas-côté ?`,
-      a: `Oui, dès lors que vous êtes en sécurité : voiture rangée le plus à droite possible, feux de détresse, gilet enfilé avant de sortir, occupants en retrait de la chaussée et hors de la circulation. Indiquez le sens de circulation et le dernier repère vu (sortie, pont, rond-point, enseigne) : Lucas arrive avec son balisage et traite la roue sur place, sans déplacer le véhicule.`,
+      q: `Immobilisé ${deVille(city.name)} sur ${axe}, dois-je patienter sur le bas-côté ?`,
+      a: `Mettez-vous d'abord en sécurité : voiture rangée au plus loin de la circulation, feux de détresse allumés, gilet enfilé avant de sortir du véhicule, occupants à l'écart de la chaussée. Donnez ensuite un repère net — un pont, un rond-point, une sortie, une enseigne — et Lucas arrive avec son propre balisage pour traiter la roue sans déplacer la voiture. Ce protocole reste identique quel que soit l'axe concerné, qu'il s'agisse d'une départementale de l'agglo ou d'une rue plus tranquille en cœur de commune.`,
     };
   },
   // Stationnement / repères locaux
@@ -163,24 +163,24 @@ const CITY_FAQ_POOL: FaqGenerator[] = [
     const reperes =
       city.landmarks.length > 0 ? city.landmarks.slice(0, 3).join(', ') : 'le centre';
     return {
-      q: `À quel endroit pouvez-vous intervenir ${aVille(city.name)} ?`,
-      a: `Partout où la voiture peut stationner sans gêner : ${reperes}, une cour, un parking d'entreprise ou la place devant chez vous. Le fourgon embarque démonte-pneu, équilibreuse, batteries et un stock de pneus dans les dimensions courantes — c'est l'atelier qui se déplace dans ${city.name}, pas l'inverse.`,
+      q: `Où exactement intervenez-vous ${aVille(city.name)} ?`,
+      a: `N'importe où la voiture peut rester stationnée sans gêner personne : ${reperes}, une cour, un parking d'entreprise ou simplement la rue devant chez vous. Tout le nécessaire — démonte-pneu, équilibreuse, batteries, pneus dans les dimensions les plus courantes — voyage dans le fourgon ; c'est lui qui vient à ${city.name}, jamais l'inverse. Aucune adresse n'est trop excentrée : du fond d'une impasse à un parking fermé au public, le fourgon s'adapte à la configuration des lieux.`,
     };
   },
   // Réparable ou pas
   (city) => ({
-    q: `Comment savoir si mon pneu crevé ${aVille(city.name)} est réparable ?`,
-    a: `Impossible de trancher sans démonter : Lucas retire l'objet fautif, examine l'intérieur de la carcasse et vérifie où se situe la perforation. Sur la bande de roulement, avec un petit diamètre et une carcasse saine, une réparation homologuée est posée sur place ${aVille(city.name)}. Sur le flanc ou l'épaulement, aucun rafistolage n'est acceptable : le pneu est remplacé, par paire sur l'essieu, dans la même intervention.`,
+    q: `Mon pneu crevé ${aVille(city.name)} peut-il être réparé, ou faut-il le changer ?`,
+    a: `Seul le démontage permet de trancher : Lucas localise précisément la perforation et inspecte l'intérieur de la carcasse. Une crevaison sur la bande de roulement, de petit diamètre et sans dommage caché, se répare dans les règles et repart sous pression. Dès que la coupure touche le flanc ou l'épaulement, en revanche, aucune réparation ne tient dans la durée : le pneu est changé, avec son jumeau du même essieu, pendant la même visite. Cette vérification systématique évite à la fois de jeter un pneu encore bon et de repartir sur une réparation qui ne tiendrait pas dans la durée.`,
   }),
   // Secteur / EPCI
   (city) => ({
-    q: `${city.name} fait-elle partie de votre zone d'intervention habituelle ?`,
-    a: `Oui : ${city.name} appartient à la ${EPCI_LABEL[city.epci]}, que l'atelier mobile couvre au même titre que Rouen intra-muros. Le service est entièrement mobile, donc seul le temps de route change selon votre position ; le tarif de déplacement correspondant vous est détaillé au ${NAP.phoneDisplay} avant toute intervention, sans supplément découvert sur place.`,
+    q: `${city.name} entre-t-elle dans votre zone habituelle, ou est-ce un déplacement exceptionnel ?`,
+    a: `${city.name} fait pleinement partie de la ${EPCI_LABEL[city.epci]}, un secteur que le fourgon parcourt aussi régulièrement que le centre de Rouen. Le service étant entièrement mobile, seul le temps de trajet varie selon votre position ; ce délai, comme le tarif de déplacement, est précisé au ${NAP.phoneDisplay} avant que quoi que ce soit ne soit engagé. Aucune commune du secteur n'est traitée comme secondaire : le même atelier, le même niveau d'équipement et les mêmes délais de réponse s'appliquent partout.`,
   }),
   // Pas de remorquage
   (city) => ({
-    q: `Si la panne est plus grave qu'un pneu, vous pouvez emmener ma voiture ${deVille(city.name)} au garage ?`,
-    a: `Non — aucun véhicule n'est tracté ni chargé sur plateau, ce n'est pas le métier de Lucas. Sa spécialité, c'est de remettre la voiture en état de rouler là où elle se trouve : crevaison, pneus, roue de secours, batterie. Si le diagnostic ${aVille(city.name)} révèle un problème mécanique qui dépasse ce cadre, il vous le dit sans détour et vous laisse la main pour organiser la suite avec votre assurance ou votre garagiste.`,
+    q: `Si le problème dépasse le pneu, embarquez-vous la voiture ${deVille(city.name)} jusqu'à un garage ?`,
+    a: `Non, ce n'est pas ce que fait Lucas : aucun véhicule n'est chargé sur plateau ni tracté. Sa mission tient en une phrase : redonner à la voiture la capacité de rouler, à l'endroit précis où elle a calé — pneu, batterie, roue de secours. Si l'examen ${aVille(city.name)} révèle une panne mécanique plus profonde, il vous le dit clairement, sans détour, et vous laisse organiser la suite avec votre assurance ou un garage de votre choix. Ce choix n'est pas qu'une question de méthode : il évite l'attente d'un plateau pour un véhicule qu'on aurait pu, la plupart du temps, remettre en route sur place.`,
   }),
 ];
 
@@ -194,7 +194,7 @@ const STRIDES = [1, 2, 4, 5, 7, 8] as const;
 export function cityFaq(city: City): FaqItem[] {
   const h = hashSlug(city.slug);
   const poolSize = CITY_FAQ_POOL.length;
-  const count = 4 + (h % 3); // 4, 5 ou 6 questions
+  const count = 7 + (h % 3); // 7, 8 ou 9 questions
   const start = (h >>> 4) % poolSize;
   const stride = STRIDES[(h >>> 8) % STRIDES.length];
 
